@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "711641433071-8tggplg4hsd9nv346gb2nj3sp8adbmal.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.covid_19shoppingcentre",
+            "certificate_hash": "7200e850a33c592fb9997658a52dab1576e026cc"
+          }
+        },
+        {
           "client_id": "711641433071-6p2t3tc6q1hv9pogvqjajeakmqur2sgu.apps.googleusercontent.com",
           "client_type": 3
         }

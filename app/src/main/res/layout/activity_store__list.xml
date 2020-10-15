@@ -2,10 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/text1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Store_List"
     android:background="@drawable/background_gradient"
-    >
+    tools:context="Store_List">
 
+    <EditText
+        android:id="@+id/searchStore"
+        android:layout_width="196dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="37dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@id/text1"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="13dp"
+        android:layout_toStartOf="@+id/searchStore"
+        android:gravity="right"
+        android:text="Store Name:"
+        android:textColor="#FFFFFF"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp" />
 </RelativeLayout>
