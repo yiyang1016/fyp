@@ -31,6 +31,7 @@ class Store_List :AppCompatActivity() {
 
     private  fun logRecyclerView(){
 
+
         //val options: FirebaseRecyclerOptions<Store> = FirebaseRecyclerOptions.Builder<Store>().setQuery(mDatabase, Store::class.java).build()
         var FirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Store, StoreViewHolder>(
             Store::class.java,

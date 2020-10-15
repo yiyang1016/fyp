@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF">
+    android:background="@drawable/radius"
+    android:layout_marginBottom="10dp">
 
     <TextView
         android:id="@+id/floor"
@@ -18,6 +19,7 @@
         android:layout_toStartOf="@+id/limit"
         android:layout_toEndOf="@+id/imageView"
         android:text="Floor"
+        android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -31,6 +33,7 @@
         android:layout_toEndOf="@+id/imageView"
         android:gravity="left"
         android:text="Store Name"
+        android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -43,6 +46,7 @@
         android:layout_marginTop="75dp"
         android:layout_marginEnd="10dp"
         android:text="limitation"
+        android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold" />
 
