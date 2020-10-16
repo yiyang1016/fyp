@@ -39,6 +39,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //Picasso Load Image
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     //Firebase
@@ -47,7 +48,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'
     //Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:2.3.0'
-
+    //Firebase Storage
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
 }
 
