@@ -11,14 +11,15 @@
         android:id="@+id/review1"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
+        android:layout_marginStart="31dp"
         android:layout_marginEnd="100dp"
         android:numStars="5"
         android:progressTint="#FFEB3B"
         android:scaleX="0.8"
         android:scaleY="0.7"
-        android:scrollIndicators="left"
         android:stepSize="1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/question1" />
 
     <TextView
@@ -31,13 +32,15 @@
         android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-2dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/question1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="104dp"
         android:text="Overall Satisfaction"
@@ -45,12 +48,14 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
         android:id="@+id/question2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="99dp"
         android:text="Service Satisfaction"
@@ -58,12 +63,14 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/review1" />
 
     <RatingBar
-        android:id="@+id/ratingBar3"
+        android:id="@+id/review2"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
+        android:layout_marginStart="31dp"
         android:layout_marginEnd="100dp"
         android:numStars="5"
         android:progressTint="#FFEB3B"
@@ -71,12 +78,14 @@
         android:scaleY="0.7"
         android:stepSize="1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/question2" />
 
     <TextView
         android:id="@+id/question3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="158dp"
         android:text="Check-In Time"
@@ -84,12 +93,14 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar3" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/review2" />
 
     <RatingBar
-        android:id="@+id/ratingBar4"
+        android:id="@+id/review3"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
+        android:layout_marginStart="31dp"
         android:layout_marginEnd="100dp"
         android:numStars="5"
         android:progressTint="#FFEB3B"
@@ -97,12 +108,14 @@
         android:scaleY="0.7"
         android:stepSize="1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/question3" />
 
     <TextView
         android:id="@+id/question4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="58dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="80dp"
         android:text="User Interface Design"
@@ -110,12 +123,14 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar4" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/review3" />
 
     <RatingBar
-        android:id="@+id/ratingBar5"
+        android:id="@+id/review4"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
+        android:layout_marginStart="31dp"
         android:layout_marginEnd="100dp"
         android:numStars="5"
         android:progressTint="#FFEB3B"
@@ -123,47 +138,39 @@
         android:scaleY="0.7"
         android:stepSize="1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/question4" />
 
     <TextView
         android:id="@+id/question5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="58dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="160dp"
         android:text="Additional Feedback (If Any)"
         android:textColor="#000000"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar5" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/review4" />
 
     <EditText
-        android:id="@+id/editTextTextMultiLine"
+        android:id="@+id/review5"
         android:layout_width="239dp"
         android:layout_height="60dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="74dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="16dp"
         android:width="2dp"
+        android:background="@drawable/review_textbox"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/question5"
-        android:background="@drawable/review_textbox"/>
-
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_width="91dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="14dp"
-        android:background="@drawable/review_button"
-        android:text="Submit"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/question5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,11 +10,11 @@
 
     <EditText
         android:id="@+id/searchStore"
-        android:layout_width="196dp"
+        android:layout_width="173dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="37dp"
+        android:layout_marginEnd="30dp"
         android:background="#FFFFFF"
         android:ems="10"
         android:inputType="textPersonName|textCapCharacters"
@@ -22,22 +22,23 @@
 
     <TextView
         android:id="@id/text1"
-        android:layout_width="145dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="8dp"
         android:layout_toStartOf="@+id/searchStore"
-        android:gravity="right"
         android:text="Store Name:"
         android:textColor="#FFFFFF"
         android:textSize="24dp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"/>
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="65dp"
-        />
+        android:layout_marginTop="70dp" />
 </RelativeLayout>
