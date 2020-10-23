@@ -19,6 +19,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        StaffMainPage.setOnClickListener {
+            val intent = Intent(this, StaffMainActivity::class.java)
+            startActivity(intent)
+        }
 
         button.setOnClickListener {
             val intent = Intent(this, Store_List::class.java)

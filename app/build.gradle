@@ -51,5 +51,12 @@ dependencies {
     //Firebase Storage
     implementation 'com.google.firebase:firebase-storage-ktx'
 
+    //libraries(QR Scanner)
+    implementation 'com.github.nisrulz:qreader:2.1.2'
+    implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.google.android.gms:play-services-vision:18.0.0'
+
+    implementation 'androidx.cardview:cardview:1.0.0'
+
 }
 

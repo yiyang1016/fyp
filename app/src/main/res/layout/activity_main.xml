@@ -22,4 +22,14 @@
         android:layout_marginEnd="103dp"
         android:text="Button" />
 
+    <Button
+        android:id="@+id/StaffMainPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="278dp"
+        android:layout_marginBottom="506dp"
+        android:text="Testing" />
+
 </RelativeLayout>
