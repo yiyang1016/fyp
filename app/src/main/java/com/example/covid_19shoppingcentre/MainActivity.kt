@@ -1,7 +1,9 @@
 package com.example.covid_19shoppingcentre
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -27,9 +29,6 @@ class MainActivity : AppCompatActivity() {
 
             val view = layoutInflater.inflate(R.layout.customer_review, null)
             dialogBuilder.setView(view)
-
-            val alertDialog = dialogBuilder.create()
-
             dialogBuilder.setPositiveButton("Submit"){ dialogInterface, i ->
                 val ref = FirebaseDatabase.getInstance().getReference("Review")
                 var reviewId = ""
@@ -50,9 +49,7 @@ class MainActivity : AppCompatActivity() {
 
                             val cal = ((reviewId.substring(2, 7)).toInt()) + 1
                             val newId = "RV0000" + cal.toString()
-                            Toast.makeText(
-                                this@MainActivity, newId, Toast.LENGTH_SHORT
-                            ).show().toString()
+
 
                             val data = Review(
                                 newId,
@@ -63,17 +60,29 @@ class MainActivity : AppCompatActivity() {
                             )
 
                             ref.child(newId).setValue(data).addOnCompleteListener {
-                                Toast.makeText(
-                                    this@MainActivity,
-                                    "Thanks for your submission!", Toast.LENGTH_SHORT
-                                ).show()
+                                val submissiondialogBuilder = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
+
+                                val view1 = layoutInflater.inflate(R.layout.customer_review_submission, null)
+                                submissiondialogBuilder.setView(view1)
+                                submissiondialogBuilder.setPositiveButton("ok"){dialogInterface, i ->}
+                                val alertDialog = dialogBuilder.create()    
+                                submissiondialogBuilder.show()
                             }
+
                         }
                     }
+
                 })
             }
-            dialogBuilder.show()
 
+            val alertDialog = dialogBuilder.create()
+            alertDialog.show()
+            if (view.review1.rating.toInt() !=null && view.review2.rating.toInt() !=null && view.review3.rating.toInt() !=null && view.review4.rating.toInt() !=null){
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
+            }else{
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = true
+            }
+            //alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = true
         }
 
     }
