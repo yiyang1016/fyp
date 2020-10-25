@@ -24,6 +24,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src/main/res', 'src/main/res/layout/customer_list'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -58,5 +65,7 @@ dependencies {
 
     implementation 'androidx.cardview:cardview:1.0.0'
 
+    //Image Slider
+    //implementation 'com.github.denzcoskun:ImageSlideshow:0.0.7'
 }
 

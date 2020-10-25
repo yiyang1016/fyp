@@ -2,14 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewFlipper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/background_gradient">
+    android:background="@drawable/background_gradient"
+    tools:context=".MainActivity">
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/store_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Store_List" />
@@ -20,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="103dp"
-        android:text="Button" />
+        android:text="Review" />
 
     <Button
         android:id="@+id/StaffMainPage"
@@ -31,5 +32,16 @@
         android:layout_marginEnd="278dp"
         android:layout_marginBottom="506dp"
         android:text="Testing" />
+
+    <Button
+        android:id="@+id/btnDistance_tracking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="77dp"
+        android:layout_marginEnd="-2dp"
+        android:layout_toStartOf="@+id/review"
+        android:text="Distance Tracking" />
+
 
 </RelativeLayout>

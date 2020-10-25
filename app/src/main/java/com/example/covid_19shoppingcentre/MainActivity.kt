@@ -1,9 +1,7 @@
 package com.example.covid_19shoppingcentre
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.customer_review.view.*
+import kotlinx.android.synthetic.main.customer_review_submission.view.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,70 +23,108 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        button.setOnClickListener {
+        store_list.setOnClickListener {
             val intent = Intent(this, Store_List::class.java)
             startActivity(intent)
         }
+
+        btnDistance_tracking.setOnClickListener {
+            val intent = Intent(this, distance_tracking::class.java)
+            startActivity(intent)
+        }
+
         review.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
 
             val view = layoutInflater.inflate(R.layout.customer_review, null)
             dialogBuilder.setView(view)
-            dialogBuilder.setPositiveButton("Submit"){ dialogInterface, i ->
-                val ref = FirebaseDatabase.getInstance().getReference("Review")
-                var reviewId = ""
-                val refSearch = FirebaseDatabase.getInstance().getReference("Review").orderByKey().limitToLast(1)
+            val alertDialog = dialogBuilder.create()
+            alertDialog.show()
 
-                refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(error: DatabaseError) {
-                        val text = "Connection Failed"
-                        Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+            val submitButton = view.btnSubmit
+            submitButton.setOnClickListener {
+                if (view.review1.rating.toInt() == 0 || view.review2.rating.toInt() == 0 ||
+                    view.review3.rating.toInt() == 0 || view.review4.rating.toInt() == 0
+                ) {
+                    val errordialogBuilder =
+                        AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
+                    val view1 = layoutInflater.inflate(R.layout.customer_review_empty_field, null)
+                    errordialogBuilder.setView(view1)
+                    val alertDialog1 = errordialogBuilder.create()
+                    alertDialog1.show()
+                    view1.okbtn.setOnClickListener {
+                        alertDialog1.cancel()
                     }
+                } else {
+                    val ref = FirebaseDatabase.getInstance().getReference("Review")
+                    var reviewId = ""
+                    val refSearch =
+                        FirebaseDatabase.getInstance().getReference("Review").orderByKey()
+                            .limitToLast(1)
 
-                    override fun onDataChange(p0: DataSnapshot) {
-                        if (p0.exists()) {
-                            for (p0 in p0.children) {
-                                val reviewsId = p0.getValue(ReviewIdClass::class.java)
-                                reviewId = reviewsId.toString()
-                            }
+                    refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(error: DatabaseError) {
+                            val text = "Connection Failed"
+                            Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                        }
 
-                            val cal = ((reviewId.substring(2, 7)).toInt()) + 1
-                            val newId = "RV0000" + cal.toString()
+                        override fun onDataChange(p0: DataSnapshot) {
+                            if (p0.exists()) {
+                                for (p0 in p0.children) {
+                                    val reviewsId = p0.getValue(ReviewIdClass::class.java)
+                                    reviewId = reviewsId.toString()
+                                }
 
+                                val cal = ((reviewId.substring(2, 7)).toInt()) + 1
+                                val num = 100000 + cal
+                                val newId = "RV" + num.toString().substring(1,6)
 
-                            val data = Review(
-                                newId,
-                                view.review1.rating.toInt(),
-                                view.review2.rating.toInt(),
-                                view.review3.rating.toInt(),
-                                view.review4.rating.toInt(), ""
-                            )
+                                val editText = view.review5
+                                if (editText.text.toString() != null) {
+                                    val showString = editText.text.toString()
 
-                            ref.child(newId).setValue(data).addOnCompleteListener {
-                                val submissiondialogBuilder = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
+                                    var feedback = ""
+                                    feedback = view.review5.text.toString()
 
-                                val view1 = layoutInflater.inflate(R.layout.customer_review_submission, null)
-                                submissiondialogBuilder.setView(view1)
-                                submissiondialogBuilder.setPositiveButton("ok"){dialogInterface, i ->}
-                                val alertDialog = dialogBuilder.create()    
-                                submissiondialogBuilder.show()
+                                    val data = Review(
+                                        newId,
+                                        view.review1.rating.toInt(),
+                                        view.review2.rating.toInt(),
+                                        view.review3.rating.toInt(),
+                                        view.review4.rating.toInt(),
+                                        feedback
+                                    )
+
+                                    ref.child(newId).setValue(data).addOnCompleteListener {
+                                        val submissiondialogBuilder = AlertDialog.Builder(
+                                            this@MainActivity,
+                                            R.style.CustomAlertDialog
+                                        )
+                                        alertDialog.cancel()
+                                        val view2 = layoutInflater.inflate(
+                                            R.layout.customer_review_submission,
+                                            null
+                                        )
+                                        submissiondialogBuilder.setView(view2)
+                                        val alertDialog = submissiondialogBuilder.create()
+                                        alertDialog.show()
+                                        view2.okbtn.setOnClickListener {
+                                            alertDialog.cancel()
+                                        }
+                                    }
+
+                                }
                             }
 
                         }
-                    }
+                    })
 
-                })
+                }
+
             }
 
-            val alertDialog = dialogBuilder.create()
-            alertDialog.show()
-            if (view.review1.rating.toInt() !=null && view.review2.rating.toInt() !=null && view.review3.rating.toInt() !=null && view.review4.rating.toInt() !=null){
-                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
-            }else{
-                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = true
-            }
-            //alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = true
         }
 
     }
 }
+

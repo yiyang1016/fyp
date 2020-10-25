@@ -162,15 +162,30 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="72dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:width="2dp"
         android:background="@drawable/review_textbox"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/question5" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="121dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/review_button"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/review5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

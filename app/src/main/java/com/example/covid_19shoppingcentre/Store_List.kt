@@ -4,17 +4,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.google.firebase.database.*
 //import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_store__list.*
 import kotlinx.android.synthetic.main.list_layout.view.*
