@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "711641433071",
+    "firebase_url": "https://fypdatabase-dce2b.firebaseio.com",
+    "project_id": "fypdatabase-dce2b",
+    "storage_bucket": "fypdatabase-dce2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711641433071:android:c9b863773deef6603c2c1a",
+        "android_client_info": {
+          "package_name": "com.example.covid_19shoppingcentre"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711641433071-8tggplg4hsd9nv346gb2nj3sp8adbmal.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.covid_19shoppingcentre",
+            "certificate_hash": "7200e850a33c592fb9997658a52dab1576e026cc"
+          }
+        },
+        {
+          "client_id": "711641433071-6p2t3tc6q1hv9pogvqjajeakmqur2sgu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmJsQbce8Wc9pzaJSKlEycs4FCMMgDop8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711641433071-6p2t3tc6q1hv9pogvqjajeakmqur2sgu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
