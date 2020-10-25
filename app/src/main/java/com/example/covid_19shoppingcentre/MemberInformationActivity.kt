@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
@@ -33,7 +36,6 @@ import java.util.*
 class MemberInformationActivity : AppCompatActivity() {
 
     private var userDatabase = FirebaseDatabase.getInstance().getReference()
-    val myRef = FirebaseDatabase.getInstance().getReference("Member")
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,12 +59,41 @@ class MemberInformationActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             back()
         }
+
+        bodyTemperature.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (TextUtils.isEmpty(bodyTemperature.text)){
+                    return
+                    bodyTemperatureResult.text = "Please enter the customer's temperature"
+                    checkInButton.isEnabled = false
+                }
+                val getTemperature: Double = bodyTemperatureResult.text.toString().toDouble()
+                if (getTemperature in 0.0..35.9){
+                    bodyTemperatureResult.text = "Temperature too low, are you OK?"
+                }
+                else if (getTemperature in 36.0..37.5){
+                    bodyTemperatureResult.text = "Body Temperature is fine. customer are allowed to enter the Shopping Centre"
+                }
+                else{
+                    bodyTemperatureResult.text = "Body Temperature is too high. customer are not allowed to enter the Shopping Centre"
+                    checkInButton.isEnabled = false
+                }
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getMemberInformation() {
         val name = memberName.text.toString()
 
+        val calendar1 = Calendar.getInstance()
+        val currentDay = DateFormat.getDateInstance(DateFormat.FULL).format(calendar1.time)
         val currentDateTime  = LocalDateTime.now()
         val hourMinuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
         val hourMinuteText = currentDateTime.format(hourMinuteFormat)
@@ -80,6 +111,7 @@ class MemberInformationActivity : AppCompatActivity() {
                                         memberIC.text = (p0.child("IC_Number").value.toString())
                                         memberPhone.text = (p0.child("PhoneNumber").value.toString())
                                         CheckInTime.text = "$hourMinuteText"
+                                        CheckInDate.text = currentDay.toString()
                                     }
                                 } catch (e: Exception) {
                                     Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
@@ -110,7 +142,6 @@ class MemberInformationActivity : AppCompatActivity() {
         }
 
         val name = memberName.text.toString()
-
         val currentDateTime  = LocalDateTime.now()
         val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val hourMinuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
@@ -121,16 +152,19 @@ class MemberInformationActivity : AppCompatActivity() {
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
                 for (s0 in s0.children) {
-                    val checkIntime = hourMinuteText.toString().trim()
-                    val cusPhone = (s0.child("PhoneNumber").value.toString())
+                    val checkInTime = hourMinuteText.toString().trim()
+                    val phone = (s0.child("PhoneNumber").value.toString())
+                    val temperature = bodyTemperature.text.toString()
+                    val statusNow = "checkIn"
+                    val checkOutTime = "pending"
 
                     val addQuery = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText.toString())
-                    val memberID = s0.key.toString()
+                    val customerID = s0.key.toString()
 
-                    if(memberID != null && checkIntime != null){
-                        val writeNewCheckIn = addShoppingCentreCheckIn(checkIntime, name, cusPhone)
+                    if(customerID != null && checkInTime != null && temperature != null && temperature != ""){
+                        val writeNewCheckIn = addShoppingCentreCheckIn(checkInTime, name, phone, customerID, temperature, statusNow, checkOutTime)
 
-                        addQuery.child(memberID).setValue(writeNewCheckIn).addOnCompleteListener {
+                        addQuery.child(customerID).setValue(writeNewCheckIn).addOnCompleteListener {
                             Toast.makeText(
                                 applicationContext,
                                 "Check In Successful",

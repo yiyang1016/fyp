@@ -17,6 +17,7 @@
         <activity android:name=".CheckInScCustomer_List" />
         <activity android:name=".MemberInformationActivity" />
         <activity android:name=".QRScannerActivity" />
+        <activity android:name=".CustomerInformationActivity"/>
         <activity android:name=".Store_List"
                   android:label="Store List"
                   android:parentActivityName=".MainActivity"/>
