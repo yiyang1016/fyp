@@ -5,16 +5,16 @@ apply plugin: 'kotlin-android-extensions'
 
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 29
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.example.covid_19shoppingcentre"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,6 +31,10 @@ android {
             }
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -46,17 +50,19 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
     //Picasso Load Image
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    //implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
     //Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:2.3.0'
     //Firebase Storage
     implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
 
     //libraries(QR Scanner)
     implementation 'com.github.nisrulz:qreader:2.1.2'
@@ -67,5 +73,17 @@ dependencies {
 
     //Image Slider
     //implementation 'com.github.denzcoskun:ImageSlideshow:0.0.7'
+
+    //Google Map
+    compile 'com.android.support:appcompat-v7:29.1.1'
+    compile 'com.android.support:design:29.1.1'
+    //noinspection UseOfBundledGooglePlayServices
+    //compile 'com.google.android.gms:play-services:11.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.7.1'
+    implementation("com.squareup.okhttp3:okhttp:3.14.7")
+    implementation 'com.github.d-max:spots-dialog:0.7@aar'
 }
 

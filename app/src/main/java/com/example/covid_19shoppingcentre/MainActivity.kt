@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        btnNearbyHospital.setOnClickListener {
+            val intent = Intent(this, nearby_hospital::class.java)
+            startActivity(intent)
+        }
+
         review.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
 

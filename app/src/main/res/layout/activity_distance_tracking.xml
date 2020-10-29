@@ -11,9 +11,8 @@
         android:id="@+id/textView2"
         android:layout_width="338dp"
         android:layout_height="138dp"
-        android:layout_marginStart="37dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="124dp"
-        android:layout_marginEnd="36dp"
         android:foregroundGravity="center_vertical"
         android:gravity="center_vertical"
         android:text="Please keep your Bluetooth run at background to keep you safe"
@@ -21,7 +20,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

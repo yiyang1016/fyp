@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">COVID-19shoppingCentre</string>
+    <string name="title_activity_nearby_hospital">Map</string>
+    <string name="title_activity_view_directions">Map</string>
 </resources>
