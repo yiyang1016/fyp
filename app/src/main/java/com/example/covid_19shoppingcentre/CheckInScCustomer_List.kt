@@ -41,7 +41,7 @@ class CheckInScCustomer_List : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.setHasFixedSize(true)
         recyclerView.setLayoutManager(LinearLayoutManager(this))
-        customerDatabase = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child("20201022")
+        customerDatabase = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText.toString())
         logRecyclerView()
 
         searchCustomer.addTextChangedListener(object : TextWatcher {
@@ -63,15 +63,13 @@ class CheckInScCustomer_List : AppCompatActivity() {
             CustomerViewHolder::class.java,
             customerDatabase
         ) {
-
             override fun populateViewHolder(p0: CustomerViewHolder, p1: CheckInScCustomer, p2: Int) {
                 if (p1.status.toString() == "checkIn") {
                     p0.mView.SCCustomerName.text = p1.name.toString()
                     p0.mView.SCCustomerPhone.text = p1.phone.toString()
 
                     val calendar1 = Calendar.getInstance()
-                    val currentDay =
-                        DateFormat.getDateInstance(DateFormat.FULL).format(calendar1.time)
+                    val currentDay = DateFormat.getDateInstance(DateFormat.LONG).format(calendar1.time)
 
                     p0.mView.setOnClickListener {
                         val i = Intent(
@@ -110,7 +108,7 @@ class CheckInScCustomer_List : AppCompatActivity() {
 
                         val calendar1 = Calendar.getInstance()
                         val currentDay =
-                            DateFormat.getDateInstance(DateFormat.FULL).format(calendar1.time)
+                            DateFormat.getDateInstance(DateFormat.LONG).format(calendar1.time)
 
                         p0.mView.setOnClickListener {
                             val i = Intent(
@@ -148,7 +146,7 @@ class CheckInScCustomer_List : AppCompatActivity() {
 
                         val calendar1 = Calendar.getInstance()
                         val currentDay =
-                            DateFormat.getDateInstance(DateFormat.FULL).format(calendar1.time)
+                            DateFormat.getDateInstance(DateFormat.LONG).format(calendar1.time)
 
                         p0.mView.setOnClickListener {
                             val i = Intent(

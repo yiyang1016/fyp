@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.082"
+        app:layout_constraintVertical_bias="0.095"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -32,7 +32,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.239" />
+        app:layout_constraintVertical_bias="0.247" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/customerInformation"
@@ -155,7 +155,7 @@
                 android:id="@+id/checkInDateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="330dp"
+                android:layout_marginStart="290dp"
                 android:layout_marginTop="392dp"
                 android:layout_marginEnd="133dp"
                 android:text="Check-in Date"
@@ -174,7 +174,7 @@
                 android:textColor="#000000"
                 android:textSize="9pt"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.738"
+                app:layout_constraintHorizontal_bias="0.648"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/checkInDateText" />
 

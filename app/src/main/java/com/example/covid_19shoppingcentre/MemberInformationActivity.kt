@@ -42,10 +42,6 @@ class MemberInformationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sc_member_check_in_information)
 
-        val dataSent = intent.getStringExtra("EXTRA_MESSAGE")
-
-        memberName.text = dataSent
-
         getMemberInformation()
         setActionBar()
 
@@ -90,15 +86,15 @@ class MemberInformationActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getMemberInformation() {
-        val name = memberName.text.toString()
-
         val calendar1 = Calendar.getInstance()
         val currentDay = DateFormat.getDateInstance(DateFormat.FULL).format(calendar1.time)
         val currentDateTime  = LocalDateTime.now()
         val hourMinuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
         val hourMinuteText = currentDateTime.format(hourMinuteFormat)
 
-        val query = userDatabase.child("Member").orderByChild("Name").equalTo(name)
+        val dataSent = intent.getStringExtra("EXTRA_MESSAGE")
+
+        val query = userDatabase.child("Member").orderByChild("Id").equalTo(dataSent)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
                 try {
@@ -108,6 +104,7 @@ class MemberInformationActivity : AppCompatActivity() {
                             override fun onDataChange(p0: DataSnapshot) {
                                 try {
                                     if (p0.exists()) {
+                                        memberName.text = (p0.child("Name").value.toString())
                                         memberIC.text = (p0.child("IC_Number").value.toString())
                                         memberPhone.text = (p0.child("PhoneNumber").value.toString())
                                         CheckInTime.text = "$hourMinuteText"
@@ -141,30 +138,32 @@ class MemberInformationActivity : AppCompatActivity() {
             putExtra("EXTRA_MESSAGE", "message")
         }
 
-        val name = memberName.text.toString()
+        val custID = memberName.text.toString()
         val currentDateTime  = LocalDateTime.now()
         val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val hourMinuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
         val dateText = currentDateTime.format(dateFormat)
         val hourMinuteText = currentDateTime.format(hourMinuteFormat)
 
-        val query = userDatabase.child("Member").orderByChild("Name").equalTo(name)
+        val query = userDatabase.child("Member").orderByChild("Id").equalTo(custID)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
                 for (s0 in s0.children) {
                     val checkInTime = hourMinuteText.toString().trim()
                     val phone = (s0.child("PhoneNumber").value.toString())
-                    val temperature = bodyTemperature.text.toString()
+                    val temperature = bodyTemperature.text.toString() + "°C"
                     val statusNow = "checkIn"
                     val checkOutTime = "pending"
+                    val name = (s0.child("Name").value.toString())
 
                     val addQuery = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText.toString())
-                    val customerID = s0.key.toString()
+                    //val customerID = s0.key.toString()
 
-                    if(customerID != null && checkInTime != null && temperature != null && temperature != ""){
-                        val writeNewCheckIn = addShoppingCentreCheckIn(checkInTime, name, phone, customerID, temperature, statusNow, checkOutTime)
 
-                        addQuery.child(customerID).setValue(writeNewCheckIn).addOnCompleteListener {
+                    if(custID != null && checkInTime != null && temperature != null && temperature != ""){
+                        val writeNewCheckIn = addShoppingCentreCheckIn(checkInTime, name, phone, custID, temperature, statusNow, checkOutTime)
+
+                        addQuery.child(custID).setValue(writeNewCheckIn).addOnCompleteListener {
                             Toast.makeText(
                                 applicationContext,
                                 "Check In Successful",

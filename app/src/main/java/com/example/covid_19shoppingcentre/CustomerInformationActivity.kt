@@ -66,14 +66,14 @@ class CustomerInformationActivity : AppCompatActivity() {
             putExtra("EXTRA_MESSAGE", "message")
         }
 
-        val query = userDatabase.child("ShoppingCentre").child("20201022").orderByChild("customerId").equalTo(id)
+        val query = userDatabase.child("ShoppingCentre").child(dateText.toString()).orderByChild("customerId").equalTo(id)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(s0: DataSnapshot) {
                 for (s0 in s0.children) {
                     val statusNow = "checkOut"
                     val checkOutTime = hourMinuteText.toString().trim()
 
-                    val updateQuery = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child("20201022")
+                    val updateQuery = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText.toString())
                     val customerID = s0.key.toString()
 
                     updateQuery.child(customerID).child("status").setValue(statusNow)
