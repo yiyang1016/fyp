@@ -1,15 +1,17 @@
 package com.example.covid_19shoppingcentre
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.icu.text.Transliterator
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -45,8 +47,53 @@ class MemberInformationActivity : AppCompatActivity() {
         getMemberInformation()
         setActionBar()
 
+        val temperatures = resources.getStringArray(R.array.Temperature)
+
         val checkInButton = findViewById<Button>(R.id.checkInBtn)
         val backButton = findViewById<Button>(R.id.backBtn)
+        val testBtn = findViewById<Button>(R.id.testing)
+        val spinner = findViewById<Spinner>(R.id.temperatureSpinner)
+
+        if (spinner != null){
+            val adapter = ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, temperatures)
+            spinner.adapter = adapter
+
+            spinner.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                @SuppressLint("ResourceAsColor")
+                override fun onItemSelected(parent: AdapterView<*>,
+                                            view: View, position: Int, id: Long) {
+                    when {
+                        temperatures[position].toString() == "below 36.0°C" -> {
+                            bodyTemperatureResult.text = "Temperature too low, are you OK?"
+                            checkInButton.isEnabled = false
+                            checkInButton.setBackgroundColor(R.color.greyColor)
+                        }
+                        temperatures[position].toString() == "above 37.5°C" -> {
+                            bodyTemperatureResult.text = "Body Temperature is too high. customer are not allowed to enter the Shopping Centre"
+                            checkInButton.isEnabled = false
+                            checkInButton.setBackgroundColor(R.color.greyColor)
+                        }
+                        temperatures[position].toString() == "Please Select a Temperature" -> {
+                            bodyTemperatureResult.text = "Please Select a Temperature"
+                            checkInButton.isEnabled = false
+                            checkInButton.setBackgroundColor(R.color.greyColor)
+                        }
+                        else -> {
+                            bodyTemperatureResult.text = "Body Temperature is fine. customer are allowed to enter the Shopping Centre"
+                            checkInButton.isEnabled = true
+                            checkInButton.setBackgroundResource(R.drawable.button_corner2)
+                        }
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    bodyTemperatureResult.text = "Please select a temperature"
+                    checkInButton.isEnabled = false
+                }
+            }
+        }
 
         checkInButton.setOnClickListener {
             checkInMember()
@@ -56,38 +103,16 @@ class MemberInformationActivity : AppCompatActivity() {
             back()
         }
 
-        bodyTemperature.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (TextUtils.isEmpty(bodyTemperature.text)){
-                    return
-                    bodyTemperatureResult.text = "Please enter the customer's temperature"
-                    checkInButton.isEnabled = false
-                }
-                val getTemperature: Double = bodyTemperatureResult.text.toString().toDouble()
-                if (getTemperature in 0.0..35.9){
-                    bodyTemperatureResult.text = "Temperature too low, are you OK?"
-                }
-                else if (getTemperature in 36.0..37.5){
-                    bodyTemperatureResult.text = "Body Temperature is fine. customer are allowed to enter the Shopping Centre"
-                }
-                else{
-                    bodyTemperatureResult.text = "Body Temperature is too high. customer are not allowed to enter the Shopping Centre"
-                    checkInButton.isEnabled = false
-                }
-            }
-        })
+        testBtn.setOnClickListener {
+            checkInMember()
+        }
     }
 
+    //@RequiresApi(Build.VERSION_CODES.O)
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getMemberInformation() {
         val calendar1 = Calendar.getInstance()
-        val currentDay = DateFormat.getDateInstance(DateFormat.FULL).format(calendar1.time)
+        val currentDay = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar1.time)
         val currentDateTime  = LocalDateTime.now()
         val hourMinuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
         val hourMinuteText = currentDateTime.format(hourMinuteFormat)
@@ -134,24 +159,25 @@ class MemberInformationActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkInMember() {
 
-        val intent = Intent(this, StaffMainActivity::class.java).apply {
-            putExtra("EXTRA_MESSAGE", "message")
+        val dataSent = intent.getStringExtra("EXTRA_MESSAGE")
+
+        val intent1 = Intent(this, StaffMainActivity::class.java).apply {
+            putExtra("whatMessage", "message")
         }
 
-        val custID = memberName.text.toString()
         val currentDateTime  = LocalDateTime.now()
         val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val hourMinuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
         val dateText = currentDateTime.format(dateFormat)
         val hourMinuteText = currentDateTime.format(hourMinuteFormat)
 
-        val query = userDatabase.child("Member").orderByChild("Id").equalTo(custID)
+        val query = userDatabase.child("Member").orderByChild("Id").equalTo(dataSent)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
                 for (s0 in s0.children) {
                     val checkInTime = hourMinuteText.toString().trim()
                     val phone = (s0.child("PhoneNumber").value.toString())
-                    val temperature = bodyTemperature.text.toString() + "°C"
+                    val temperature = temperatureSpinner.selectedItem.toString().trim()
                     val statusNow = "checkIn"
                     val checkOutTime = "pending"
                     val name = (s0.child("Name").value.toString())
@@ -159,17 +185,16 @@ class MemberInformationActivity : AppCompatActivity() {
                     val addQuery = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText.toString())
                     //val customerID = s0.key.toString()
 
+                    if(dataSent != null && checkInTime != null){
+                        val writeNewCheckIn = addShoppingCentreCheckIn(checkInTime, name, phone, dataSent, temperature, statusNow, checkOutTime)
 
-                    if(custID != null && checkInTime != null && temperature != null && temperature != ""){
-                        val writeNewCheckIn = addShoppingCentreCheckIn(checkInTime, name, phone, custID, temperature, statusNow, checkOutTime)
-
-                        addQuery.child(custID).setValue(writeNewCheckIn).addOnCompleteListener {
+                        addQuery.child(dataSent).setValue(writeNewCheckIn).addOnCompleteListener {
                             Toast.makeText(
                                 applicationContext,
                                 "Check In Successful",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            startActivity(intent)
+                            startActivity(intent1)
                         }
                     }
                 }

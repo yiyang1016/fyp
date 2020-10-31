@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        reserveBtn.setOnClickListener {
+            val intent = Intent(this, ReserveStore_List::class.java)
+            startActivity(intent)
+        }
+
         store_list.setOnClickListener {
             val intent = Intent(this, Store_List::class.java)
             startActivity(intent)

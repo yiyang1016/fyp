@@ -2,4 +2,25 @@
     <string name="app_name">COVID-19shoppingCentre</string>
     <string name="title_activity_nearby_hospital">Map</string>
     <string name="title_activity_view_directions">Map</string>
+
+    <string-array name="Temperature">
+        <item>Please Select a Temperature</item>
+        <item>below 36.0°C</item>
+        <item>36.1°C</item>
+        <item>36.2°C</item>
+        <item>36.3°C</item>
+        <item>36.4°C</item>
+        <item>36.5°C</item>
+        <item>36.6°C</item>
+        <item>36.7°C</item>
+        <item>36.8°C</item>
+        <item>36.9°C</item>
+        <item>37.0°C</item>
+        <item>37.1°C</item>
+        <item>37.2°C</item>
+        <item>37.3°C</item>
+        <item>37.4°C</item>
+        <item>37.5°C</item>
+        <item>above 37.5°C</item>
+    </string-array>
 </resources>

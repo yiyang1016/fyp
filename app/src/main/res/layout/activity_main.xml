@@ -30,9 +30,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="96dp"
-        android:layout_marginEnd="211dp"
-        android:layout_marginBottom="478dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginEnd="260dp"
+        android:layout_marginBottom="421dp"
         android:text="Testing" />
 
     <Button
@@ -54,6 +54,16 @@
         android:layout_marginTop="154dp"
         android:layout_marginEnd="-171dp"
         android:text="NearBy Hospital" />
+
+    <Button
+        android:id="@+id/reserveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="249dp"
+        android:layout_marginBottom="347dp"
+        android:text="Reservation" />
 
 
 </RelativeLayout>
