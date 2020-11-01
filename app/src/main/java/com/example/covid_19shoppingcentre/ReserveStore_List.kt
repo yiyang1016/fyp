@@ -14,6 +14,11 @@ import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_store__list.*
 import kotlinx.android.synthetic.main.list_layout.view.*
+import kotlinx.android.synthetic.main.list_layout.view.image
+import kotlinx.android.synthetic.main.list_layout.view.name
+import kotlinx.android.synthetic.main.reserve_store_date.*
+import kotlinx.android.synthetic.main.reserve_store_list_layout.view.*
+import java.util.*
 
 
 class ReserveStore_List :AppCompatActivity() {
@@ -21,12 +26,11 @@ class ReserveStore_List :AppCompatActivity() {
     lateinit var  mRecyclerView: RecyclerView
     lateinit var mDatabase : DatabaseReference
     lateinit var FirebaseRecyclerAdapter : FirebaseRecyclerAdapter<Store, StoreViewHolder>
-
+    private var Database = FirebaseDatabase.getInstance().getReference()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reserve_store_list)
-
 
         mRecyclerView = findViewById(R.id.listView)
         mRecyclerView.setHasFixedSize(true)
@@ -54,9 +58,10 @@ class ReserveStore_List :AppCompatActivity() {
             mDatabase
         ) {
             override fun populateViewHolder(p0: StoreViewHolder, p1: Store, p2: Int) {
+
                 p0.mView.name.setText(p1.Store_Name)
-                p0.mView.floor.setText(p1.Store_Floor + "," + p1.Store_Slot)
                 Picasso.with(this@ReserveStore_List).load(p1.Store_Image).into(p0.mView.image)
+                p0.mView.available.setText(p1.Store_Floor + "," + p1.Store_Slot)
 
                 p0.mView.setOnClickListener {
                     val i = Intent(
@@ -83,7 +88,7 @@ class ReserveStore_List :AppCompatActivity() {
             ) {
                 override fun populateViewHolder(p0: StoreViewHolder, p1: Store, p2: Int) {
                     p0.mView.name.setText(p1.Store_Name)
-                    p0.mView.floor.setText(p1.Store_Floor + "," + p1.Store_Slot)
+                    p0.mView.available.setText(p1.Store_Floor + "," + p1.Store_Slot)
                     Picasso.with(this@ReserveStore_List).load(p1.Store_Image).into(p0.mView.image)
 
                     p0.mView.setOnClickListener {
@@ -109,9 +114,8 @@ class ReserveStore_List :AppCompatActivity() {
                 firebaseSearchQuery
             ) {
                 override fun populateViewHolder(p0: StoreViewHolder, p1: Store, p2: Int) {
-
                     p0.mView.name.setText(p1.Store_Name)
-                    p0.mView.floor.setText(p1.Store_Floor + "," + p1.Store_Slot)
+                    p0.mView.available.setText(p1.Store_Floor + "," + p1.Store_Slot)
                     Picasso.with(this@ReserveStore_List).load(p1.Store_Image).into(p0.mView.image)
 
                     p0.mView.setOnClickListener {
