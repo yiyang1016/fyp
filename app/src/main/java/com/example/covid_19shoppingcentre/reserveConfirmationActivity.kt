@@ -1,8 +1,11 @@
 package com.example.covid_19shoppingcentre
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.covid_19shoppingcentre.models.addReservation
+import com.example.covid_19shoppingcentre.models.addShoppingCentreCheckIn
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -52,6 +55,30 @@ class reserveConfirmationActivity : AppCompatActivity() {
     }
 
     private fun reserve(){
+        val reserveDate = intent.getStringExtra("reserveDate")
+        val storeI = intent.getStringExtra("storeId")
+        val reserveTime = intent.getStringExtra("reserveTime")
 
+        val statusNow = "active"
+        val memberI = "M00001"
+
+        val intent1 = Intent(this, StaffMainActivity::class.java).apply {
+            putExtra("whatMessage", "message")
+        }
+
+        val query = Database.child("Reservation")
+
+        if(storeI != null && reserveTime != null){
+            val writeNewCheckIn = addReservation(statusNow)
+
+            query.child(reserveDate).child(storeI).child(reserveTime).child(memberI).setValue(writeNewCheckIn).addOnCompleteListener {
+                Toast.makeText(
+                    applicationContext,
+                    "Reserve Successful",
+                    Toast.LENGTH_SHORT
+                ).show()
+                startActivity(intent1)
+            }
+        }
     }
 }

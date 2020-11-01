@@ -54,6 +54,7 @@
         <activity android:name=".ReserveDate"/>
         <activity android:name=".ReserveTime"/>
         <activity android:name=".reserveConfirmationActivity"/>
+        <activity android:name=".Reservation_List"/>
         <activity
             android:name=".Store_List"
             android:label="Store List"

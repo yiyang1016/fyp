@@ -28,6 +28,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        reserveListBtn.setOnClickListener{
+            val intent = Intent(this, Reservation_List::class.java)
+            startActivity(intent)
+        }
+
         store_list.setOnClickListener {
             val intent = Intent(this, Store_List::class.java)
             startActivity(intent)
