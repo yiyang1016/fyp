@@ -1,0 +1,81 @@
+package com.example.covid_19shoppingcentre
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.reserve_store_details.*
+import kotlinx.android.synthetic.main.reserve_store_details.date
+import kotlinx.android.synthetic.main.reserve_store_details.slot
+import kotlinx.android.synthetic.main.reserve_store_details.status
+import kotlinx.android.synthetic.main.reserve_store_details.storeName
+import kotlinx.android.synthetic.main.reserve_store_details.time
+import kotlinx.android.synthetic.main.reserve_store_details_pass.*
+import java.text.SimpleDateFormat
+import java.util.*
+
+class ReserveDetailsPassActivity : AppCompatActivity() {
+    private var Database = FirebaseDatabase.getInstance().getReference()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.reserve_store_details_pass)
+
+        setActionBar()
+
+        val storeN = intent.getStringExtra("name")
+        val reserveT = intent.getStringExtra("time")
+        val reserveD = intent.getStringExtra("date")
+        val statu = intent.getStringExtra("status")
+
+        storeName.text = storeN
+        time.text = reserveT
+        status.text = statu
+
+
+        val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
+        val displayDateFormat = SimpleDateFormat("dd/MM/yyyy")
+
+        val parseDate: Date = simpleDateFormat.parse(reserveD)
+        val displayDate = displayDateFormat.format(parseDate)
+
+        date.text = displayDate.toString()
+
+        val query = Database.child("Store").orderByChild("Store_Name").equalTo(storeN)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(s0: DataSnapshot) {
+                for (s0 in s0.children) {
+                    slot.text = (s0.child("Store_Slot").value.toString())
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        okBtn.setOnClickListener{
+            val intent = Intent(this, Reservation_List::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent1 = Intent(this, Reservation_List::class.java).apply {
+            putExtra("EXTRA_MESSAGE", "message")
+        }
+        startActivity(intent1)
+        return false
+    }
+
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Reservation Details"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+}

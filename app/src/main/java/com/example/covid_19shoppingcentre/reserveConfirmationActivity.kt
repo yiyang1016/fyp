@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.covid_19shoppingcentre.models.addReservation
+import com.example.covid_19shoppingcentre.models.addReservationList
 import com.example.covid_19shoppingcentre.models.addShoppingCentreCheckIn
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -37,7 +38,7 @@ class reserveConfirmationActivity : AppCompatActivity() {
         date.text = displayDate.toString()
 
         reserveBtn.setOnClickListener{
-            reserve()
+            reserveList()
         }
 
         val query = Database.child("Store").child(storeI)
@@ -62,7 +63,7 @@ class reserveConfirmationActivity : AppCompatActivity() {
         val statusNow = "active"
         val memberI = "M00001"
 
-        val intent1 = Intent(this, StaffMainActivity::class.java).apply {
+        val intent1 = Intent(this, Reservation_List::class.java).apply {
             putExtra("whatMessage", "message")
         }
 
@@ -77,8 +78,38 @@ class reserveConfirmationActivity : AppCompatActivity() {
                     "Reserve Successful",
                     Toast.LENGTH_SHORT
                 ).show()
+//                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent1)
+                finish()
             }
         }
     }
-}
+
+    private fun reserveList() {
+        val storeN = intent.getStringExtra("storeName")
+        val reserveDate = intent.getStringExtra("reserveDate")
+        val reserveTime = intent.getStringExtra("reserveTime")
+
+        val statusNow = "active"
+        val memberI = "M00001"
+
+        val query = Database.child("ReservationList")
+        val writeNewReserveList = addReservationList(reserveDate, memberI, statusNow, storeN, reserveTime)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    query.child(snapshot.childrenCount.toString()).setValue(writeNewReserveList)
+                        .addOnCompleteListener {
+                            //Toast.makeText(applicationContext, "ERROR" + snapshot.childrenCount, Toast.LENGTH_SHORT).show()
+                            reserve()
+                        }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+        }
+    }

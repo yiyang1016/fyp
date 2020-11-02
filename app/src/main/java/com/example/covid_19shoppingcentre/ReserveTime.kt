@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
@@ -15,7 +16,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.reserve_store_date.storeName
+import kotlinx.android.synthetic.main.reserve_store_details.*
 import kotlinx.android.synthetic.main.reserve_store_time.*
+import kotlinx.android.synthetic.main.reserve_store_time.timeText
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -23,14 +26,19 @@ import java.time.format.DateTimeFormatter
 class ReserveTime : AppCompatActivity() {
     private var Database = FirebaseDatabase.getInstance().getReference()
 
+    // CONSTANT
+    private val EVERY_EIGHT_SECOND: Long = 1000
+
+    // Run on parallel
+    private var handler: Handler? = null
+    private var runnable: Runnable? = null
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reserve_store_time)
 
         val storeN = intent.getStringExtra("storeName")
-        val reserveDate = intent.getStringExtra("ReserveDate")
-        val storeI = intent.getStringExtra("storeId")
 
         storeName.text = storeN
 
@@ -39,167 +47,14 @@ class ReserveTime : AppCompatActivity() {
         timeList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, chooseTime)
 
         compareTime()
-        limitation()
         alreadyBook()
-
-        timeList.setOnItemClickListener { parent, view, position, id ->
-            val i = Intent(
-                this@ReserveTime,
-                reserveConfirmationActivity::class.java
-            )
-            i.putExtra("reserveTime", chooseTime[position])
-            i.putExtra("reserveDate", reserveDate)
-            i.putExtra("storeName", storeN)
-            i.putExtra("storeId", storeI)
-            startActivity(i)
-        }
-    }
-
-    private fun limitation() {
-        val reserveDate = intent.getStringExtra("ReserveDate")
-        val storeI = intent.getStringExtra("storeId")
-
-        val query = Database.child("Reservation").child(reserveDate).child(storeI).child("10:00 AM").orderByChild("status").equalTo("active")
-        val query1 = Database.child("Reservation").child(reserveDate).child(storeI).child("12:00 AM").orderByChild("status").equalTo("active")
-        val query2 = Database.child("Reservation").child(reserveDate).child(storeI).child("2:00 PM").orderByChild("status").equalTo("active")
-        val query3 = Database.child("Reservation").child(reserveDate).child(storeI).child("4:00 PM").orderByChild("status").equalTo("active")
-        val query4 = Database.child("Reservation").child(reserveDate).child(storeI).child("6:00 PM").orderByChild("status").equalTo("active")
-        //val query5 = Database.child("Reservation").child(reserveDate).child(storeI).child("8:00 PM").orderByChild("status").equalTo("active")
-
-        query.addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(s0: DataSnapshot) {
-                try {
-                    if (s0.exists()) {
-                        if (s0.childrenCount >= 5){
-                            val view = timeList.getChildAt(0)
-                            view.setOnClickListener {
-                                Toast.makeText(applicationContext, "10:00 AM reservation is full", Toast.LENGTH_SHORT).show() }
-                            val trying = view as TextView
-                            trying.setTextColor(Color.GRAY)
-                        }
-                    }
-                } catch (e: Exception){
-                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        query1.addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(s0: DataSnapshot) {
-                try {
-                    if (s0.exists()) {
-                        if (s0.childrenCount >= 5){
-                            val view = timeList.getChildAt(1)
-                            view.setOnClickListener {
-                                Toast.makeText(applicationContext, "12:00 AM reservation is full", Toast.LENGTH_SHORT).show()
-                            }
-                            val trying = view as TextView
-                            trying.setTextColor(Color.GRAY)
-                        }
-                    }
-                } catch (e: Exception){
-                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        query2.addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(s0: DataSnapshot) {
-                try {
-                    if (s0.exists()) {
-                        if (s0.childrenCount >= 5){
-                            val view = timeList.getChildAt(2)
-                            view.setOnClickListener {
-                                Toast.makeText(applicationContext, "2:00 PM reservation is full", Toast.LENGTH_SHORT).show()
-                            }
-                            val trying = view as TextView
-                            trying.setTextColor(Color.GRAY)
-                        }
-                    }
-                } catch (e: Exception){
-                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        query3.addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(s0: DataSnapshot) {
-                try {
-                    if (s0.exists()) {
-                        if (s0.childrenCount >= 5){
-                            val view = timeList.getChildAt(3)
-                            view.setOnClickListener {
-                                Toast.makeText(applicationContext, "4:00 PM reservation is full", Toast.LENGTH_SHORT).show()
-                            }
-                            val trying = view as TextView
-                            trying.setTextColor(Color.GRAY)
-                        }
-                    }
-                } catch (e: Exception){
-                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        query4.addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(s0: DataSnapshot) {
-                try {
-                    if (s0.exists()) {
-                        if (s0.childrenCount >= 5){
-                            val view = timeList.getChildAt(4)
-                            view.setOnClickListener {
-                                Toast.makeText(applicationContext, "6:00 PM reservation is full", Toast.LENGTH_SHORT).show()
-                            }
-                            val trying = view as TextView
-                            trying.setTextColor(Color.GRAY)
-                        }
-                    }
-                } catch (e: Exception){
-                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-//        query5.addListenerForSingleValueEvent(object : ValueEventListener{
-//            override fun onDataChange(s0: DataSnapshot) {
-//                try {
-//                    if (s0.exists()) {
-//                        if (s0.childrenCount >= 5){
-//                            val view = timeList.getChildAt(5)
-//                            view.setOnClickListener {
-//                                Toast.makeText(applicationContext, "8:00 PM reservation is full", Toast.LENGTH_SHORT).show()
-//                            }
-//                            //view.isEnabled = false
-//                        }
-//                    }
-//                } catch (e: Exception){
-//                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            override fun onCancelled(error: DatabaseError) {
-//                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-//            }
-//        })
+        executeHandler()
     }
 
     private fun alreadyBook() {
         val reserveDate = intent.getStringExtra("ReserveDate")
         val storeI = intent.getStringExtra("storeId")
+        val storeN = intent.getStringExtra("storeName")
         val memberI = "M00001"
 
         val member = Database.child("Reservation").child(reserveDate).child(storeI).child("10:00 AM").child(memberI)
@@ -207,19 +62,19 @@ class ReserveTime : AppCompatActivity() {
         val member2 = Database.child("Reservation").child(reserveDate).child(storeI).child("2:00 PM").child(memberI)
         val member3 = Database.child("Reservation").child(reserveDate).child(storeI).child("4:00 PM").child(memberI)
         val member4 = Database.child("Reservation").child(reserveDate).child(storeI).child("6:00 PM").child(memberI)
-        //val member5 = Database.child("Reservation").child(reserveDate).child(storeI).child("8:00 PM").child(memberI)
 
         member.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
+                val view = timeList.getChildAt(0)
+                val trying = view as TextView
                 try {
                     if (s0.exists()) {
-                        val view = timeList.getChildAt(0)
                         view.setOnClickListener {
                             Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
-                        val trying = view as TextView
                         trying.setTextColor(Color.GRAY)
                         //trying.text = "Hello"
-
+                    } else{
+                        limitation()
                     }
                 } catch (e: Exception){
                     Toast.makeText(applicationContext, "ERROR$e", Toast.LENGTH_SHORT).show()
@@ -232,15 +87,17 @@ class ReserveTime : AppCompatActivity() {
 
         member1.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
+                val view1 = timeList.getChildAt(1)
+                val trying = view1 as TextView
                 try {
                     if (s0.exists()) {
-                        val view = timeList.getChildAt(1)
-                        view.setOnClickListener {
+                        view1.setOnClickListener {
                             Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
-                        val trying = view as TextView
                         trying.setTextColor(Color.GRAY)
+                    } else {
+                        limitation1()
                     }
-                } catch (e: Exception){
+                }catch (e: Exception){
                     Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -251,13 +108,15 @@ class ReserveTime : AppCompatActivity() {
 
         member2.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
+                val view = timeList.getChildAt(2)
+                val trying = view as TextView
                 try {
                     if (s0.exists()) {
-                        val view = timeList.getChildAt(2)
                         view.setOnClickListener {
                             Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
-                        val trying = view as TextView
                         trying.setTextColor(Color.GRAY)
+                    } else {
+                        limitation2()
                     }
                 } catch (e: Exception){
                     Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
@@ -270,13 +129,15 @@ class ReserveTime : AppCompatActivity() {
 
         member3.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
+                val view = timeList.getChildAt(3)
+                val trying = view as TextView
                 try {
                     if (s0.exists()) {
-                        val view = timeList.getChildAt(3)
                         view.setOnClickListener {
                             Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
-                        val trying = view as TextView
                         trying.setTextColor(Color.GRAY)
+                    } else {
+                        limitation3()
                     }
                 } catch (e: Exception){
                     Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
@@ -289,13 +150,15 @@ class ReserveTime : AppCompatActivity() {
 
         member4.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
+                val view = timeList.getChildAt(4)
+                val trying = view as TextView
                 try {
                     if (s0.exists()) {
-                        val view = timeList.getChildAt(4)
                         view.setOnClickListener {
                             Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
-                        val trying = view as TextView
                         trying.setTextColor(Color.GRAY)
+                    } else {
+                        limitation4()
                     }
                 } catch (e: Exception){
                     Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
@@ -305,25 +168,220 @@ class ReserveTime : AppCompatActivity() {
                 Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
             }
         })
+    }
 
-//        member5.addListenerForSingleValueEvent(object : ValueEventListener{
-//            override fun onDataChange(s0: DataSnapshot) {
-//                try {
-//                    if (s0.exists()) {
-//                        val view = timeList.getChildAt(5)
-//                        //view.isEnabled = false
-//                        view.setOnClickListener {
-//                            Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
-//
-//                    }
-//                } catch (e: Exception){
-//                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            override fun onCancelled(error: DatabaseError) {
-//                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-//            }
-//        })
+    private fun limitation() {
+        val reserveDate = intent.getStringExtra("ReserveDate")
+        val storeI = intent.getStringExtra("storeId")
+        val storeN = intent.getStringExtra("storeName")
+
+        val query = Database.child("Reservation").child(reserveDate).child(storeI).child("10:00 AM").orderByChild("status").equalTo("active")
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(s0: DataSnapshot) {
+                val view = timeList.getChildAt(0)
+                val trying = view as TextView
+                try {
+                    if (s0.exists()) {
+                        if (s0.childrenCount >= 5){
+                            view.setOnClickListener {
+                                Toast.makeText(applicationContext, "10:00 AM reservation is full", Toast.LENGTH_SHORT).show() }
+                            trying.setTextColor(Color.GRAY)
+                        } else{
+                            trying.setTextColor(Color.BLACK)
+                            view.setOnClickListener{
+                                val i = Intent(
+                                    this@ReserveTime,
+                                    reserveConfirmationActivity::class.java
+                                )
+                                i.putExtra("reserveTime", "10:00 AM")
+                                i.putExtra("reserveDate", reserveDate)
+                                i.putExtra("storeName", storeN)
+                                i.putExtra("storeId", storeI)
+                                startActivity(i)
+                            }
+                        }
+                    }
+                } catch (e: Exception){
+                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun limitation1() {
+        val reserveDate = intent.getStringExtra("ReserveDate")
+        val storeI = intent.getStringExtra("storeId")
+        val storeN = intent.getStringExtra("storeName")
+
+        val query1 = Database.child("Reservation").child(reserveDate).child(storeI).child("12:00 AM").orderByChild("status").equalTo("active")
+
+        query1.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(s0: DataSnapshot) {
+                val view = timeList.getChildAt(1)
+                val trying = view as TextView
+                try {
+                    if (s0.exists()) {
+                        if (s0.childrenCount >= 5){
+                            view.setOnClickListener {
+                                Toast.makeText(applicationContext, "12:00 AM reservation is full", Toast.LENGTH_SHORT).show()
+                            }
+                            trying.setTextColor(Color.GRAY)
+                        } else{
+                            trying.setTextColor(Color.BLACK)
+                            view.setOnClickListener{
+                                val i = Intent(
+                                    this@ReserveTime,
+                                    reserveConfirmationActivity::class.java
+                                )
+                                i.putExtra("reserveTime", "12:00 AM")
+                                i.putExtra("reserveDate", reserveDate)
+                                i.putExtra("storeName", storeN)
+                                i.putExtra("storeId", storeI)
+                                startActivity(i)
+                            }
+                        }
+                    }
+                } catch (e: Exception){
+                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun limitation2() {
+        val reserveDate = intent.getStringExtra("ReserveDate")
+        val storeI = intent.getStringExtra("storeId")
+        val storeN = intent.getStringExtra("storeName")
+
+        val query2 = Database.child("Reservation").child(reserveDate).child(storeI).child("2:00 PM").orderByChild("status").equalTo("active")
+
+        query2.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(s0: DataSnapshot) {
+                val view = timeList.getChildAt(2)
+                val trying = view as TextView
+                try {
+                    if (s0.exists()) {
+                        if (s0.childrenCount >= 5){
+                            view.setOnClickListener {
+                                Toast.makeText(applicationContext, "2:00 PM reservation is full", Toast.LENGTH_SHORT).show()
+                            }
+                            trying.setTextColor(Color.GRAY)
+                        } else{
+                            trying.setTextColor(Color.BLACK)
+                            view.setOnClickListener{
+                                val i = Intent(
+                                    this@ReserveTime,
+                                    reserveConfirmationActivity::class.java
+                                )
+                                i.putExtra("reserveTime", "2:00 PM")
+                                i.putExtra("reserveDate", reserveDate)
+                                i.putExtra("storeName", storeN)
+                                i.putExtra("storeId", storeI)
+                                startActivity(i)
+                            }
+                        }
+                    }
+                } catch (e: Exception){
+                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun limitation3() {
+        val reserveDate = intent.getStringExtra("ReserveDate")
+        val storeI = intent.getStringExtra("storeId")
+        val storeN = intent.getStringExtra("storeName")
+
+        val query3 = Database.child("Reservation").child(reserveDate).child(storeI).child("4:00 PM").orderByChild("status").equalTo("active")
+
+        query3.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(s0: DataSnapshot) {
+                val view = timeList.getChildAt(3)
+                val trying = view as TextView
+                try {
+                    if (s0.exists()) {
+                        if (s0.childrenCount >= 5){
+                            view.setOnClickListener {
+                                Toast.makeText(applicationContext, "4:00 PM reservation is full", Toast.LENGTH_SHORT).show()
+                            }
+                            trying.setTextColor(Color.GRAY)
+                        } else{
+                            trying.setTextColor(Color.BLACK)
+                            view.setOnClickListener{
+                                val i = Intent(
+                                    this@ReserveTime,
+                                    reserveConfirmationActivity::class.java
+                                )
+                                i.putExtra("reserveTime", "4:00 PM")
+                                i.putExtra("reserveDate", reserveDate)
+                                i.putExtra("storeName", storeN)
+                                i.putExtra("storeId", storeI)
+                                startActivity(i)
+                            }
+                        }
+                    }
+                } catch (e: Exception){
+                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun limitation4() {
+        val reserveDate = intent.getStringExtra("ReserveDate")
+        val storeI = intent.getStringExtra("storeId")
+        val storeN = intent.getStringExtra("storeName")
+
+        val query4 = Database.child("Reservation").child(reserveDate).child(storeI).child("6:00 PM").orderByChild("status").equalTo("active")
+
+        query4.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(s0: DataSnapshot) {
+                val view = timeList.getChildAt(4)
+                val trying = view as TextView
+                try {
+                    if (s0.exists()) {
+                        if (s0.childrenCount >= 5){
+                            view.setOnClickListener {
+                                Toast.makeText(applicationContext, "6:00 PM reservation is full", Toast.LENGTH_SHORT).show()
+                            }
+                            trying.setTextColor(Color.GRAY)
+                        } else{
+                            trying.setTextColor(Color.BLACK)
+                            view.setOnClickListener{
+                                val i = Intent(
+                                    this@ReserveTime,
+                                    reserveConfirmationActivity::class.java
+                                )
+                                i.putExtra("reserveTime", "6:00 PM")
+                                i.putExtra("reserveDate", reserveDate)
+                                i.putExtra("storeName", storeN)
+                                i.putExtra("storeId", storeI)
+                                startActivity(i)
+                            }
+                        }
+                    }
+                } catch (e: Exception){
+                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -384,13 +442,6 @@ class ReserveTime : AppCompatActivity() {
                                 val trying = view as TextView
                                 trying.setTextColor(Color.GRAY)
                             }
-//                            if (timeNow > 20){
-//                                val view = timeList.getChildAt(5)
-//                                view.setOnClickListener{
-//                                    Toast.makeText(applicationContext, "Already Passed 8:00 PM", Toast.LENGTH_SHORT).show()
-//                                }
-//                                //view.isEnabled = false
-//                            }
                         }
                     } catch (e: Exception){
                         Toast.makeText(applicationContext, "Error$e", Toast.LENGTH_SHORT).show()
@@ -402,6 +453,39 @@ class ReserveTime : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun executeHandler() {
+        //If the handler and runnable are null we create it the first time.
+        if (handler == null && runnable == null) {
+            handler = Handler()
+            runnable = object : Runnable {
+                @RequiresApi(Build.VERSION_CODES.O)
+                override fun run() {
+                    //Updating firebase store/getting
+                    compareTime()
+                    alreadyBook()
+                    //And we execute it again
+                    handler!!.postDelayed(this, EVERY_EIGHT_SECOND)
+                }
+            }
+        } else {
+            handler?.postDelayed(runnable, EVERY_EIGHT_SECOND)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        //execute the handler again.
+        executeHandler()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //we remove the callback
+        handler?.removeCallbacks(runnable)
+        //and we set the status to offline.
     }
 
 }

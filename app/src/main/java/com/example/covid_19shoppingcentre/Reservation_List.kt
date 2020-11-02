@@ -1,26 +1,21 @@
 package com.example.covid_19shoppingcentre
 
+//import com.firebase.ui.database.FirebaseRecyclerOptions
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import android.view.ViewGroup
+import android.widget.RadioButton
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.google.firebase.database.*
-//import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_store__list.*
-import kotlinx.android.synthetic.main.list_layout.view.*
-import kotlinx.android.synthetic.main.list_layout.view.image
-import kotlinx.android.synthetic.main.list_layout.view.name
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.reservation_list_layout.view.*
-import kotlinx.android.synthetic.main.reserve_store_date.*
-import kotlinx.android.synthetic.main.reserve_store_list_layout.view.*
-import java.util.*
 
 
 class Reservation_List :AppCompatActivity() {
@@ -34,14 +29,30 @@ class Reservation_List :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reservation_list)
 
+        setActionBar()
+
         mRecyclerView = findViewById(R.id.reservationList)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.setLayoutManager(LinearLayoutManager(this))
-        reserveDatabase = FirebaseDatabase.getInstance().getReference("Reservation")
+        reserveDatabase = FirebaseDatabase.getInstance().getReference("ReservationList")
         logRecyclerView()
+
+        val left = findViewById<RadioButton>(R.id.current)
+        val right = findViewById<RadioButton>(R.id.pass)
+
+        left.setOnClickListener{
+            left.setTextColor(Color.BLACK)
+            right.setTextColor(Color.WHITE)
+            logRecyclerView()
+        }
+        right.setOnClickListener{
+            right.setTextColor(Color.BLACK)
+            left.setTextColor(Color.WHITE)
+            logRecyclerView1()
+        }
     }
 
-    private  fun logRecyclerView(){
+    private fun logRecyclerView(){
         val memberI = "M00001"
 
         FirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Reserve, ReserveViewHolder>(
@@ -51,35 +62,90 @@ class Reservation_List :AppCompatActivity() {
             reserveDatabase
         ) {
             override fun populateViewHolder(p0: ReserveViewHolder, p1: Reserve, p2: Int) {
-                val query = reserveDatabase.child("member").equalTo(memberI)
-                query.addListenerForSingleValueEvent(object : ValueEventListener{
-                    override fun onDataChange(s0: DataSnapshot) {
-                        for (s0 in s0.children) {
-                            p0.mView.storeName.setText(s0.key.toString())
+                if (p1.memberId.toString() == memberI){
+                    if(p1.status.toString() == "active"){
+                        p0.mView.reserveTime.setText(p1.time)
+                        p0.mView.storeName.setText(p1.storeName)
+
+                        p0.mView.setOnClickListener {
+                            val i = Intent(
+                                this@Reservation_List,
+                                ReserveDetailsActivity::class.java
+                            )
+                            i.putExtra("name", p1.storeName.toString())
+                            i.putExtra("time", p1.time.toString())
+                            i.putExtra("date", p1.date.toString())
+                            i.putExtra("status", p1.status.toString())
+                            startActivity(i)
                         }
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-                    }
 
-                })
-//                p0.mView.name.setText(p1.Store_Name)
-//                Picasso.with(this@Reservation_List).load(p1.Store_Image).into(p0.mView.image)
-//                p0.mView.available.setText(p1.Store_Floor + "," + p1.Store_Slot)
+                    } else {
+                        p0.mView.visibility = View.GONE
+                        p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
+                    }
+                } else{
+                    p0.mView.visibility = View.GONE
+                    p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
+                }
+            }
+        }
+        mRecyclerView.adapter = FirebaseRecyclerAdapter
+    }
 
-//                p0.mView.setOnClickListener {
-//                    val i = Intent(
-//                        this@Reservation_List,
-//                        ReserveDate::class.java
-//                    )
-//                    i.putExtra("StoreName", p1.Store_Name.toString())
-//                    startActivity(i)
-//                }
+    private fun logRecyclerView1(){
+        val memberI = "M00001"
+
+        FirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Reserve, ReserveViewHolder>(
+            Reserve::class.java,
+            R.layout.reservation_list_layout,
+            ReserveViewHolder::class.java,
+            reserveDatabase
+        ) {
+            override fun populateViewHolder(p0: ReserveViewHolder, p1: Reserve, p2: Int) {
+                if (p1.memberId.toString() == memberI){
+                    if(p1.status.toString() != "active"){
+                        p0.mView.reserveTime.setText(p1.time)
+                        p0.mView.storeName.setText(p1.storeName)
+
+                        p0.mView.setOnClickListener {
+                            val i = Intent(
+                                this@Reservation_List,
+                                ReserveDetailsPassActivity::class.java
+                            )
+                            i.putExtra("name", p1.storeName.toString())
+                            i.putExtra("time", p1.time.toString())
+                            i.putExtra("date", p1.date.toString())
+                            i.putExtra("status", p1.status.toString())
+                            startActivity(i)
+                        }
+
+                    } else {
+                        p0.mView.visibility = View.GONE
+                        p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
+                    }
+                } else{
+                    p0.mView.visibility = View.GONE
+                    p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
+                }
             }
         }
         mRecyclerView.adapter = FirebaseRecyclerAdapter
     }
 
     class ReserveViewHolder( var mView: View) : RecyclerView.ViewHolder(mView) {
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent1 = Intent(this, MainActivity::class.java).apply {
+            putExtra("EXTRA_MESSAGE", "message")
+        }
+        startActivity(intent1)
+        return false
+    }
+
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Reservation List"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 }
