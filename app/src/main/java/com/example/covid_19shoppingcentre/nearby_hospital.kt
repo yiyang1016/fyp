@@ -57,6 +57,9 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
 
     internal lateinit var currentPlace:MyPlaces
 
+    //pass current location lat and lng
+    public var  currentLat = 0.0
+    public var  currentLng = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nearby_hospital)
@@ -167,6 +170,9 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
                 longtitude = mLastLocation.longitude
 
                 val latLng = LatLng(latitude,longtitude)
+                //save lat & lng to public variable
+                currentLat = latitude
+                currentLng = longtitude
                 val markerOptions = MarkerOptions()
                     .position(latLng)
                     .title("Your position")
@@ -175,7 +181,7 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
 
                 //Move Camera
                 mMap!!.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-                mMap.moveCamera(CameraUpdateFactory.zoomTo(12f))
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(13f))
                 nearByPlace("hospital")
             }
         }
@@ -256,7 +262,11 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
                 //When user select marker, just get result of the place assign to static variable
                 Common.currentResult = currentPlace!!.results!![Integer.parseInt(marker.snippet)]
                 //Start new Activity
-                startActivity(Intent(this@nearby_hospital,ViewPlace::class.java))
+                val intent = Intent(this@nearby_hospital,ViewPlace::class.java)
+                intent.putExtra("lat", currentLat.toString())
+                intent.putExtra("lng",currentLng.toString())
+                startActivity(intent)
+
             }
              true
         }

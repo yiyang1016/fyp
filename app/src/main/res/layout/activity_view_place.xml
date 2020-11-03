@@ -42,6 +42,23 @@
                 android:text="Place Address" />
 
             <TextView
+                android:id="@+id/place_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:text="Distance : " />
+
+            <TextView
+                android:id="@+id/phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:text="Phone Number" />
+
+
+            <TextView
                 android:id="@+id/place_open_hour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +70,8 @@
                 android:id="@+id/rating_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:max="5"/>
+                android:isIndicator="true"
+                android:max="5" />
 
             <Button
                 android:id="@+id/btn_show_map"
