@@ -84,6 +84,7 @@ class CustomerInformationActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         startActivity(intent)
+                        finish()
                     }
                 }
             }

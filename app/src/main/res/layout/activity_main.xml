@@ -75,5 +75,15 @@
         android:layout_marginBottom="282dp"
         android:text="ReservationList" />
 
+    <Button
+        android:id="@+id/testingtBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="147dp"
+        android:layout_marginBottom="308dp"
+        android:text="Testing1" />
+
 
 </RelativeLayout>

@@ -1,10 +1,15 @@
 package com.example.covid_19shoppingcentre
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -12,11 +17,28 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.customer_review.view.*
 import kotlinx.android.synthetic.main.customer_review_submission.view.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 
 class MainActivity : AppCompatActivity() {
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val serviceClass = checkService::class.java
+        val intent1 = Intent(applicationContext, serviceClass)
+
+        if (!isServiceRunning(serviceClass)) {
+            // Start the service
+            startService(intent1)
+        } else {
+            Toast.makeText(applicationContext,"service already running",Toast.LENGTH_SHORT).show()
+        }
+
+        intent1.putExtra("memberId", "M00001")
 
         StaffMainPage.setOnClickListener {
             val intent = Intent(this, StaffMainActivity::class.java)
@@ -140,6 +162,19 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    private fun isServiceRunning(serviceClass: Class<*>): Boolean {
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+        // Loop through the running services
+        for (service in activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                // If the service is running then return true
+                return true
+            }
+        }
+        return false
     }
 }
 
