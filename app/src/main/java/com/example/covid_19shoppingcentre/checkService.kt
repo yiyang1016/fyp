@@ -16,7 +16,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.concurrent.timer
 
 class checkService : Service() {
     private var Database = FirebaseDatabase.getInstance().getReference()
@@ -31,7 +30,6 @@ class checkService : Service() {
     private val channelId = "com.e.radiobutton"
     private val description = "Test notification"
 
-    private val EVERY_EIGHT_SECOND: Long = 5000
     private var handler: Handler? = null
     private var runnable: Runnable? = null
 
@@ -41,9 +39,7 @@ class checkService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        //val memberId = intent.getStringExtra("memberId").toString()
-
-        Toast.makeText(applicationContext, "notification testing", Toast.LENGTH_SHORT).show()
+        //val memberId = intent.getStringExtra("MemberId")
 
         // Do a periodic task
         mHandler = Handler()
@@ -51,8 +47,9 @@ class checkService : Service() {
             notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             checkTime()
             checkNotification("M00001")
+            Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
         }
-        mHandler.postDelayed(mRunnable, 20000)
+        mHandler.postDelayed(mRunnable, 5000)
 
         return Service.START_STICKY
     }
@@ -110,7 +107,7 @@ class checkService : Service() {
                 try{
                     for (s0 in s0.children){
                         if (s0.child("status").value.toString() == "active" && s0.child("date").value.toString() == dateText.toString()){
-                            if(s0.child("hour").value.toString().toInt() == hourNow && minuteNow == 50){
+                            if(s0.child("hour").value.toString().toInt() == hourNow && minuteNow >= 50){
                                 val time = s0.child("time").value.toString()
                                 val name = s0.child("storeName").value.toString()
                                 notification(time, name)
@@ -178,9 +175,10 @@ class checkService : Service() {
             override fun onDataChange(s0: DataSnapshot) {
                 try{
                     for (s0 in s0.children){
-                        if(s0.child("time").value == m){
+                        if(s0.child("time").value.toString() == m){
                             val updateQuery1 = Database.child("ReservationList").child(s0.key.toString())
                             updateQuery1.child("status").setValue("cancelled").addOnCompleteListener {
+                                Toast.makeText(applicationContext, "Done cancelled" + s0.key.toString(), Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -228,26 +226,4 @@ class checkService : Service() {
             Toast.makeText(applicationContext, "this is ERROR: $e", Toast.LENGTH_SHORT).show()
         }
     }
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    private fun executeHandler() {
-//        //If the handler and runnable are null we create it the first time.
-//        if (handler == null && runnable == null) {
-//            handler = Handler()
-//            runnable = object : Runnable {
-//                @RequiresApi(Build.VERSION_CODES.O)
-//                override fun run() {
-//                    //Updating firebase store/getting
-//                    Toast.makeText(applicationContext, "got run run", Toast.LENGTH_SHORT).show()
-//                    checkTime()
-//                    notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//                    checkNotification(memberId)
-//                    //And we execute it again
-//                    handler!!.postDelayed(this, EVERY_EIGHT_SECOND)
-//                }
-//            }
-//        } else {
-//            handler?.postDelayed(runnable, EVERY_EIGHT_SECOND)
-//        }
-//    }
 }

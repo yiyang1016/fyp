@@ -17,9 +17,6 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.customer_review.view.*
 import kotlinx.android.synthetic.main.customer_review_submission.view.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         val serviceClass = checkService::class.java
         val intent1 = Intent(applicationContext, serviceClass)
+        intent1.putExtra("MemberId", "M00001")
 
         if (!isServiceRunning(serviceClass)) {
             // Start the service
@@ -38,7 +36,6 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext,"service already running",Toast.LENGTH_SHORT).show()
         }
 
-        intent1.putExtra("memberId", "M00001")
 
         StaffMainPage.setOnClickListener {
             val intent = Intent(this, StaffMainActivity::class.java)
