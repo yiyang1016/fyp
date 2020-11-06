@@ -4,12 +4,13 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Color
+import android.media.RingtoneManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,12 +18,13 @@ import com.google.firebase.database.ValueEventListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+
 class checkService : Service() {
     private var Database = FirebaseDatabase.getInstance().getReference()
 
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
-    lateinit var builder : Notification.Builder
+    lateinit var builder : NotificationCompat.Builder
 
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
@@ -39,17 +41,19 @@ class checkService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        //val memberId = intent.getStringExtra("MemberId")
+        val memberId = intent.getStringExtra("MemberId")
+        Toast.makeText(applicationContext, "service started", Toast.LENGTH_SHORT).show()
 
         // Do a periodic task
         mHandler = Handler()
         mRunnable = Runnable {
-            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             checkTime()
-            checkNotification("M00001")
-            Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
+                notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                checkNotification(memberId)
+                Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
+
         }
-        mHandler.postDelayed(mRunnable, 5000)
+        mHandler.postDelayed(mRunnable, 35000)
 
         return Service.START_STICKY
     }
@@ -63,7 +67,7 @@ class checkService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkTime() {
-        mHandler.postDelayed(mRunnable, 20000)
+        mHandler.postDelayed(mRunnable, 35000)
         val currentDateTime = LocalDateTime.now()
         val hourFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("HH")
         val hourText = currentDateTime.format(hourFormat)
@@ -91,6 +95,7 @@ class checkService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkNotification(member: String){
+        mHandler.postDelayed(mRunnable, 35000)
         val currentDateTime = LocalDateTime.now()
         val hourFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("HH")
         val hourText = currentDateTime.format(hourFormat)
@@ -194,26 +199,32 @@ class checkService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun notification(d: String, N: String){
+        val alarmSound =
+            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
         try{
             val intent = Intent(this, Reservation_List::class.java)
             val pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-            notificationChannel = NotificationChannel(
-                channelId,
-                description,
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            notificationChannel.enableLights(true)
-            notificationChannel.lightColor = Color.GREEN
-            notificationChannel.enableVibration(false)
-            notificationManager.createNotificationChannel(notificationChannel)
+//            notificationChannel = NotificationChannel(
+//                channelId,
+//                description,
+//                NotificationManager.IMPORTANCE_HIGH
+//            )
+//            notificationChannel.enableLights(true)
+//            notificationChannel.lightColor = Color.GREEN
+//            notificationChannel.enableVibration(false)
+//            notificationManager.createNotificationChannel(notificationChannel)
 
-            builder = Notification.Builder(this, channelId)
+            builder = NotificationCompat.Builder(this, channelId)
                 .setContentTitle("Reservation")
                 .setContentText("You had a Reservation in $N at $d")
                 .setSmallIcon(R.drawable.hand_sanitizer)
                 .setAutoCancel(true)
+                .setPriority(2)
+                .setSound(alarmSound)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setLargeIcon(
                     BitmapFactory.decodeResource(
                         this.resources,
