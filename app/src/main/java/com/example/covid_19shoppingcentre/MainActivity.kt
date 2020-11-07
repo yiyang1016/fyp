@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext,"service already running",Toast.LENGTH_SHORT).show()
         }
 
-
         StaffMainPage.setOnClickListener {
+            stopService(intent1)
             val intent = Intent(this, StaffMainActivity::class.java)
             startActivity(intent)
         }

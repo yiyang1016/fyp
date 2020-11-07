@@ -7,6 +7,7 @@ class CheckInScCustomer {
     var checkInTime: String? = null
     var bodyTemperature: String? = null
     var customerId: String? = null
+    var checkOutTime: String? = null
 
     constructor(){
     }
@@ -17,7 +18,8 @@ class CheckInScCustomer {
         status: String?,
         checkInTime: String?,
         bodyTemperature: String?,
-        customerId: String?
+        customerId: String?,
+        checkOutTime: String?
 
     ) {
         this.name = name
@@ -26,5 +28,6 @@ class CheckInScCustomer {
         this.checkInTime = checkInTime
         this.bodyTemperature = bodyTemperature
         this.customerId = customerId
+        this.checkOutTime = checkOutTime
     }
 }

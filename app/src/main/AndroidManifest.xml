@@ -68,6 +68,7 @@
         <activity android:name=".ReserveDetailsActivity"
             android:launchMode="singleTop"/>
         <activity android:name=".ReserveDetailsPassActivity"/>
+        <activity android:name=".StaffStoreDetailsActivity"/>
         <activity
             android:name=".Store_List"
             android:label="Store List"
@@ -81,6 +82,9 @@
         </activity>
 
         <service android:name=".checkService"
+            android:enabled="true"
+            android:exported="true"/>
+        <service android:name=".staffService"
             android:enabled="true"
             android:exported="true"/>
 

@@ -1,16 +1,14 @@
 package com.example.covid_19shoppingcentre
 
-import android.app.*
+import android.app.NotificationManager
+import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.media.RingtoneManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -18,12 +16,8 @@ import com.google.firebase.database.ValueEventListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
-class checkService : Service() {
+class staffService : Service() {
     private var Database = FirebaseDatabase.getInstance().getReference()
-
-    lateinit var notificationManager: NotificationManager
-    lateinit var builder : NotificationCompat.Builder
 
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
@@ -39,19 +33,14 @@ class checkService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val memberId = intent.getStringExtra("MemberId")
-        Toast.makeText(applicationContext, "service started", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "staff service started", Toast.LENGTH_SHORT).show()
 
         // Do a periodic task
         mHandler = Handler()
         mRunnable = Runnable {
             checkTime()
-                notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                checkNotification(memberId)
-                Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
-
         }
-        mHandler.postDelayed(mRunnable, 35000)
+        mHandler.postDelayed(mRunnable, 5000)
 
         return Service.START_STICKY
     }
@@ -65,7 +54,7 @@ class checkService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkTime() {
-        mHandler.postDelayed(mRunnable, 35000)
+        mHandler.postDelayed(mRunnable, 5000)
         val currentDateTime = LocalDateTime.now()
         val hourFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("HH")
         val hourText = currentDateTime.format(hourFormat)
@@ -89,42 +78,6 @@ class checkService : Service() {
         if (hourNow >= 18 && minuteNow >= 5) {
             updateStatus("6:00 PM")
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun checkNotification(member: String){
-        mHandler.postDelayed(mRunnable, 35000)
-        val currentDateTime = LocalDateTime.now()
-        val hourFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("HH")
-        val hourText = currentDateTime.format(hourFormat)
-        val hourNow = hourText.toInt()
-        val minuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("m")
-        val minuteText = currentDateTime.format(minuteFormat)
-        val minuteNow = minuteText.toInt()
-        val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        val dateText = currentDateTime.format(dateFormat)
-
-        val query = Database.child("ReservationList").orderByChild("memberId").equalTo(member)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(s0: DataSnapshot) {
-                try{
-                    for (s0 in s0.children){
-                        if (s0.child("status").value.toString() == "active" && s0.child("date").value.toString() == dateText.toString()){
-                            if(s0.child("hour").value.toString().toInt() == hourNow && minuteNow == 50){
-                                val time = s0.child("time").value.toString()
-                                val name = s0.child("storeName").value.toString()
-                                notification(time, name)
-                            }
-                        }
-                    }
-                } catch(e: Exception){
-                    Toast.makeText(applicationContext, "ERROR: $e", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -181,7 +134,6 @@ class checkService : Service() {
                         if(s0.child("time").value.toString() == m){
                             val updateQuery1 = Database.child("ReservationList").child(s0.key.toString())
                             updateQuery1.child("status").setValue("cancelled").addOnCompleteListener {
-                                Toast.makeText(applicationContext, "Done cancelled" + s0.key.toString(), Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -195,34 +147,4 @@ class checkService : Service() {
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun notification(d: String, N: String){
-        val alarmSound =
-            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
-        try{
-            val intent = Intent(this, Reservation_List::class.java)
-            val pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-            builder = NotificationCompat.Builder(this, channelId)
-                .setContentTitle("Reservation")
-                .setContentText("You had a Reservation in $N at $d")
-                .setSmallIcon(R.drawable.hand_sanitizer)
-                .setAutoCancel(true)
-                .setPriority(2)
-                .setSound(alarmSound)
-                .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setLargeIcon(
-                    BitmapFactory.decodeResource(
-                        this.resources,
-                        R.drawable.hand_sanitizer
-                    )
-                )
-                .setContentIntent(pendingIntent)
-            notificationManager.notify(1234, builder.build())
-        } catch(e: Exception){
-            Toast.makeText(applicationContext, "this is ERROR: $e", Toast.LENGTH_SHORT).show()
-        }
-    }
 }
