@@ -57,6 +57,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        sdchBtn.setOnClickListener {
+            val intent = Intent(this, social_distance_score_history::class.java)
+            startActivity(intent)
+        }
         btnDistance_tracking.setOnClickListener {
             val intent = Intent(this, distance_tracking::class.java)
             startActivity(intent)

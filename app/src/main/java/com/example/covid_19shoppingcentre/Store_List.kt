@@ -163,7 +163,6 @@ class Store_List :AppCompatActivity() {
                             Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
                         }
                     })
-
                 }
             }
             mRecyclerView.adapter = FirebaseRecyclerAdapter

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.covid_19shoppingcentre">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -10,13 +9,18 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
-    <!-- Required only if your app isn't using the Device Companion Manager. -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- Required only if your app isn't using the Device Companion Manager. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -25,23 +29,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".social_distance_score_history"
+            android:label="Score History"
+            android:parentActivityName=".MainActivity"/>
+
         <activity
             android:name=".ViewDirections"
-            android:label="@string/title_activity_view_directions"
-            ></activity>
+            android:label="@string/title_activity_view_directions" />
         <activity
             android:name=".ViewPlace"
             android:label="Hospital Near Me"
@@ -53,22 +51,24 @@
         <activity
             android:name=".nearby_hospital"
             android:label="Hospital Near Me"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".StaffMainActivity" />
         <activity android:name=".CheckInScCustomer_List" />
         <activity android:name=".MemberInformationActivity" />
         <activity android:name=".QRScannerActivity" />
         <activity android:name=".CustomerInformationActivity" />
-        <activity android:name=".ReserveStore_List"/>
-        <activity android:name=".ReserveDate"/>
-        <activity android:name=".ReserveTime"/>
-        <activity android:name=".ReserveConfirmationActivity"/>
-        <activity android:name=".Reservation_List"
-            android:launchMode="singleTop"/>
-        <activity android:name=".ReserveDetailsActivity"
-            android:launchMode="singleTop"/>
-        <activity android:name=".ReserveDetailsPassActivity"/>
-        <activity android:name=".StaffStoreDetailsActivity"/>
+        <activity android:name=".ReserveStore_List" />
+        <activity android:name=".ReserveDate" />
+        <activity android:name=".ReserveTime" />
+        <activity android:name=".ReserveConfirmationActivity" />
+        <activity
+            android:name=".Reservation_List"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ReserveDetailsActivity"
+            android:launchMode="singleTop" />
+        <activity android:name=".ReserveDetailsPassActivity" />
+        <activity android:name=".StaffStoreDetailsActivity" />
         <activity
             android:name=".Store_List"
             android:label="Store List"
@@ -81,12 +81,14 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".checkService"
+        <service
+            android:name=".checkService"
             android:enabled="true"
-            android:exported="true"/>
-        <service android:name=".staffService"
+            android:exported="true" />
+        <service
+            android:name=".staffService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.gms.version"

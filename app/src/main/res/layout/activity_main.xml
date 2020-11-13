@@ -25,65 +25,85 @@
 
     <Button
         android:id="@+id/StaffMainPage"
-        android:layout_width="104dp"
+        android:layout_width="124dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btnNearbyHospital"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="47dp"
-        android:layout_marginEnd="260dp"
-        android:layout_marginBottom="421dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="67dp"
+        android:layout_toEndOf="@+id/sdchBtn"
         android:text="Testing" />
 
     <Button
         android:id="@+id/btnDistance_tracking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="77dp"
-        android:layout_marginEnd="-2dp"
-        android:layout_toStartOf="@+id/review"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="18dp"
+        android:layout_toStartOf="@+id/btnNearbyHospital"
         android:text="Distance Tracking" />
 
     <Button
         android:id="@+id/btnNearbyHospital"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/btnDistance_tracking"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="154dp"
-        android:layout_marginEnd="-171dp"
+        android:layout_width="189dp"
+        android:layout_height="55dp"
+        android:layout_below="@+id/review"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="-3dp"
         android:text="NearBy Hospital" />
 
     <Button
         android:id="@+id/reserveBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/StaffMainPage"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="249dp"
-        android:layout_marginBottom="347dp"
+        android:layout_marginStart="127dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="124dp"
         android:text="Reservation" />
 
     <Button
         android:id="@+id/reserveListBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="161dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/reserveBtn"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="249dp"
-        android:layout_marginBottom="282dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="124dp"
         android:text="ReservationList" />
 
     <Button
         android:id="@+id/testingtBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="175dp"
+        android:layout_height="57dp"
+        android:layout_below="@+id/reserveListBtn"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="147dp"
-        android:layout_marginBottom="308dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="118dp"
         android:text="Testing1" />
+
+    <Button
+        android:id="@+id/sdchBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnDistance_tracking"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="29dp"
+        android:text="history" />
 
 
 </RelativeLayout>
