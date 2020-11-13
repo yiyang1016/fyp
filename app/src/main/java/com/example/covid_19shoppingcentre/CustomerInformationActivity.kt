@@ -41,15 +41,11 @@ class CustomerInformationActivity : AppCompatActivity() {
         setActionBar()
 
         val checkOutButton = findViewById<Button>(R.id.checkOutBtn)
-        val testing = findViewById<Button>(R.id.testingButton)
 
         checkOutButton.setOnClickListener {
             checkOutCustomer()
         }
 
-        testing.setOnClickListener {
-            checkOutCustomer()
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

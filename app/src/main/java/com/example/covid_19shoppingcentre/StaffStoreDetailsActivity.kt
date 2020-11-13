@@ -72,21 +72,29 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
             mDatabase
         ) {
             override fun populateViewHolder(p0: CustomerViewHolder, p1: CheckInScCustomer, p2: Int) {
-                p0.mView.CheckInTime.text = p1.checkInTime
+                if (p1.status.toString() == "active"){
+                    p0.mView.CheckInTime.text = p1.checkInTime
 
-                val query = Database.child("ShoppingCentre").child(dateText.toString()).orderByChild("customerId").equalTo(p1.customerId)
-                query.addListenerForSingleValueEvent(object : ValueEventListener{
+                val query = Database.child("ShoppingCentre").child(dateText.toString())
+                    .orderByChild("customerId").equalTo(p1.customerId)
+                query.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(s0: DataSnapshot) {
-                        for (s0 in s0.children){
+                        for (s0 in s0.children) {
                             p0.mView.CustomerName.text = s0.child("name").value.toString()
                             p0.mView.PhoneNumber.text = s0.child("phone").value.toString()
                             p0.mView.Temperature.text = s0.child("bodyTemperature").value.toString()
                         }
                     }
+
                     override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 })
+            } else{
+                    p0.mView.visibility = View.GONE
+                    p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
+                }
             }
         }
         mRecyclerView.adapter = FirebaseRecyclerAdapter
@@ -105,7 +113,9 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 for (p0 in p0.children) {
-                    customerCountInt++
+                    if(p0.child("status").value.toString() == "active") {
+                        customerCountInt++
+                    }
                 }
                 customerCount.text = customerCountInt.toString()
             }

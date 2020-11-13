@@ -48,8 +48,6 @@ class checkService : Service() {
             checkTime()
                 notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 checkNotification(memberId)
-                Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
-
         }
         mHandler.postDelayed(mRunnable, 35000)
 
@@ -181,7 +179,6 @@ class checkService : Service() {
                         if(s0.child("time").value.toString() == m){
                             val updateQuery1 = Database.child("ReservationList").child(s0.key.toString())
                             updateQuery1.child("status").setValue("cancelled").addOnCompleteListener {
-                                Toast.makeText(applicationContext, "Done cancelled" + s0.key.toString(), Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
