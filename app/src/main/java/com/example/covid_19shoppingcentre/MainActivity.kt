@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        btnQuestion.setOnClickListener{
+        btnQuestionaire.setOnClickListener{
             val intent = Intent(this, questionMobile::class.java)
             startActivity(intent)
         }
