@@ -29,14 +29,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".tabletStoreCurrentCust"></activity>
+        <activity android:name=".tabletStoreLoginVarification" />
+        <activity android:name=".MainActivity2" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".social_distance_score_history"
+        <activity
+            android:name=".social_distance_score_history"
             android:label="Score History"
-            android:parentActivityName=".MainActivity"/>
-
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ViewDirections"
             android:label="@string/title_activity_view_directions" />

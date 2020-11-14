@@ -71,6 +71,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        btnStoreLogin.setOnClickListener {
+            val intent = Intent(this, tabletStoreLoginVarification::class.java)
+            startActivity(intent)
+        }
+
         review.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
 
