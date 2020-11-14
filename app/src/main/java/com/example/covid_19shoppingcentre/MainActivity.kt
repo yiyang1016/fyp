@@ -76,6 +76,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        btnQuestion.setOnClickListener{
+            val intent = Intent(this, questionMobile::class.java)
+            startActivity(intent)
+        }
+
         review.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
 
