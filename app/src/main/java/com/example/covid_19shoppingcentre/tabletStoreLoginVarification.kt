@@ -47,7 +47,6 @@ class tabletStoreLoginVarification : AppCompatActivity() {
                             .show()
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(applicationContext, "00", Toast.LENGTH_SHORT).show()
                 }

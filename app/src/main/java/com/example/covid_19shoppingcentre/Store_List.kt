@@ -97,7 +97,7 @@ class Store_List :AppCompatActivity() {
                                             customerCountInt++
                                         }
                                     }
-                                    p0.mView.limit.setText(customerCountInt.toString() + " / " + p1.Store_Limitation)
+                                    p0.mView.limit.setText(customerCountInt.toString() + "/" + p1.Store_Limitation)
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
@@ -160,7 +160,7 @@ class Store_List :AppCompatActivity() {
                                                 customerCountInt++
                                             }
                                         }
-                                        p0.mView.limit.setText(customerCountInt.toString() + " / " + p1.Store_Limitation)
+                                        p0.mView.limit.setText(customerCountInt.toString() + "/" + p1.Store_Limitation)
                                     }
 
                                     override fun onCancelled(error: DatabaseError) {
@@ -224,7 +224,7 @@ class Store_List :AppCompatActivity() {
                                                 customerCountInt++
                                             }
                                         }
-                                        p0.mView.limit.setText(customerCountInt.toString() + " / " + p1.Store_Limitation)
+                                        p0.mView.limit.setText(customerCountInt.toString() + "/" + p1.Store_Limitation)
                                     }
 
                                     override fun onCancelled(error: DatabaseError) {

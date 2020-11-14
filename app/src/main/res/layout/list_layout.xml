@@ -40,13 +40,13 @@
 
     <TextView
         android:id="@+id/limit"
-        android:layout_width="87dp"
+        android:layout_width="106dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="45dp"
+        android:layout_marginStart="38dp"
         android:layout_marginTop="21dp"
-        android:layout_marginEnd="43dp"
+        android:layout_marginEnd="30dp"
         android:layout_toEndOf="@+id/floor"
         android:gravity="right"
         android:text="Limitation"
