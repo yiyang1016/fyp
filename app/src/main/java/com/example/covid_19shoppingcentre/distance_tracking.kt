@@ -47,28 +47,38 @@ class distance_tracking : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_distance_tracking)
-       readDatabase()
+
+        //read database to get device name and address
+        readDatabase()
+        bleScanHandler = Handler()
+        bleManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        bleAdapter = bleManager.adapter
         if(!bleAdapter.isEnabled){
             val bluetoothTurnOn = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(bluetoothTurnOn, REQUEST_BLUETOOTH_TURN_ON)
-        }else {
-            bleStartScan.run()
         }
+
+        //check Bluetooth status every 3 seconds
+        val handler = Handler()
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                //Call your function here
+                if(!bleAdapter.isEnabled){
+                    val bluetoothTurnOn = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(bluetoothTurnOn, REQUEST_BLUETOOTH_TURN_ON)
+                }
+                handler.postDelayed(this, 3000)//1 sec delay
+            }
+        }, 0)
 
         bleImageButton.setOnClickListener{view->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            bleScanHandler = Handler()
-            bleManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-            bleAdapter = bleManager.adapter
+            bleStartScan.run()
             //Update local Bluetooth name
-            //bleAdapter.bluetoothLeAdvertiser
-
             database.child("Member").child("M00004").child("Bluetooth_Name").setValue(bleAdapter.name)
             database.child("Member").child("M00004").child("Bluetooth_Address").setValue(bleAdapter.address)
             readDatabase()
-
-
         }
     }
 
@@ -80,7 +90,7 @@ class distance_tracking : AppCompatActivity() {
         bleScanner.startScan(bleScanCallback)
         Toast.makeText(this.applicationContext, "Start Scan Nearby Device", Toast.LENGTH_SHORT).show()
         bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
-
+        distance.text = bleScanCallback.resultOfScan.toString()
     }
 
     private val bleStopScan = Runnable{
@@ -117,7 +127,7 @@ class distance_tracking : AppCompatActivity() {
             val bleDevice = scanResult?.device
             val deviceAddress = bleDevice?.address
             val rssiValue = scanResult?.rssi
-            if(!resultOfScan.contains(deviceAddress) && bleDevice?.name != null){
+            if(!resultOfScan.contains(deviceAddress)){
                 resultOfScan.put(deviceAddress, bleDevice)
                 if(this.context !=null ){
                     Toast.makeText(this.context, bleDevice?.name + ":" + bleDevice?.address +"RSSI"+ rssiValue, Toast.LENGTH_SHORT).show()
@@ -154,6 +164,7 @@ class distance_tracking : AppCompatActivity() {
                 if (p0.exists()) {
                     for (p0 in p0.children) {
                         textView3.setText("Bluetooth Name: " + p0.child("Bluetooth_Name").value.toString() +"\nBluetooth Address: "+ p0.child("Bluetooth_Address").value.toString())
+
                     }
                 }
             }

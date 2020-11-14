@@ -14,7 +14,12 @@ import com.google.firebase.database.*
 //import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_store__list.*
+import kotlinx.android.synthetic.main.activity_store__list.searchStore
 import kotlinx.android.synthetic.main.list_layout.view.*
+import kotlinx.android.synthetic.main.staff_store_details.*
+import kotlinx.android.synthetic.main.tablet_store_login_varification.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class Store_List :AppCompatActivity() {
@@ -23,7 +28,7 @@ class Store_List :AppCompatActivity() {
     lateinit var  mRecyclerView: RecyclerView
     lateinit var mDatabase : DatabaseReference
     lateinit var FirebaseRecyclerAdapter : FirebaseRecyclerAdapter<Store, StoreViewHolder>
-
+    var current = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +45,7 @@ class Store_List :AppCompatActivity() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-               val searchText = searchStore.text.toString().trim()
+               val searchText = searchStore.text.toString().toUpperCase().trim()
                 logRecyclerView(searchText)
             }
             override fun afterTextChanged(p0: Editable?) {
@@ -58,7 +63,7 @@ class Store_List :AppCompatActivity() {
             override fun populateViewHolder(p0: StoreViewHolder, p1: Store, p2: Int) {
                 p0.mView.name.setText(p1.Store_Name)
                 p0.mView.floor.setText(p1.Store_Floor + "," + p1.Store_Slot)
-                p0.mView.limit.setText("/" + p1.Store_Limitation)
+
                 Picasso.with(this@Store_List).load(p1.Store_Image).into(p0.mView.image)
 
                 val findId = Database.child("Store").orderByChild("Store_Name").equalTo(p1.Store_Name)
@@ -73,8 +78,32 @@ class Store_List :AppCompatActivity() {
                                 )
                                 i.putExtra("StoreName", p1.Store_Name.toString())
                                 i.putExtra("StoreId", snapshot.key.toString())
+
+
                                 startActivity(i)
                             }
+                            val storeId = snapshot.key.toString()
+                            var customerCountInt = 0
+                            val currentDateTime = LocalDateTime.now()
+                            val hourFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
+                            val hourText = currentDateTime.format(hourFormat)
+                            val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                            val dateText = currentDateTime.format(dateFormat)
+                            val query = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourText.toString())
+                            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snap: DataSnapshot) {
+                                    for (snap in snap.children) {
+                                        if(snap.child("status").value.toString() == "active") {
+                                            customerCountInt++
+                                        }
+                                    }
+                                    p0.mView.limit.setText(customerCountInt.toString() + " / " + p1.Store_Limitation)
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                                }
+                            })
                         }
                     }
                     override fun onCancelled(error: DatabaseError) {
@@ -99,7 +128,7 @@ class Store_List :AppCompatActivity() {
                 override fun populateViewHolder(p0: StoreViewHolder, p1: Store, p2: Int) {
                     p0.mView.name.setText(p1.Store_Name)
                     p0.mView.floor.setText(p1.Store_Floor + "," + p1.Store_Slot)
-                    p0.mView.limit.setText("/" + p1.Store_Limitation)
+
                     Picasso.with(this@Store_List).load(p1.Store_Image).into(p0.mView.image)
 
                     val findId = Database.child("Store").orderByChild("Store_Name").equalTo(p1.Store_Name)
@@ -116,6 +145,28 @@ class Store_List :AppCompatActivity() {
                                     i.putExtra("StoreId", snapshot.key.toString())
                                     startActivity(i)
                                 }
+                                val storeId = snapshot.key.toString()
+                                var customerCountInt = 0
+                                val currentDateTime = LocalDateTime.now()
+                                val hourFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
+                                val hourText = currentDateTime.format(hourFormat)
+                                val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                                val dateText = currentDateTime.format(dateFormat)
+                                val query = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourText.toString())
+                                query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(snap: DataSnapshot) {
+                                        for (snap in snap.children) {
+                                            if(snap.child("status").value.toString() == "active") {
+                                                customerCountInt++
+                                            }
+                                        }
+                                        p0.mView.limit.setText(customerCountInt.toString() + " / " + p1.Store_Limitation)
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                                    }
+                                })
                             }
                         }
                         override fun onCancelled(error: DatabaseError) {
@@ -140,7 +191,7 @@ class Store_List :AppCompatActivity() {
 
                     p0.mView.name.setText(p1.Store_Name)
                     p0.mView.floor.setText(p1.Store_Floor + "," + p1.Store_Slot)
-                    p0.mView.limit.setText("/" + p1.Store_Limitation)
+
                     Picasso.with(this@Store_List).load(p1.Store_Image).into(p0.mView.image)
 
                     val findId = Database.child("Store").orderByChild("Store_Name").equalTo(p1.Store_Name)
@@ -156,7 +207,30 @@ class Store_List :AppCompatActivity() {
                                     i.putExtra("StoreName", p1.Store_Name.toString())
                                     i.putExtra("StoreId", snapshot.key.toString())
                                     startActivity(i)
+
                                 }
+                                val storeId = snapshot.key.toString()
+                                var customerCountInt = 0
+                                val currentDateTime = LocalDateTime.now()
+                                val hourFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
+                                val hourText = currentDateTime.format(hourFormat)
+                                val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                                val dateText = currentDateTime.format(dateFormat)
+                                val query = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourText.toString())
+                                query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(snap: DataSnapshot) {
+                                        for (snap in snap.children) {
+                                            if(snap.child("status").value.toString() == "active") {
+                                                customerCountInt++
+                                            }
+                                        }
+                                        p0.mView.limit.setText(customerCountInt.toString() + " / " + p1.Store_Limitation)
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                                    }
+                                })
                             }
                         }
                         override fun onCancelled(error: DatabaseError) {
@@ -171,4 +245,5 @@ class Store_List :AppCompatActivity() {
 
     class StoreViewHolder( var mView: View) : RecyclerView.ViewHolder(mView) {
     }
+
 }
