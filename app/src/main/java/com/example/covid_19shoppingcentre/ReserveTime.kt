@@ -428,7 +428,7 @@ class ReserveTime : AppCompatActivity() {
                 if (snapshot.exists()){
                     try{
                         if (reserveDate == dateText.toString()){
-                            if (timeNow > 10){
+                            if (timeNow >= 10){
                                 val view = timeList.getChildAt(0)
                                     view.setOnClickListener{
                                         Toast.makeText(applicationContext, "Already Passed 10:00 AM", Toast.LENGTH_SHORT).show()
@@ -436,7 +436,7 @@ class ReserveTime : AppCompatActivity() {
                                 val trying = view as TextView
                                 trying.setTextColor(Color.GRAY)
                             }
-                            if (timeNow > 12){
+                            if (timeNow >= 12){
                                 val view = timeList.getChildAt(1)
                                 view.setOnClickListener{
                                     Toast.makeText(applicationContext, "Already Passed 12:00 AM", Toast.LENGTH_SHORT).show()
@@ -444,7 +444,7 @@ class ReserveTime : AppCompatActivity() {
                                 val trying = view as TextView
                                 trying.setTextColor(Color.GRAY)
                             }
-                            if (timeNow > 14){
+                            if (timeNow >= 14){
                                 val view = timeList.getChildAt(2)
                                 view.setOnClickListener{
                                     Toast.makeText(applicationContext, "Already Passed 2:00 PM", Toast.LENGTH_SHORT).show()
@@ -452,7 +452,7 @@ class ReserveTime : AppCompatActivity() {
                                 val trying = view as TextView
                                 trying.setTextColor(Color.GRAY)
                             }
-                            if (timeNow > 16){
+                            if (timeNow >= 16){
                                 val view = timeList.getChildAt(3)
                                 view.setOnClickListener{
                                     Toast.makeText(applicationContext, "Already Passed 4:00 PM", Toast.LENGTH_SHORT).show()
@@ -460,7 +460,7 @@ class ReserveTime : AppCompatActivity() {
                                 val trying = view as TextView
                                 trying.setTextColor(Color.GRAY)
                             }
-                            if (timeNow > 18){
+                            if (timeNow >= 18){
                                 val view = timeList.getChildAt(4)
                                 view.setOnClickListener{
                                     Toast.makeText(applicationContext, "Already Passed 6:00 PM", Toast.LENGTH_SHORT).show()

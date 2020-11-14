@@ -86,6 +86,7 @@ class CheckInScCustomer_List : AppCompatActivity() {
                     }
                 } else{
                     p0.mView.visibility = View.GONE
+                    p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
                 }
             }
         }
@@ -125,6 +126,7 @@ class CheckInScCustomer_List : AppCompatActivity() {
                         }
                     } else{
                         p0.mView.visibility = View.GONE
+                        p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
                     }
                 }
             }
@@ -163,6 +165,7 @@ class CheckInScCustomer_List : AppCompatActivity() {
                         }
                     } else{
                         p0.mView.visibility = View.GONE
+                        p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
                     }
                 }
             }
