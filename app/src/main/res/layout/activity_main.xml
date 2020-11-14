@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="103dp"
+        android:layout_marginEnd="26dp"
         android:text="Review" />
 
     <Button
@@ -64,9 +64,9 @@
         android:layout_below="@+id/StaffMainPage"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="127dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="124dp"
+        android:layout_marginStart="204dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="47dp"
         android:text="Reservation" />
 
     <Button
@@ -76,23 +76,23 @@
         android:layout_below="@+id/reserveBtn"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginEnd="124dp"
+        android:layout_marginStart="123dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="126dp"
         android:text="ReservationList" />
 
     <Button
         android:id="@+id/testingtBtn"
-        android:layout_width="346dp"
-        android:layout_height="83dp"
-        android:layout_below="@+id/reserveListBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="61dp"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="167dp"
-        android:layout_marginBottom="167dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="393dp"
+        android:layout_marginEnd="230dp"
+        android:layout_marginBottom="149dp"
         android:text="Testing1" />
 
     <Button
@@ -101,17 +101,28 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnDistance_tracking"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="81dp"
         android:text="history" />
 
     <Button
         android:id="@+id/btnStoreLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="22dp"
+        android:layout_marginEnd="55dp"
         android:layout_toStartOf="@+id/review"
         android:text="StoreLogin" />
+
+    <Button
+        android:id="@+id/btnQuestionaire"
+        android:layout_width="196dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="-50dp"
+        android:layout_marginBottom="406dp"
+        android:layout_toStartOf="@+id/StaffMainPage"
+        android:text="Questionaire" />
 
 
 </RelativeLayout>
