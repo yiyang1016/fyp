@@ -36,7 +36,7 @@ class tabletStoreLoginVarification : AppCompatActivity() {
             ref.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(p0: DataSnapshot) {
                     if (p0.child("Store_Password").value.toString() == password) {
-                        Toast.makeText(applicationContext, "win", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Successfull Login", Toast.LENGTH_SHORT).show()
                         val intent = Intent(
                             this@tabletStoreLoginVarification,
                             tabletStoreCurrentCust::class.java
