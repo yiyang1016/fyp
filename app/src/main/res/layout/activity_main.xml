@@ -8,121 +8,90 @@
     android:background="@drawable/background_gradient"
     tools:context=".MainActivity">
 
-
-    <Button
-        android:id="@+id/store_list"
+    <TextView
+        android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Store_List" />
+        android:layout_below="@+id/button"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="131dp"
+        android:text="Store List"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:gravity="center"
+        android:text="Welcome to MidValley Shopping Mall \nHope you enjoy your shopping "
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <Button
-        android:id="@+id/review"
+        android:id="@+id/button"
+        android:layout_width="164dp"
+        android:layout_height="63dp"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/logout_btn_layout"
+        android:text="Check Out"
+        android:textColor="#FFFCFC"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView5"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="26dp"
-        android:text="Review" />
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:text="Today Score"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/StaffMainPage"
-        android:layout_width="124dp"
+    <TextView
+        android:id="@+id/displayScoreText"
+        android:layout_width="77dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnNearbyHospital"
+        android:layout_below="@+id/textView7"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="77dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="67dp"
-        android:layout_toEndOf="@+id/sdchBtn"
-        android:text="Testing" />
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="41dp"
+        android:gravity="right"
+        android:text="score"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="255dp"
+        android:layout_above="@+id/storeList_btn"
+        android:layout_below="@+id/textView9"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp" />
 
     <Button
-        android:id="@+id/btnDistance_tracking"
+        android:id="@+id/storeList_btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="18dp"
-        android:layout_toStartOf="@+id/btnNearbyHospital"
-        android:text="Distance Tracking" />
-
-    <Button
-        android:id="@+id/btnNearbyHospital"
-        android:layout_width="189dp"
-        android:layout_height="55dp"
-        android:layout_below="@+id/review"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="31dp"
-        android:layout_marginEnd="-3dp"
-        android:text="NearBy Hospital" />
-
-    <Button
-        android:id="@+id/reserveBtn"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/StaffMainPage"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="204dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="47dp"
-        android:text="Reservation" />
-
-    <Button
-        android:id="@+id/reserveListBtn"
-        android:layout_width="161dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/reserveBtn"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="123dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="126dp"
-        android:text="ReservationList" />
-
-    <Button
-        android:id="@+id/testingtBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="61dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="393dp"
-        android:layout_marginEnd="230dp"
-        android:layout_marginBottom="149dp"
-        android:text="Testing1" />
-
-    <Button
-        android:id="@+id/sdchBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnDistance_tracking"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="81dp"
-        android:text="history" />
-
-    <Button
-        android:id="@+id/btnStoreLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="55dp"
-        android:layout_toStartOf="@+id/review"
-        android:text="StoreLogin" />
-
-    <Button
-        android:id="@+id/btnQuestionaire"
-        android:layout_width="196dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="65dp"
-        android:layout_marginTop="148dp"
-        android:layout_marginEnd="-50dp"
-        android:layout_marginBottom="406dp"
-        android:layout_toStartOf="@+id/StaffMainPage"
-        android:text="Questionaire" />
-
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="0dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="Click Here to View Full List" />
 
 </RelativeLayout>

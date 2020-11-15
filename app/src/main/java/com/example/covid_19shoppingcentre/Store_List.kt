@@ -33,6 +33,7 @@ class Store_List :AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store__list)
+        overridePendingTransition(R.anim.slide_up, R.anim.slide_down)
 
         mRecyclerView = findViewById(R.id.listView)
         mRecyclerView.setHasFixedSize(true )
@@ -246,4 +247,8 @@ class Store_List :AppCompatActivity() {
     class StoreViewHolder( var mView: View) : RecyclerView.ViewHolder(mView) {
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_down_reverse, R.anim.slide_up_reverse)
+    }
 }

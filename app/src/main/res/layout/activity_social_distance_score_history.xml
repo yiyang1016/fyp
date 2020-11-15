@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="388dp"
+        android:layout_width="0dp"
         android:layout_height="53dp"
         android:layout_marginStart="14dp"
         android:layout_marginTop="16dp"
@@ -24,8 +24,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
-        android:layout_width="409dp"
-        android:layout_height="532dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="73dp"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="1dp" />
