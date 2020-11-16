@@ -301,6 +301,9 @@ class distance_tracking : AppCompatActivity() {
                             if (p0.exists()) {
                                 for (p0 in p0.children) {
                                     val current = Integer.parseInt(p0.child("CurrentScore").value.toString()) - marks
+                                    if(current < 70 || current < 50 || current < 30){
+                                        showNotification("Warning Message", "Distance Low than $current. Please keep social distance before get bar!")
+                                    }
                                     database.child("Member").child("M00006").child("CurrentScore").setValue(current)
                                 }
                             } else {
