@@ -1,6 +1,5 @@
 package com.example.covid_19shoppingcentre
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.social_distance_history_layout.view.*
-import android.content.Context
 import android.graphics.Color
 import android.view.Menu
 import android.view.MenuItem
@@ -46,7 +44,7 @@ class social_distance_score_history : AppCompatActivity() {
     }
 
     private fun logRecycleView(memberId : String){
-        val firebaseSearchQuery = mDatabase.orderByChild("Member_Id").startAt(memberId).endAt(memberId+"\uf8ff")
+        val firebaseSearchQuery = mDatabase.orderByChild("member_Id").startAt(memberId).endAt(memberId+"\uf8ff")
         FirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Score, ScoreViewHolder>(
             Score::class.java,
             R.layout.social_distance_history_layout,
@@ -71,6 +69,7 @@ class social_distance_score_history : AppCompatActivity() {
 
     class ScoreViewHolder( var mView: View) : RecyclerView.ViewHolder(mView) {
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         //Inflate the menu; this adds items to the action bar if it is present
         menuInflater.inflate(R.menu.menu_main, menu)

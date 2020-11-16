@@ -80,7 +80,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="Home Page">
+            android:label="MidValley">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
