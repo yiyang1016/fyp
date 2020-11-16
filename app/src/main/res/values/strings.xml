@@ -42,4 +42,7 @@
         <item>9pm</item>
         <item>10pm</item>
     </string-array>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 </resources>
