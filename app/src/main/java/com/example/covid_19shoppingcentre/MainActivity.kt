@@ -72,7 +72,14 @@ class MainActivity : AppCompatActivity() {
                     )
                     startActivity(i)
                 }
+                R.id.nav_storeLogin -> {
+                    val i = Intent(
+                        this@MainActivity,
+                        tabletStoreLoginVarification::class.java
+                    )
+                    startActivity(i)
                 }
+            }
             true
         }
 
