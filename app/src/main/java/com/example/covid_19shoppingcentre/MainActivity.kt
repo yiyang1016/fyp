@@ -5,14 +5,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -21,6 +26,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.customer_review.view.*
 import kotlinx.android.synthetic.main.customer_review_submission.view.*
 import kotlinx.android.synthetic.main.list_layout.view.*
+import kotlinx.android.synthetic.main.reservation_list.*
+import kotlinx.android.synthetic.main.staff_store_details.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -29,11 +36,45 @@ class MainActivity : AppCompatActivity() {
     lateinit var  mRecyclerView: RecyclerView
     lateinit var mDatabase : DatabaseReference
     lateinit var FirebaseRecyclerAdapter : FirebaseRecyclerAdapter<Store, Store_List.StoreViewHolder>
+    lateinit var toggle: ActionBarDrawerToggle
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        toggle = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        navigationView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.nav_reserve_store -> {
+                val i = Intent(
+                    this@MainActivity,
+                    ReserveStore_List::class.java
+                )
+                startActivity(i)
+            }
+                R.id.nav_reservation_list -> {
+                    val i = Intent(
+                        this@MainActivity,
+                        Reservation_List::class.java
+                    )
+                    startActivity(i)
+                }
+                R.id.nav_storeList -> {
+                    val i = Intent(
+                        this@MainActivity,
+                        Store_List::class.java
+                    )
+                    startActivity(i)
+                }
+                }
+            true
+        }
 
         val serviceClass = checkService::class.java
         val intent1 = Intent(applicationContext, serviceClass)
@@ -57,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         storeList_btn.setOnClickListener {
             val i = Intent(
                 this@MainActivity,
-                Store_List::class.java
+                ReserveStore_List::class.java
             )
             startActivity(i)
         }
@@ -222,7 +263,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {
@@ -258,7 +298,7 @@ class MainActivity : AppCompatActivity() {
                             p0.mView.setOnClickListener {
                                 val i = Intent(
                                     this@MainActivity,
-                                    Store_List::class.java
+                                    ReserveStore_List::class.java
                                 )
                                 startActivity(i)
                             }
@@ -269,7 +309,10 @@ class MainActivity : AppCompatActivity() {
                             val hourText = currentDateTime.format(hourFormat)
                             val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
                             val dateText = currentDateTime.format(dateFormat)
+                            val hourtext1 = hourText.toInt() - 1
+
                             val query = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourText.toString())
+                            val query1 = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourtext1.toString())
                             query.addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snap: DataSnapshot) {
                                     for (snap in snap.children) {
@@ -277,7 +320,19 @@ class MainActivity : AppCompatActivity() {
                                             customerCountInt++
                                         }
                                     }
-                                    p0.mView.limit.setText(customerCountInt.toString() + "/" + p1.Store_Limitation)
+                                    query1.addListenerForSingleValueEvent(object : ValueEventListener{
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            for (snapshot in snapshot.children) {
+                                                if(snapshot.child("status").value.toString() == "active") {
+                                                    customerCountInt++
+                                                }
+                                            }
+                                            p0.mView.limit.setText(customerCountInt.toString() + "/" + p1.Store_Limitation)
+                                        }
+                                        override fun onCancelled(error: DatabaseError) {
+                                            Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                                        }
+                                    })
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
@@ -290,11 +345,26 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
                     }
                 })
-
-
             }
         }
         mRecyclerView.adapter = FirebaseRecyclerAdapter
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 }
 

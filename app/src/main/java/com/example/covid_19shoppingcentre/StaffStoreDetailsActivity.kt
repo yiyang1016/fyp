@@ -46,6 +46,8 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.staff_store_details)
 
+        chart()
+
         val storeName = intent.getStringExtra("StoreName")
         val storeId = intent.getStringExtra("StoreId")
         val currentDateTime = LocalDateTime.now()
@@ -84,6 +86,7 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
                         storeTime[position].toString() == "11am" -> {
                             mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("11")
                             logRecyclerView()
+                            chart()
                         }
                         storeTime[position].toString() == "12am" -> {
                             mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("12")
@@ -130,7 +133,7 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
                             logRecyclerView()
                         }
                         else -> {
-                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child("20201115").child(storeId).child("22")
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child(hourText.toString())
                             logRecyclerView()
                         }
                     }
@@ -147,7 +150,6 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
 
         StoreName.text = storeName
 
-        chart()
         customerNumber()
         executeHandler()
     }
@@ -215,7 +217,11 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
         linechart.description.text = "Hours"
         linechart.setNoDataText("No customer yet!")
 
-        linechart.animateY(1000, Easing.EaseInExpo)
+        linechart.animateX(1000, Easing.EaseInExpo)
+        linechart.getXAxis().setAvoidFirstLastClipping(true)
+        linechart.extraLeftOffset = 15f
+        linechart.extraRightOffset = 15f
+        linechart.axisLeft.setStartAtZero(true)
     }
 
     private fun logRecyclerView(){
@@ -233,7 +239,7 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
             mDatabase
         ) {
             override fun populateViewHolder(p0: CustomerViewHolder, p1: CheckInScCustomer, p2: Int) {
-                if (p1.status.toString() == "active"){
+//                if (p1.status.toString() == "active"){
                     p0.mView.CheckInTime.text = p1.checkInTime
 
                 val query = Database.child("ShoppingCentre").child(dateText.toString())
@@ -252,10 +258,10 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
                             .show()
                     }
                 })
-            } else{
-                    p0.mView.visibility = View.GONE
-                    p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
-                }
+//            } else{
+//                    p0.mView.visibility = View.GONE
+//                    p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
+//                }
             }
         }
         mRecyclerView.adapter = FirebaseRecyclerAdapter

@@ -18,7 +18,6 @@ import com.google.firebase.database.ValueEventListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
 class checkService : Service() {
     private var Database = FirebaseDatabase.getInstance().getReference()
 
@@ -40,7 +39,6 @@ class checkService : Service() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val memberId = intent.getStringExtra("MemberId")
-        Toast.makeText(applicationContext, "service started", Toast.LENGTH_SHORT).show()
 
         // Do a periodic task
         mHandler = Handler()
