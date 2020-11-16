@@ -48,6 +48,7 @@
         android:layout_marginEnd="43dp"
         android:layout_toEndOf="@+id/floor"
         android:gravity="right"
+        android:text="0"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -59,5 +60,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         tools:srcCompat="@tools:sample/avatars" />
+
 
 </RelativeLayout>
