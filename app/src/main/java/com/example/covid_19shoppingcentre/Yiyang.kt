@@ -19,5 +19,10 @@ class Yiyang : AppCompatActivity() {
             val intent = Intent(this, nearby_hospital::class.java)
             startActivity(intent)
         }
+
+        history.setOnClickListener {
+            val intent = Intent(this, social_distance_score_history::class.java)
+            startActivity(intent)
+        }
     }
 }

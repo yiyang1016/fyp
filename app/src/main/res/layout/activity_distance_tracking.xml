@@ -15,7 +15,7 @@
         android:layout_marginTop="124dp"
         android:foregroundGravity="center_vertical"
         android:gravity="center_vertical"
-        android:text="Please keep your Bluetooth run at background to keep you safe"
+        android:text="Please ensure your Bluetooth run at background to keep you safe"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -30,23 +30,26 @@
         android:layout_height="163dp"
         android:layout_marginStart="118dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="118dp"
         android:background="@drawable/distance_tracking_round_button"
         android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:srcCompat="@drawable/bluetooth_icon1" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+        android:id="@+id/status"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="STATUS : OFF"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/bleImageButton"
-        app:layout_constraintVertical_bias="0.044" />
+        tools:layout_editor_absoluteX="149dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

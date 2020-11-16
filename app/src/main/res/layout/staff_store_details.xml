@@ -9,6 +9,54 @@
     tools:context="Store_List">
 
     <TextView
+        android:id="@+id/nameText"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="422dp"
+        android:text="Name"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/phoneText"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="192dp"
+        android:layout_marginTop="422dp"
+        android:text="Phone Number"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/checkInText"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="365dp"
+        android:layout_marginTop="422dp"
+        android:text="Check-In"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/temperatureText"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="485dp"
+        android:layout_marginTop="422dp"
+        android:text="Temp"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp" />
+
+    <TextView
         android:id="@+id/StoreName"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -54,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_marginTop= "430dp" />
+        android:layout_marginTop= "460dp" />
 
     <TextView
         android:id="@+id/customerInStoreText"
@@ -93,5 +141,15 @@
         android:text="N/A"
         android:textColor="#FFFFFF"
         android:textSize="14dp" />
+
+    <Spinner
+        android:id="@+id/time_spinner"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="375dp"
+        android:layout_marginEnd="25dp"
+        android:popupBackground="#99000000"/>
 
 </RelativeLayout>

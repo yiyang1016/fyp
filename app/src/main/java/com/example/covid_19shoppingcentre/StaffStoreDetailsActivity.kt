@@ -1,9 +1,14 @@
 package com.example.covid_19shoppingcentre
 
+import android.annotation.SuppressLint
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +32,7 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
     private var Database = FirebaseDatabase.getInstance().getReference()
     lateinit var  mRecyclerView: RecyclerView
     lateinit var mDatabase : DatabaseReference
+    lateinit var m1Database : DatabaseReference
     lateinit var FirebaseRecyclerAdapter : FirebaseRecyclerAdapter<CheckInScCustomer, CustomerViewHolder>
 
     // CONSTANT
@@ -42,85 +48,107 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
 
         val storeName = intent.getStringExtra("StoreName")
         val storeId = intent.getStringExtra("StoreId")
-
         val currentDateTime = LocalDateTime.now()
         val hourFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
         val hourText = currentDateTime.format(hourFormat)
         val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val dateText = currentDateTime.format(dateFormat)
 
-        val linechart = findViewById<LineChart>(R.id.storeLinechart)
+        val storeTime =  resources.getStringArray(R.array.inStoreTime)
+        val spinner = findViewById<Spinner>(R.id.time_spinner)
+        spinner.background.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
 
-        val entries = ArrayList<Entry>()
+        if (spinner != null){
+            val adapter = ArrayAdapter(this,
+                R.layout.time_spinner, storeTime)
+            spinner.adapter = adapter
 
-        for (x in 8..22) {
-            val data1 = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(x.toString())
-
-            data1.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(q0: DataSnapshot) {
-
-                    if (q0.exists()) {
-                        var floaat1 = q0.childrenCount.toFloat()
-                        var floaat = x.toFloat()
-                        entries.add(Entry(floaat, floaat1))
-                    } else {
-                        var floaat = x.toFloat()
-                        entries.add(Entry(floaat, 0f))
+            spinner.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                @SuppressLint("ResourceAsColor")
+                override fun onItemSelected(parent: AdapterView<*>,
+                                            view: View, position: Int, id: Long) {
+                    when {
+                        storeTime[position].toString() == "8am" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("8")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "9am" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("9")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "10am" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("10")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "11am" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("11")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "12am" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("12")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "1pm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("13")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "2pm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("14")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "3pm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("15")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "4pm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("16")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "5pm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("17")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "6pm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("18")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "7pm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("19")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "8pm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("20")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "9pmm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("21")
+                            logRecyclerView()
+                        }
+                        storeTime[position].toString() == "10pm" -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child("22")
+                            logRecyclerView()
+                        }
+                        else -> {
+                            mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child("20201115").child(storeId).child("22")
+                            logRecyclerView()
+                        }
                     }
                 }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                override fun onNothingSelected(parent: AdapterView<*>) {
                 }
-            })
+            }
         }
-
-        entries.add(Entry(7f, 0f))
-
-        val v1 = LineDataSet(entries, "Number of Customer")
-
-        v1.setDrawValues(true)
-        v1.setDrawFilled(true)
-        v1.lineWidth = 2f
-        v1.fillColor = R.color.white
-        v1.fillAlpha = R.color.white
-
-        linechart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-        linechart.axisLeft.setDrawGridLines(false);
-        linechart.xAxis.setDrawGridLines(false);
-
-        linechart.data = LineData(v1)
-
-        linechart.xAxis.labelRotationAngle = 0f
-
-        linechart.axisRight.isEnabled = false
-        linechart.xAxis.axisMaximum = 22f
-        linechart.xAxis.axisMinimum = 8f
-
-        linechart.axisLeft.axisMinimum = 0f
-        linechart.axisLeft.axisMaximum = 30f
-
-        linechart.setTouchEnabled(true)
-        linechart.setPinchZoom(true)
-
-        linechart.description.text = "Hours"
-        linechart.setNoDataText("No customer yet!")
-
-        linechart.animateX(1800, Easing.EaseInExpo)
-
-
 
         mRecyclerView = findViewById(R.id.customerInStoreList)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.setLayoutManager(LinearLayoutManager(this))
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("CheckInStore").child(dateText.toString()).child(storeId).child(hourText.toString())
-
         StoreName.text = storeName
 
+        chart()
         customerNumber()
-        logRecyclerView()
         executeHandler()
     }
 
@@ -135,19 +163,17 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
         val entries1 = ArrayList<Entry>()
 
         for (x in 8..22) {
-            val data1 = Database.child("CheckInStore").child("20201114").child(storeId).child(x.toString())
-
+            val data1 = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(x.toString())
             data1.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(q0: DataSnapshot) {
-
-                    if (q0.exists()) {
+                    if (!q0.exists()) {
+                        var floaat = x.toFloat()
+                        entries1.add(Entry(floaat, 0f))
+                    } else {
                         var floaat1 = q0.childrenCount.toFloat()
                         var floaat = x.toFloat()
                         entries1.add(Entry(floaat, floaat1))
-                        Toast.makeText(applicationContext, floaat1.toString() + "ERROR", Toast.LENGTH_SHORT).show()
-                    } else {
-                        var floaat = x.toFloat()
-                        entries1.add(Entry(floaat, 0f))
+
                     }
                 }
 
@@ -189,13 +215,16 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
         linechart.description.text = "Hours"
         linechart.setNoDataText("No customer yet!")
 
-        //linechart.animateY(1000, Easing.EaseInExpo)
+        linechart.animateY(1000, Easing.EaseInExpo)
     }
 
     private fun logRecyclerView(){
         val currentDateTime = LocalDateTime.now()
         val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val dateText = currentDateTime.format(dateFormat)
+        val hourFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
+        val hourText = currentDateTime.format(hourFormat)
+        val hourtext2 = hourText.toInt() - 1
 
         FirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<CheckInScCustomer, CustomerViewHolder>(
             CheckInScCustomer::class.java,
@@ -240,17 +269,30 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
         val hourText = currentDateTime.format(hourFormat)
         val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val dateText = currentDateTime.format(dateFormat)
+        val hourtext1 = hourText.toInt() - 1
 
         val query = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourText.toString())
+        val query1 = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourtext1.toString())
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 for (p0 in p0.children) {
                     if(p0.child("status").value.toString() == "active") {
-
                         customerCountInt++
                     }
                 }
-                customerCount.text = customerCountInt.toString()
+                query1.addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (snapshot in snapshot.children) {
+                            if(snapshot.child("status").value.toString() == "active") {
+                                customerCountInt++
+                            }
+                        }
+                        customerCount.text = customerCountInt.toString()
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -294,5 +336,4 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
         handler?.removeCallbacks(runnable)
         //and we set the status to offline.
     }
-
 }

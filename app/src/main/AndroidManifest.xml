@@ -29,7 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".tabletSetLimitation"></activity>
+        <activity android:name=".Yiyang"></activity>
         <activity android:name=".questionMobile"></activity>
         <activity android:name=".tabletStoreCurrentCust" />
         <activity android:name=".tabletStoreLoginVarification" />
@@ -78,7 +78,9 @@
             android:name=".Store_List"
             android:label="Store List"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:label="MidValley">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -24,11 +24,11 @@
         tools:layout_editor_absoluteX="125dp" />
 
     <Button
-        android:id="@+id/review"
+        android:id="@+id/history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Review"
+        android:text="SocialDistanceScoreHistory"
         app:layout_constraintTop_toBottomOf="@+id/nearestHostpitalBtn"
         tools:layout_editor_absoluteX="97dp" />
 
