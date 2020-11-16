@@ -72,13 +72,13 @@ class QRScannerActivity :AppCompatActivity() {
             .build()
     }
 
-    override fun onResume() {
+    override fun onResume(){
         super.onResume()
         if(qrEader != null)
             qrEader!!.initAndStart(camera_view)
     }
 
-    override fun onPause() {
+    override fun onPause(){
         super.onPause()
         if(qrEader != null)
             qrEader!!.releaseAndCleanup()

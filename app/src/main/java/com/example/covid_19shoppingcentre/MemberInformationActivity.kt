@@ -51,7 +51,6 @@ class MemberInformationActivity : AppCompatActivity() {
 
         val checkInButton = findViewById<Button>(R.id.checkInBtn)
         val backButton = findViewById<Button>(R.id.backBtn)
-        val testBtn = findViewById<Button>(R.id.testing)
         val spinner = findViewById<Spinner>(R.id.temperatureSpinner)
 
         if (spinner != null){
@@ -102,10 +101,6 @@ class MemberInformationActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             back()
         }
-
-        testBtn.setOnClickListener {
-            checkInMember()
-        }
     }
 
     //@RequiresApi(Build.VERSION_CODES.O)
@@ -129,6 +124,7 @@ class MemberInformationActivity : AppCompatActivity() {
                             override fun onDataChange(p0: DataSnapshot) {
                                 try {
                                     if (p0.exists()) {
+                                        recentBodyStatus.text = (p0.child("HealthyStatus").value.toString())
                                         memberName.text = (p0.child("Name").value.toString())
                                         memberIC.text = (p0.child("IC_Number").value.toString())
                                         memberPhone.text = (p0.child("PhoneNumber").value.toString())

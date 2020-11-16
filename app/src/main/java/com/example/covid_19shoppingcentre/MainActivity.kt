@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_storeList -> {
                     val i = Intent(
                         this@MainActivity,
-                        Store_List::class.java
+                        StaffMainActivity::class.java
                     )
                     startActivity(i)
                 }
