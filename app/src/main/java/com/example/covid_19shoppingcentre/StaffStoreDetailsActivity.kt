@@ -1,16 +1,19 @@
 package com.example.covid_19shoppingcentre
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,6 +49,7 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.staff_store_details)
 
+        setActionBar()
         chart()
 
         val storeName = intent.getStringExtra("StoreName")
@@ -308,6 +312,20 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
     }
 
     class CustomerViewHolder( var mView: View) : RecyclerView.ViewHolder(mView) {
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent1 = Intent(this, Store_List::class.java).apply {
+            putExtra("EXTRA_MESSAGE", "message")
+        }
+        startActivity(intent1)
+        return false
+    }
+
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Store Details"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun executeHandler() {

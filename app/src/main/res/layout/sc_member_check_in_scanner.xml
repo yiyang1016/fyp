@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:text="Please Scan a QR Code"
+            android:text="Scanning..."
             android:textAlignment="center"
             android:textColor="@android:color/black" />
 

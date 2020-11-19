@@ -60,7 +60,7 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:text="Welcome to"
         android:textAlignment="center"
@@ -76,19 +76,18 @@
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="37dp"
-        android:text="XXX Shopping Mall"
+        android:layout_marginTop="305dp"
+        android:text="Midvalley Shopping Mall"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.369" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/logoImg"

@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.covid_19shoppingcentre.models.addShoppingCentreCheckIn
 import com.google.firebase.database.*
@@ -114,6 +115,7 @@ class MemberInformationActivity : AppCompatActivity() {
 
         val query = userDatabase.child("Member").orderByChild("Id").equalTo(dataSent)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
+            @SuppressLint("ResourceAsColor")
             override fun onDataChange(s0: DataSnapshot) {
                 try {
                     if(s0.exists()){
@@ -127,6 +129,7 @@ class MemberInformationActivity : AppCompatActivity() {
                                             memberIC.text = (p0.child("IC_Number").value.toString())
                                             memberPhone.text = (p0.child("PhoneNumber").value.toString())
                                             CheckInTime.text = "$hourMinuteText"
+                                            recentBodyStatus.text = (p0.child("HealthyStatus").value.toString())
                                             CheckInDate.text = currentDay.toString()
                                         }
                                     } catch (e: Exception) {
@@ -139,6 +142,24 @@ class MemberInformationActivity : AppCompatActivity() {
                                 }
                             })
                         }
+                    } else{
+                        val intent1 = Intent(this@MemberInformationActivity, QRScannerActivity::class.java).apply {
+                        }
+
+                        val builder = AlertDialog.Builder(this@MemberInformationActivity)
+                        //set title for alert dialog
+                        builder.setTitle("Warning")
+                        //set message for alert dialog
+                        builder.setMessage("Member does not Exist!!")
+                        builder.setIcon(android.R.drawable.ic_dialog_alert)
+
+                        //performing positive action
+                        builder.setPositiveButton("OK"){dialogInterface, which ->
+                            startActivity(intent1)
+                        }
+                        val alertDialog: AlertDialog = builder.create()
+                        alertDialog.setCancelable(false)
+                        alertDialog.show()
                     }
                 } catch (e: Exception) {
                     Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
@@ -169,7 +190,6 @@ class MemberInformationActivity : AppCompatActivity() {
         val query = userDatabase.child("Member").orderByChild("Id").equalTo(dataSent)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
-                if(s0.exists()) {
                     for (s0 in s0.children) {
                         val checkInTime = hourMinuteText.toString().trim()
                         val phone = (s0.child("PhoneNumber").value.toString())
@@ -230,7 +250,6 @@ class MemberInformationActivity : AppCompatActivity() {
                             })
                         }
                     }
-                }
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()

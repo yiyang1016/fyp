@@ -11,6 +11,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -58,10 +62,12 @@
             android:name=".nearby_hospital"
             android:label="Hospital Near Me"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".StaffMainActivity" />
+        <activity android:name=".StaffMainActivity"
+                  android:label="Staff Main Page"/>
         <activity android:name=".CheckInScCustomer_List" />
         <activity android:name=".MemberInformationActivity" />
-        <activity android:name=".QRScannerActivity" />
+        <activity android:name=".QRScannerActivity"
+                  android:label="QR Scanner"/>
         <activity android:name=".CustomerInformationActivity" />
         <activity android:name=".ReserveStore_List"
                   android:label="Store List"
@@ -77,10 +83,7 @@
             android:launchMode="singleTop" />
         <activity android:name=".ReserveDetailsPassActivity" />
         <activity android:name=".StaffStoreDetailsActivity" />
-        <activity
-            android:name=".Store_List"
-            android:label="Store List"
-            android:parentActivityName=".MainActivity" />
+        <activity android:name=".Store_List" />
         <activity
             android:name=".MainActivity"
             android:label="MidValley">

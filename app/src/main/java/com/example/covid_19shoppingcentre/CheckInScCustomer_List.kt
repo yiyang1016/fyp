@@ -5,11 +5,13 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +44,8 @@ class CheckInScCustomer_List : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.setLayoutManager(LinearLayoutManager(this))
         customerDatabase = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText.toString())
+
+        setActionBar()
         logRecyclerView()
 
         searchCustomer.addTextChangedListener(object : TextWatcher {
@@ -174,4 +178,17 @@ class CheckInScCustomer_List : AppCompatActivity() {
     }
     class CustomerViewHolder( var mView: View) : RecyclerView.ViewHolder(mView)
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent1 = Intent(this, StaffMainActivity::class.java).apply {
+            putExtra("EXTRA_MESSAGE", "message")
+        }
+        startActivity(intent1)
+        return false
+    }
+
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Customer List"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
 }

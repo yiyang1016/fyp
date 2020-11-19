@@ -3,6 +3,7 @@ package com.example.covid_19shoppingcentre
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.media.Image
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.staff_main.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -43,6 +45,8 @@ class StaffMainActivity : AppCompatActivity() {
         val SC_Customer_CheckIn = findViewById<Button>(R.id.SCCheckInBtn)
         val SC_CheckedIn_Customer = findViewById<Button>(R.id.SCCheckInCustomerBtn)
         val SC_View_Store = findViewById<Button>(R.id.viewStoreBtn)
+
+        logoImg.setImageDrawable(resources.getDrawable(R.drawable.logo))
 
         SC_Customer_CheckIn.setOnClickListener{
             val intent = Intent(this, QRScannerActivity::class.java).apply {

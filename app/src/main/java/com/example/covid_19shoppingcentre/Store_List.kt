@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +41,8 @@ class Store_List :AppCompatActivity() {
         mRecyclerView.setHasFixedSize(true )
         mRecyclerView.setLayoutManager(LinearLayoutManager(this))
         mDatabase = FirebaseDatabase.getInstance().getReference("Store")
+
+        setActionBar()
         logRecyclerView()
 
 
@@ -248,5 +252,19 @@ class Store_List :AppCompatActivity() {
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.slide_down_reverse, R.anim.slide_up_reverse)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent1 = Intent(this, StaffMainActivity::class.java).apply {
+            putExtra("EXTRA_MESSAGE", "message")
+        }
+        startActivity(intent1)
+        return false
+    }
+
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Store List"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 }
