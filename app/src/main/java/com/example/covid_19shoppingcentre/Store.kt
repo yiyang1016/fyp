@@ -23,4 +23,5 @@ class Store {
         this.Store_Slot = Store_Slot
         this.Store_Image = Store_Image
     }
+
 }

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    tools:context=".storeRegistration">
+
+    <EditText
+        android:id="@+id/txtStoreName"
+        android:layout_width="168dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/button_staff_main"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreRes2"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitleStoreRes" />
+
+    <EditText
+        android:id="@+id/txtStoreDes"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="77dp"
+        android:background="@drawable/button_staff_main"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtStoreFloor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreRes4"
+        app:layout_constraintTop_toBottomOf="@+id/txtStoreName" />
+
+    <EditText
+        android:id="@+id/txtStoreSlot"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="19dp"
+        android:background="@drawable/button_staff_main"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtStoreLimit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreRes3"
+        app:layout_constraintTop_toBottomOf="@+id/tvStoreRes5" />
+
+    <EditText
+        android:id="@+id/txtStorePass"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="66dp"
+        android:background="@drawable/button_staff_main"
+        android:ems="10"
+        android:inputType="numberPassword"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/txtStoreDes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreRes"
+        app:layout_constraintTop_toTopOf="@+id/txtStoreName" />
+
+    <EditText
+        android:id="@+id/txtStoreLimit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_staff_main"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddStoreComfirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreRes7"
+        app:layout_constraintTop_toBottomOf="@+id/txtStoreSlot" />
+
+    <EditText
+        android:id="@+id/txtStoreFloor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/button_staff_main"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtStoreSlot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreRes5"
+        app:layout_constraintTop_toBottomOf="@+id/tvStoreRes4" />
+
+    <Button
+        android:id="@+id/btnAddStoreComfirm"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/distance_tracking_round_button"
+        android:text="Comfirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnUpPic"
+        app:layout_constraintTop_toBottomOf="@+id/txtStoreLimit" />
+
+    <TextView
+        android:id="@+id/txtTitleStoreRes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginBottom="48dp"
+        android:gravity="center"
+        android:text="Store Registration"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvStoreRes2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvStoreRes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="63dp"
+        android:layout_marginBottom="41dp"
+        android:text="Password :"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvStoreRes4"
+        app:layout_constraintEnd_toStartOf="@+id/txtStorePass"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvStoreRes2" />
+
+    <TextView
+        android:id="@+id/tvStoreRes3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="36dp"
+        android:text="Slot ID :"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvStoreRes7"
+        app:layout_constraintEnd_toStartOf="@+id/txtStoreSlot"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvStoreRes7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="6dp"
+        android:text="Customer Limit :"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtStoreLimit"
+        app:layout_constraintEnd_toStartOf="@+id/txtStoreLimit"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvStoreRes2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="43dp"
+        android:text=" Store Name :"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvStoreRes"
+        app:layout_constraintEnd_toStartOf="@+id/txtStoreName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitleStoreRes" />
+
+    <TextView
+        android:id="@+id/tvStoreRes4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="34dp"
+        android:text="Description :"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvStoreRes5"
+        app:layout_constraintEnd_toStartOf="@+id/txtStoreDes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvStoreRes" />
+
+    <TextView
+        android:id="@+id/tvStoreRes5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="22dp"
+        android:text="Floor Locate :"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtStoreSlot"
+        app:layout_constraintEnd_toStartOf="@+id/txtStoreFloor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvStoreRes4" />
+
+    <Button
+        android:id="@+id/btnUpPic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="89dp"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/distance_tracking_round_button"
+        android:text="Upload Picture"
+        android:textColor="#000000"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAddStoreComfirm"
+        app:layout_constraintEnd_toStartOf="@+id/btnAddStoreComfirm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnAddStoreComfirm" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

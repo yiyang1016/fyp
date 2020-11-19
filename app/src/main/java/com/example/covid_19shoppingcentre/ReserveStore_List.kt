@@ -128,6 +128,7 @@ class ReserveStore_List :AppCompatActivity() {
         }
         mRecyclerView.adapter = FirebaseRecyclerAdapter
     }
+
     private  fun logRecyclerView(searchText: String){
         if(searchText.isEmpty()){
             // FirebaseRecyclerAdapter.cleanup()

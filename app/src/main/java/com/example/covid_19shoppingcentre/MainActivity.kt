@@ -79,6 +79,116 @@ class MainActivity : AppCompatActivity() {
                     )
                     startActivity(i)
                 }
+                R.id.nav_distanceTrackingBtn ->{
+                    val intent = Intent(this, distance_tracking::class.java)
+                    startActivity(intent)
+                }
+
+                 R.id.nav_nearestHostpitalBtn -> {
+                    val intent = Intent(this, nearby_hospital::class.java)
+                    startActivity(intent)
+                }
+
+                R.id.nav_history -> {
+                    val intent = Intent(this, social_distance_score_history::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_review ->{
+                    val dialogBuilder = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
+
+                    val view = layoutInflater.inflate(R.layout.customer_review, null)
+                    dialogBuilder.setView(view)
+                    val alertDialog = dialogBuilder.create()
+                    alertDialog.show()
+
+                    val submitButton = view.btnSubmit
+                    submitButton.setOnClickListener {
+                        if (view.review1.rating.toInt() == 0 || view.review2.rating.toInt() == 0 ||
+                            view.review3.rating.toInt() == 0 || view.review4.rating.toInt() == 0
+                        ) {
+                            val errordialogBuilder =
+                                AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
+                            val view1 = layoutInflater.inflate(R.layout.customer_review_empty_field, null)
+                            errordialogBuilder.setView(view1)
+                            val alertDialog1 = errordialogBuilder.create()
+                            alertDialog1.show()
+                            view1.okbtn.setOnClickListener {
+                                alertDialog1.cancel()
+                            }
+                        } else {
+                            val ref = FirebaseDatabase.getInstance().getReference("Review")
+                            var reviewId = ""
+                            val refSearch =
+                                FirebaseDatabase.getInstance().getReference("Review").orderByKey()
+                                    .limitToLast(1)
+
+                            refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onCancelled(error: DatabaseError) {
+                                    val text = "Connection Failed"
+                                    Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                                }
+
+                                override fun onDataChange(p0: DataSnapshot) {
+                                    if (p0.exists()) {
+                                        for (p0 in p0.children) {
+                                            val reviewsId = p0.getValue(ReviewIdClass::class.java)
+                                            reviewId = reviewsId.toString()
+                                        }
+
+                                        val cal = ((reviewId.substring(2, 7)).toInt()) + 1
+                                        val num = 100000 + cal
+                                        val newId = "RV" + num.toString().substring(1,6)
+
+                                        val editText = view.review5
+                                        if (editText.text.toString() != null) {
+                                            val showString = editText.text.toString()
+
+                                            var feedback = ""
+                                            feedback = view.review5.text.toString()
+
+                                            val data = Review(
+                                                newId,
+                                                view.review1.rating.toInt(),
+                                                view.review2.rating.toInt(),
+                                                view.review3.rating.toInt(),
+                                                view.review4.rating.toInt(),
+                                                feedback
+                                            )
+
+                                            ref.child(newId).setValue(data).addOnCompleteListener {
+                                                val submissiondialogBuilder = AlertDialog.Builder(
+                                                    this@MainActivity,
+                                                    R.style.CustomAlertDialog
+                                                )
+                                                alertDialog.cancel()
+                                                val view2 = layoutInflater.inflate(
+                                                    R.layout.customer_review_submission,
+                                                    null
+                                                )
+                                                submissiondialogBuilder.setView(view2)
+                                                val alertDialog = submissiondialogBuilder.create()
+                                                alertDialog.show()
+                                                view2.okbtn.setOnClickListener {
+                                                    alertDialog.cancel()
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                                }
+                            })
+
+                        }
+                    }
+                }
+                R.id.nav_storeRegistration -> {
+                    val i = Intent(
+                        this@MainActivity,
+                        storeRegistration::class.java
+                    )
+                    startActivity(i)
+                }
             }
             true
         }

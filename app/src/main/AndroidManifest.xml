@@ -33,11 +33,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Yiyang"></activity>
-        <activity android:name=".questionMobile"></activity>
+        <activity android:name=".uploadStorePicture"></activity>
+        <activity android:name=".storeRegistration" />
+        <activity android:name=".Yiyang" />
+        <activity android:name=".questionMobile" />
         <activity android:name=".tabletStoreCurrentCust" />
         <activity android:name=".tabletStoreLoginVarification" />
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -69,18 +70,16 @@
         <activity android:name=".QRScannerActivity"
                   android:label="QR Scanner"/>
         <activity android:name=".CustomerInformationActivity" />
-        <activity android:name=".ReserveStore_List"
-                  android:label="Store List"
-                  android:parentActivityName=".MainActivity"/>
-        <activity android:name=".ReserveDate"
-            android:launchMode="singleTop" />
-        <activity android:name=".ReserveTime"
-            android:launchMode="singleTop" />
+        <activity
+            android:name=".ReserveStore_List"
+            android:label="Store List"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".ReserveDate" />
+        <activity android:name=".ReserveTime" />
         <activity android:name=".ReserveConfirmationActivity" />
         <activity
             android:name=".Reservation_List"
-            android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity"/>
+            android:launchMode="singleTop" />
         <activity
             android:name=".ReserveDetailsActivity"
             android:launchMode="singleTop" />
