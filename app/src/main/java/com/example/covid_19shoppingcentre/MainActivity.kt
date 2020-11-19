@@ -23,7 +23,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_yiyang.*
 import kotlinx.android.synthetic.main.customer_review.view.*
 import kotlinx.android.synthetic.main.customer_review_submission.view.*
 import kotlinx.android.synthetic.main.list_layout.view.*
@@ -182,6 +181,13 @@ class MainActivity : AppCompatActivity() {
 
                         }
                     }
+                }
+                R.id.nav_storeRegistration -> {
+                    val i = Intent(
+                        this@MainActivity,
+                        storeRegistration::class.java
+                    )
+                    startActivity(i)
                 }
             }
             true

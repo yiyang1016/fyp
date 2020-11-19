@@ -46,10 +46,6 @@ class ViewPlace : AppCompatActivity() {
             startActivity(mapIntent)
         }
 
-        btn_view_direction.setOnClickListener{
-            val viewDirections = Intent(this@ViewPlace,ViewDirections::class.java)
-            startActivity(viewDirections)
-        }
         //Load photo of place
         if(Common.currentResult!!.photos!=null&&Common.currentResult!!.photos!!.size>0)
             Picasso.with(this)
