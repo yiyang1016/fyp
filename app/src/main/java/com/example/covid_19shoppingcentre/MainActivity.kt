@@ -91,7 +91,6 @@ class MainActivity : AppCompatActivity() {
             // Start the service
             startService(intent1)
         } else {
-            Toast.makeText(applicationContext,"service already running",Toast.LENGTH_SHORT).show()
         }
 
         //Display First Two Store

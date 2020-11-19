@@ -51,7 +51,6 @@ class staffService : Service() {
         handler?.removeCallbacks(runnable)
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkTime() {
         mHandler.postDelayed(mRunnable, 5000)

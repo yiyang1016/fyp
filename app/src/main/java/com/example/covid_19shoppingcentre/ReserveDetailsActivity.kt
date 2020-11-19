@@ -1,6 +1,7 @@
 package com.example.covid_19shoppingcentre
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.view.MenuItem
@@ -11,7 +12,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.reserve_store_confirmation.*
+import kotlinx.android.synthetic.main.reserve_store_date.*
 import kotlinx.android.synthetic.main.reserve_store_details.*
 import kotlinx.android.synthetic.main.reserve_store_details.date
 import kotlinx.android.synthetic.main.reserve_store_details.status
@@ -39,7 +42,6 @@ class ReserveDetailsActivity : AppCompatActivity() {
         time.text = reserveT
         status.text = statu
 
-
         val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
         val displayDateFormat = SimpleDateFormat("dd/MM/yyyy")
 
@@ -53,6 +55,8 @@ class ReserveDetailsActivity : AppCompatActivity() {
             override fun onDataChange(s0: DataSnapshot) {
                 for (s0 in s0.children) {
                     slot.text = (s0.child("Store_Slot").value.toString())
+                    val pic = (s0.child("Store_Image").value.toString())
+                    Picasso.with(this@ReserveDetailsActivity).load(pic).into(storePicture)
                 }
             }
             override fun onCancelled(error: DatabaseError) {

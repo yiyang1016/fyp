@@ -45,7 +45,6 @@ class Store_List :AppCompatActivity() {
         setActionBar()
         logRecyclerView()
 
-
         searchStore.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -83,7 +82,6 @@ class Store_List :AppCompatActivity() {
                                 )
                                 i.putExtra("StoreName", p1.Store_Name.toString())
                                 i.putExtra("StoreId", snapshot.key.toString())
-
 
                                 startActivity(i)
                             }

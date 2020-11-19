@@ -72,12 +72,15 @@
         <activity android:name=".ReserveStore_List"
                   android:label="Store List"
                   android:parentActivityName=".MainActivity"/>
-        <activity android:name=".ReserveDate" />
-        <activity android:name=".ReserveTime" />
+        <activity android:name=".ReserveDate"
+            android:launchMode="singleTop" />
+        <activity android:name=".ReserveTime"
+            android:launchMode="singleTop" />
         <activity android:name=".ReserveConfirmationActivity" />
         <activity
             android:name=".Reservation_List"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".ReserveDetailsActivity"
             android:launchMode="singleTop" />

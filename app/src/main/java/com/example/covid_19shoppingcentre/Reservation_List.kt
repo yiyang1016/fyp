@@ -63,9 +63,6 @@ class Reservation_List :AppCompatActivity() {
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-//        checkTime()
-//        checkNotification()
-//        executeHandler()
         val left = findViewById<RadioButton>(R.id.current)
         val right = findViewById<RadioButton>(R.id.pass)
 

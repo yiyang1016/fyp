@@ -7,15 +7,19 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.android.synthetic.main.reserve_store_date.storeName
 import kotlinx.android.synthetic.main.reserve_store_time.*
 import java.time.LocalDateTime
@@ -38,6 +42,9 @@ class ReserveTime : AppCompatActivity() {
 
         val storeN = intent.getStringExtra("storeName")
         val reserveDate = intent.getStringExtra("ReserveDate")
+        val pic = intent.getStringExtra("storePic")
+
+        Picasso.with(this@ReserveTime).load(pic).into(imageView)
 
         storeName.text = storeN
 
@@ -45,6 +52,7 @@ class ReserveTime : AppCompatActivity() {
 
         timeList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, chooseTime)
 
+        setActionBar()
         compareTime()
         alreadyBook()
         executeHandler()
@@ -62,6 +70,7 @@ class ReserveTime : AppCompatActivity() {
                             intent.putExtra("reserveDate", reserveDate)
                             intent.putExtra("storeName", storeN)
                             intent.putExtra("storeId", storeId)
+                            intent.putExtra("StorePic", pic)
                             startActivity(intent)
                         }
                     }
@@ -200,6 +209,7 @@ class ReserveTime : AppCompatActivity() {
         val reserveDate = intent.getStringExtra("ReserveDate")
         val storeI = intent.getStringExtra("storeId")
         val storeN = intent.getStringExtra("storeName")
+        val pic = intent.getStringExtra("storePic")
 
         val query = Database.child("Reservation").child(reserveDate).child(storeI).child("10:00 AM").orderByChild("status").equalTo("active")
 
@@ -224,6 +234,7 @@ class ReserveTime : AppCompatActivity() {
                                 i.putExtra("reserveDate", reserveDate)
                                 i.putExtra("storeName", storeN)
                                 i.putExtra("storeId", storeI)
+                                intent.putExtra("StorePic", pic)
                                 startActivity(i)
                             }
                         }
@@ -242,6 +253,7 @@ class ReserveTime : AppCompatActivity() {
         val reserveDate = intent.getStringExtra("ReserveDate")
         val storeI = intent.getStringExtra("storeId")
         val storeN = intent.getStringExtra("storeName")
+        val pic = intent.getStringExtra("storePic")
 
         val query1 = Database.child("Reservation").child(reserveDate).child(storeI).child("12:00 AM").orderByChild("status").equalTo("active")
 
@@ -267,6 +279,7 @@ class ReserveTime : AppCompatActivity() {
                                 i.putExtra("reserveDate", reserveDate)
                                 i.putExtra("storeName", storeN)
                                 i.putExtra("storeId", storeI)
+                                intent.putExtra("StorePic", pic)
                                 startActivity(i)
                             }
                         }
@@ -285,6 +298,7 @@ class ReserveTime : AppCompatActivity() {
         val reserveDate = intent.getStringExtra("ReserveDate")
         val storeI = intent.getStringExtra("storeId")
         val storeN = intent.getStringExtra("storeName")
+        val pic = intent.getStringExtra("storePic")
 
         val query2 = Database.child("Reservation").child(reserveDate).child(storeI).child("2:00 PM").orderByChild("status").equalTo("active")
 
@@ -310,6 +324,7 @@ class ReserveTime : AppCompatActivity() {
                                 i.putExtra("reserveDate", reserveDate)
                                 i.putExtra("storeName", storeN)
                                 i.putExtra("storeId", storeI)
+                                intent.putExtra("StorePic", pic)
                                 startActivity(i)
                             }
                         }
@@ -328,6 +343,7 @@ class ReserveTime : AppCompatActivity() {
         val reserveDate = intent.getStringExtra("ReserveDate")
         val storeI = intent.getStringExtra("storeId")
         val storeN = intent.getStringExtra("storeName")
+        val pic = intent.getStringExtra("storePic")
 
         val query3 = Database.child("Reservation").child(reserveDate).child(storeI).child("4:00 PM").orderByChild("status").equalTo("active")
 
@@ -353,6 +369,7 @@ class ReserveTime : AppCompatActivity() {
                                 i.putExtra("reserveDate", reserveDate)
                                 i.putExtra("storeName", storeN)
                                 i.putExtra("storeId", storeI)
+                                intent.putExtra("StorePic", pic)
                                 startActivity(i)
                             }
                         }
@@ -371,6 +388,7 @@ class ReserveTime : AppCompatActivity() {
         val reserveDate = intent.getStringExtra("ReserveDate")
         val storeI = intent.getStringExtra("storeId")
         val storeN = intent.getStringExtra("storeName")
+        val pic = intent.getStringExtra("storePic")
 
         val query4 = Database.child("Reservation").child(reserveDate).child(storeI).child("6:00 PM").orderByChild("status").equalTo("active")
 
@@ -396,6 +414,7 @@ class ReserveTime : AppCompatActivity() {
                                 i.putExtra("reserveDate", reserveDate)
                                 i.putExtra("storeName", storeN)
                                 i.putExtra("storeId", storeI)
+                                intent.putExtra("StorePic", pic)
                                 startActivity(i)
                             }
                         }
@@ -512,6 +531,24 @@ class ReserveTime : AppCompatActivity() {
         //we remove the callback
         handler?.removeCallbacks(runnable)
         //and we set the status to offline.
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val pic = intent.getStringExtra("storePic")
+        val storeN = intent.getStringExtra("storeName")
+
+        val intent1 = Intent(this, ReserveDate::class.java).apply {
+            putExtra("StorePic", pic)
+            putExtra("StoreName", storeN)
+        }
+        startActivity(intent1)
+        return false
+    }
+
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Reserve Time"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
 }

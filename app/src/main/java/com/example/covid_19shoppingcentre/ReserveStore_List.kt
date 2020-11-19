@@ -67,7 +67,6 @@ class ReserveStore_List :AppCompatActivity() {
                 Picasso.with(this@ReserveStore_List).load(p1.Store_Image).into(p0.mView.image)
                 p0.mView.floor.setText(p1.Store_Floor + "," + p1.Store_Slot)
 
-
                 val findId = Database.child("Store").orderByChild("Store_Name").equalTo(p1.Store_Name)
                 findId.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -78,6 +77,7 @@ class ReserveStore_List :AppCompatActivity() {
                                     ReserveDate::class.java
                                 )
                                 i.putExtra("StoreName", p1.Store_Name.toString())
+                                i.putExtra("StorePic", p1.Store_Image)
                                 startActivity(i)
 
                             }

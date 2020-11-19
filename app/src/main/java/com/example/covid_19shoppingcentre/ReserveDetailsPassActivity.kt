@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.reserve_store_details.*
 import kotlinx.android.synthetic.main.reserve_store_details.date
 import kotlinx.android.synthetic.main.reserve_store_details.slot
@@ -52,6 +53,8 @@ class ReserveDetailsPassActivity : AppCompatActivity() {
             override fun onDataChange(s0: DataSnapshot) {
                 for (s0 in s0.children) {
                     slot.text = (s0.child("Store_Slot").value.toString())
+                    val pic = (s0.child("Store_Image").value.toString())
+                    Picasso.with(this@ReserveDetailsPassActivity).load(pic).into(imageView)
                 }
             }
             override fun onCancelled(error: DatabaseError) {
