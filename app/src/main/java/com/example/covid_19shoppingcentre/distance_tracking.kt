@@ -85,10 +85,13 @@ class distance_tracking : AppCompatActivity() {
                                 val rssi = value
                                 if (compareValues(rssi, -69) < 0) {
                                     //marksDeduct(2)
+                                    showNotification("Close Distance", "Please Keep Your Social Distance More than 1.5 Meters.")
                                 } else if (compareValues(rssi, -73) < 0) {
                                     //marksDeduct(3)
+                                    showNotification("Close Distance", "Please Keep Your Social Distance More than 1.5 Meters.")
                                 } else if (compareValues(rssi, -79) < 0) {
                                     //marksDeduct(5)
+                                    showNotification("Close Distance", "Please Keep Your Social Distance More than 1.5 Meters.")
                                 }
                             }
                         }
@@ -136,11 +139,12 @@ class distance_tracking : AppCompatActivity() {
                 for ((key, value) in bleScanCallback.addRssi) {
                     val rssi = value
                     if (compareValues(rssi, -69) < 0) {
-                        //marksDeduct(2)
+                        marksDeduct(2)
+
                     } else if (compareValues(rssi, -73) < 0) {
-                        //marksDeduct(3)
+                        marksDeduct(3)
                     } else if (compareValues(rssi, -79) < 0) {
-                        //marksDeduct(5)
+                        marksDeduct(5)
                     }
                 }
             }
@@ -185,11 +189,7 @@ class distance_tracking : AppCompatActivity() {
             if (!resultOfScan.contains(deviceAddress)) {
                 resultOfScan.put(deviceAddress, bleDevice)
                 if (this.context != null) {
-                    Toast.makeText(
-                        this.context,
-                        bleDevice?.name + ":" + bleDevice?.address + "RSSI" + rssiValue,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    //Toast.makeText(this.context,bleDevice?.name + ":" + bleDevice?.address + "RSSI" + rssiValue,Toast.LENGTH_SHORT).show()
                     deviceNameAddress.put(bleDevice?.name, deviceAddress)
                     addRssi.put(deviceAddress, rssiValue)
                 }
@@ -302,7 +302,7 @@ class distance_tracking : AppCompatActivity() {
                                 for (p0 in p0.children) {
                                     val current = Integer.parseInt(p0.child("CurrentScore").value.toString()) - marks
                                     if(current <= 70 || current <= 50 || current <= 30){
-                                        showNotification("Warning Message", "Distance Low than $current. Please keep social distance before get bar!")
+                                        showNotification("Warning Message", "Social Distance Mark Low than $current. Please keep social distance before get bar!")
                                     }
                                     database.child("Member").child("M00006").child("CurrentScore").setValue(current)
                                 }
