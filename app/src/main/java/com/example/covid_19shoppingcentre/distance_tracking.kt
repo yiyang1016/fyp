@@ -275,10 +275,10 @@ class distance_tracking : AppCompatActivity() {
                     val num = 100000 + cal
                     val newId = "S" + num.toString().substring(1, 6)
 
-                    val current = LocalDateTime.now()
+                    val currentDate = LocalDateTime.now()
 
                     val formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy")
-                    val formatted = current.format(formatter)
+                    val formatted = currentDate.format(formatter)
 
                     val data = SocialDistanceScore(
                         newId,
@@ -301,7 +301,7 @@ class distance_tracking : AppCompatActivity() {
                             if (p0.exists()) {
                                 for (p0 in p0.children) {
                                     val current = Integer.parseInt(p0.child("CurrentScore").value.toString()) - marks
-                                    if(current < 70 || current < 50 || current < 30){
+                                    if(current <= 70 || current <= 50 || current <= 30){
                                         showNotification("Warning Message", "Distance Low than $current. Please keep social distance before get bar!")
                                     }
                                     database.child("Member").child("M00006").child("CurrentScore").setValue(current)

@@ -16,10 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.covid_19shoppingcentre.models.addShoppingCentreCheckIn
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -38,6 +35,7 @@ import java.util.*
 class MemberInformationActivity : AppCompatActivity() {
 
     private var userDatabase = FirebaseDatabase.getInstance().getReference()
+    private lateinit var database: DatabaseReference
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,28 +116,29 @@ class MemberInformationActivity : AppCompatActivity() {
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
                 try {
-                    for (s0 in s0.children) {
-                        val ref= userDatabase.child("Member").child(s0.key.toString())
-                        ref.addValueEventListener(object : ValueEventListener {
-                            override fun onDataChange(p0: DataSnapshot) {
-                                try {
-                                    if (p0.exists()) {
-                                        recentBodyStatus.text = (p0.child("HealthyStatus").value.toString())
-                                        memberName.text = (p0.child("Name").value.toString())
-                                        memberIC.text = (p0.child("IC_Number").value.toString())
-                                        memberPhone.text = (p0.child("PhoneNumber").value.toString())
-                                        CheckInTime.text = "$hourMinuteText"
-                                        CheckInDate.text = currentDay.toString()
+                    if(s0.exists()){
+                        for (s0 in s0.children) {
+                            val ref= userDatabase.child("Member").child(s0.key.toString())
+                            ref.addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(p0: DataSnapshot) {
+                                    try {
+                                        if (p0.exists()) {
+                                            memberName.text = (p0.child("Name").value.toString())
+                                            memberIC.text = (p0.child("IC_Number").value.toString())
+                                            memberPhone.text = (p0.child("PhoneNumber").value.toString())
+                                            CheckInTime.text = "$hourMinuteText"
+                                            CheckInDate.text = currentDay.toString()
+                                        }
+                                    } catch (e: Exception) {
+                                        Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
                                     }
-                                } catch (e: Exception) {
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
                                     Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
                                 }
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-                            }
-                        })
+                            })
+                        }
                     }
                 } catch (e: Exception) {
                     Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
@@ -170,27 +169,65 @@ class MemberInformationActivity : AppCompatActivity() {
         val query = userDatabase.child("Member").orderByChild("Id").equalTo(dataSent)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
-                for (s0 in s0.children) {
-                    val checkInTime = hourMinuteText.toString().trim()
-                    val phone = (s0.child("PhoneNumber").value.toString())
-                    val temperature = temperatureSpinner.selectedItem.toString().trim()
-                    val statusNow = "checkIn"
-                    val checkOutTime = "pending"
-                    val name = (s0.child("Name").value.toString())
+                if(s0.exists()) {
+                    for (s0 in s0.children) {
+                        val checkInTime = hourMinuteText.toString().trim()
+                        val phone = (s0.child("PhoneNumber").value.toString())
+                        val temperature = temperatureSpinner.selectedItem.toString().trim()
+                        val statusNow = "checkIn"
+                        val checkOutTime = "pending"
+                        val name = (s0.child("Name").value.toString())
 
-                    val addQuery = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText.toString())
-                    //val customerID = s0.key.toString()
+                        val addQuery = FirebaseDatabase.getInstance().getReference("ShoppingCentre")
+                            .child(dateText.toString())
+                        //val customerID = s0.key.toString()
 
-                    if(dataSent != null && checkInTime != null){
-                        val writeNewCheckIn = addShoppingCentreCheckIn(checkInTime, name, phone, dataSent, temperature, statusNow, checkOutTime)
+                        if (dataSent != null && checkInTime != null) {
+                            val writeNewCheckIn = addShoppingCentreCheckIn(
+                                checkInTime,
+                                name,
+                                phone,
+                                dataSent,
+                                temperature,
+                                statusNow,
+                                checkOutTime
+                            )
 
-                        addQuery.child(dataSent).setValue(writeNewCheckIn).addOnCompleteListener {
-                            Toast.makeText(
-                                applicationContext,
-                                "Check In Successful",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            startActivity(intent1)
+                            addQuery.child(dataSent).setValue(writeNewCheckIn)
+                                .addOnCompleteListener {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "Check In Successful",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    startActivity(intent1)
+                                }
+                            val current = LocalDateTime.now()
+
+                            val formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy")
+                            val formatted = current.format(formatter)
+
+                            val refSearch = FirebaseDatabase.getInstance().getReference().child("SocialDistanceScore")
+                                .orderByChild("member_Id").equalTo(dataSent).limitToLast(1)
+                            refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onCancelled(error: DatabaseError) {
+                                    val text = "Connection Failed"
+                                    Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                                }
+
+                                override fun onDataChange(p0: DataSnapshot) {
+                                    if (p0.exists()) {
+                                        for (p0 in p0.children) {
+                                            if(p0.child("score_Date").value.toString() != formatted){
+                                                resetMark()
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(applicationContext, "CurrentScore Missing from the database", Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+                                }
+                            })
                         }
                     }
                 }
@@ -220,5 +257,73 @@ class MemberInformationActivity : AppCompatActivity() {
         val actionBar: ActionBar? = supportActionBar
         actionBar!!.title = "Member Information"
         actionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+    fun resetMark() {
+        val ref = FirebaseDatabase.getInstance().getReference("SocialDistanceScore")
+        var scoreId = ""
+        val refSearch =
+            FirebaseDatabase.getInstance().getReference("SocialDistanceScore").orderByKey()
+                .limitToLast(1)
+
+
+        //Create new score history data
+        refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                val text = "Connection Failed"
+                Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    for (p0 in p0.children) {
+                        val getScoreId = p0.getValue(Score::class.java)
+                        scoreId = getScoreId?.Score_Id.toString()
+                    }
+                    val dataSent = intent.getStringExtra("EXTRA_MESSAGE")
+
+                    val cal = ((scoreId.substring(1, 6)).toInt()) + 1
+                    val num = 100000 + cal
+                    val newId = "S" + num.toString().substring(1, 6)
+
+                    val current = LocalDateTime.now()
+
+                    val formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy")
+                    val formatted = current.format(formatter)
+
+                    val data = SocialDistanceScore(
+                        newId,
+                        "Check In",
+                        100,
+                        formatted, dataSent.toString()
+                    )
+
+                    ref.child(newId).setValue(data)
+
+                    val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
+                        .orderByChild("Id").equalTo(dataSent)
+                    refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(error: DatabaseError) {
+                            val text = "Connection Failed"
+                            Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot) {
+                            if (p0.exists()) {
+                                for (p0 in p0.children) {
+                                    database.child("Member").child(dataSent).child("CurrentScore").setValue(100)
+                                }
+                            } else {
+                                Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    })
+
+                }
+
+            }
+
+        })
     }
 }
