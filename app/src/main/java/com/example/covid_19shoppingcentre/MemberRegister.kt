@@ -46,7 +46,6 @@ class MemberRegister : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.member_registration)
 
-
         userDatabase.addListenerForSingleValueEvent( object: ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
@@ -81,17 +80,23 @@ class MemberRegister : AppCompatActivity() {
             userPassword = txtRegisPassword.text.toString()
             confirmPass = txtRegisConPassword.text.toString()
             phone = txtPhone.text.toString()
+            var role = "staff"
+
+            val intent1 = Intent(this@MemberRegister, MemberLogin::class.java).apply {
+            }
+
             if (userName.isNotEmpty() && email.isNotEmpty() && userPassword.isNotEmpty() && confirmPass.isNotEmpty() && phone.isNotEmpty()){
                 if (userPassword == confirmPass) {
                     if (icNum.length == 12) {
                         if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                             userDatabase.child(userID)
-                                .setValue(Member(icNum, userID, userName, phone))
+                                .setValue(Member(icNum, userID, userName, phone, email, confirmPass, role))
                             Toast.makeText(
                                 applicationContext,
                                 "YOUR USER ID IS $userID",
                                 Toast.LENGTH_LONG
                             ).show()
+                            startActivity(intent1)
                         } else {
                             txtEmailAddress.error = "Enter correct Email"
                         }

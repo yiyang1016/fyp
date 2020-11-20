@@ -260,14 +260,14 @@ class MemberInformationActivity : AppCompatActivity() {
     }
 
     private fun back() {
-        val intent1 = Intent(this, QRScannerActivity::class.java).apply {
+        val intent1 = Intent(this, StaffMainActivity::class.java).apply {
             putExtra("EXTRA_MESSAGE", "message")
         }
         startActivity(intent1)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val intent1 = Intent(this, QRScannerActivity::class.java).apply {
+        val intent1 = Intent(this, StaffMainActivity::class.java).apply {
             putExtra("EXTRA_MESSAGE", "message")
         }
         startActivity(intent1)
