@@ -115,7 +115,6 @@ class storeRegistration : AppCompatActivity() {
             }
 
             if(count >1) {
-
                 Database.child(storeID).child("Store_Name").setValue(txtStoreName.getText().toString())
                 Database.child(storeID).child("Store_Description").setValue(txtStoreDes.getText().toString())
                 Database.child(storeID).child("Store_Password").setValue(txtStorePass.getText().toString())
@@ -123,7 +122,6 @@ class storeRegistration : AppCompatActivity() {
                 Database.child(storeID).child("Store_Slot").setValue(txtStoreSlot.getText().toString())
                 Database.child(storeID).child("Store_Limitation").setValue(txtStoreLimit.getText().toString())
                 Database.child(storeID).child("Store_Image").setValue(picurl)
-
                 Toast.makeText(
                     applicationContext,
                     "New Store is Added",

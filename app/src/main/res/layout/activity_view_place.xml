@@ -49,13 +49,31 @@
                 android:textStyle="italic"
                 android:text="Distance : " />
 
-            <TextView
-                android:id="@+id/phone_number"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="italic"
-                android:text="Phone Number" />
+                android:layout_height="wrap_content" >
+
+                <ImageButton
+                    android:id="@+id/phoneBtn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2"
+                    app:srcCompat="@drawable/ic_baseline_local_phone_24" />
+
+                <TextView
+                    android:id="@+id/phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_toEndOf="@+id/bleImageButton"
+                    android:text="Phone Number"
+                    android:textSize="16sp"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
 
 
             <TextView

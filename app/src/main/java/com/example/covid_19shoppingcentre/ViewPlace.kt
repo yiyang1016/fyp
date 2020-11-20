@@ -109,6 +109,14 @@ class ViewPlace : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + Uri.encode(number)))
             startActivity(intent)
         }
+        phoneBtn.setOnClickListener{
+            //get input from edit text
+            number = phone_number.text.substring(11).toString().trim()
+
+            //Dialer intent
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + Uri.encode(number)))
+            startActivity(intent)
+        }
 
     }
 

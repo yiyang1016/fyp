@@ -36,7 +36,7 @@ import java.util.*
 class MemberInformationActivity : AppCompatActivity() {
 
     private var userDatabase = FirebaseDatabase.getInstance().getReference()
-    private lateinit var database: DatabaseReference
+    private  var database = FirebaseDatabase.getInstance().getReference("Member")
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -220,34 +220,36 @@ class MemberInformationActivity : AppCompatActivity() {
                                         "Check In Successful",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    startActivity(intent1)
-                                }
-                            val current = LocalDateTime.now()
 
-                            val formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy")
-                            val formatted = current.format(formatter)
+                                    val current = LocalDateTime.now()
 
-                            val refSearch = FirebaseDatabase.getInstance().getReference().child("SocialDistanceScore")
-                                .orderByChild("member_Id").equalTo(dataSent).limitToLast(1)
-                            refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onCancelled(error: DatabaseError) {
-                                    val text = "Connection Failed"
-                                    Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
-                                }
+                                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                                    val formatted = current.format(formatter)
 
-                                override fun onDataChange(p0: DataSnapshot) {
-                                    if (p0.exists()) {
-                                        for (p0 in p0.children) {
-                                            if(p0.child("score_Date").value.toString() != formatted){
-                                                resetMark()
+                                    val refSearch = FirebaseDatabase.getInstance().getReference().child("SocialDistanceScore")
+                                        .orderByChild("member_Id").equalTo(dataSent).limitToLast(1)
+                                    refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+                                        override fun onCancelled(error: DatabaseError) {
+                                            val text = "Connection Failed"
+                                            Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                                        }
+
+                                        override fun onDataChange(p0: DataSnapshot) {
+                                            if (p0.exists()) {
+                                                for (p0 in p0.children) {
+                                                    if(p0.child("score_Date").value.toString() != formatted){
+                                                        resetMark()
+                                                    }
+                                                }
+                                            } else {
+                                                Toast.makeText(applicationContext, "Current Score Missing from the database", Toast.LENGTH_SHORT)
+                                                    .show()
                                             }
                                         }
-                                    } else {
-                                        Toast.makeText(applicationContext, "CurrentScore Missing from the database", Toast.LENGTH_SHORT)
-                                            .show()
-                                    }
+                                    })
+                                    startActivity(intent1)
                                 }
-                            })
+
                         }
                     }
             }
@@ -330,7 +332,7 @@ class MemberInformationActivity : AppCompatActivity() {
                         override fun onDataChange(p0: DataSnapshot) {
                             if (p0.exists()) {
                                 for (p0 in p0.children) {
-                                    database.child("Member").child(dataSent).child("CurrentScore").setValue(100)
+                                    database.child(dataSent).child("CurrentScore").setValue(100)
                                 }
                             } else {
                                 Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)

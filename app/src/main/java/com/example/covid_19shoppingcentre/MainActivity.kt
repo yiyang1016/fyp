@@ -244,8 +244,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         button.setOnClickListener {
-            val intent = Intent(this, Yiyang::class.java)
-            startActivity(intent)
+
         }
 
         /*StaffMainPage.setOnClickListener {

@@ -60,6 +60,7 @@
             android:name=".social_distance_score_history"
             android:label="Score History"
             android:parentActivityName=".MainActivity" />
+
         <activity
             android:name=".ViewPlace"
             android:label="Hospital Near Me"
@@ -101,13 +102,16 @@
             android:name=".MainActivity"
             android:label="MidValley">
         </activity>
-        <activity android:name=".MemberRegister">
+        <activity android:name=".MemberRegister"/>
+        <activity android:name=".MemberLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
 
 
         <service

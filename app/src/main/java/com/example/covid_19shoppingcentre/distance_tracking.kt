@@ -40,8 +40,8 @@ class distance_tracking : AppCompatActivity() {
     private lateinit var bleScanHandler: Handler
 
     //    var deviceList = findViewById<EditText>(R.id.showDevice)
-    private lateinit var database: DatabaseReference
-
+   // private lateinit var database:     DatabaseReference
+    private var database = FirebaseDatabase.getInstance().getReference("Member")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_distance_tracking)
@@ -84,13 +84,13 @@ class distance_tracking : AppCompatActivity() {
                             for ((key, value) in bleScanCallback.addRssi) {
                                 val rssi = value
                                 if (compareValues(rssi, -69) < 0) {
-                                    //marksDeduct(2)
+                                    marksDeduct(2)
                                     showNotification("Close Distance", "Please Keep Your Social Distance More than 1.5 Meters.")
                                 } else if (compareValues(rssi, -73) < 0) {
-                                    //marksDeduct(3)
+                                    marksDeduct(3)
                                     showNotification("Close Distance", "Please Keep Your Social Distance More than 1.5 Meters.")
                                 } else if (compareValues(rssi, -79) < 0) {
-                                    //marksDeduct(5)
+                                    marksDeduct(5)
                                     showNotification("Close Distance", "Please Keep Your Social Distance More than 1.5 Meters.")
                                 }
                             }
@@ -117,7 +117,6 @@ class distance_tracking : AppCompatActivity() {
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
         }
-
     }
 
     //Start Scan nearby bluetooth
@@ -134,20 +133,7 @@ class distance_tracking : AppCompatActivity() {
     private val bleStopScan = Runnable {
         if (bleScanner != null) {
             bleScanner.stopScan(bleScanCallback)
-            println(bleScanCallback.addRssi.map { "bleScanCallback.addRSSi" + it.key.toString() + '-' + it.value.toString() })
-            if (bleScanCallback.addRssi.isNotEmpty()) {
-                for ((key, value) in bleScanCallback.addRssi) {
-                    val rssi = value
-                    if (compareValues(rssi, -69) < 0) {
-                        marksDeduct(2)
-
-                    } else if (compareValues(rssi, -73) < 0) {
-                        marksDeduct(3)
-                    } else if (compareValues(rssi, -79) < 0) {
-                        marksDeduct(5)
-                    }
-                }
-            }
+            println(bleScanCallback.addRssi.map { "bleScanCallback.addRSSi" + it.key.toString() + '-' + it.value.toString()})
             bleScanResults.clear()
             bleScanCallback.resultOfScan.clear()
             bleScanCallback.addRssi.clear()
@@ -277,7 +263,7 @@ class distance_tracking : AppCompatActivity() {
 
                     val currentDate = LocalDateTime.now()
 
-                    val formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy")
+                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
                     val formatted = currentDate.format(formatter)
 
                     val data = SocialDistanceScore(
@@ -304,7 +290,7 @@ class distance_tracking : AppCompatActivity() {
                                     if(current <= 70 || current <= 50 || current <= 30){
                                         showNotification("Warning Message", "Social Distance Mark Low than $current. Please keep social distance before get bar!")
                                     }
-                                    database.child("Member").child("M00006").child("CurrentScore").setValue(current)
+                                    database.child("M00004").child("CurrentScore").setValue(current)
                                 }
                             } else {
                                 Toast.makeText(applicationContext, "CurrentScore Missing from the database", Toast.LENGTH_SHORT)

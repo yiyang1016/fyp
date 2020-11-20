@@ -44,6 +44,7 @@ class MemberLogin : AppCompatActivity() {
                             ).show()
                             val i = Intent(this@MemberLogin, MainActivity::class.java)
                             i.putExtra("MemberID", userID )
+                            startActivity(i)
                         }else
                             Toast.makeText(applicationContext, pass,Toast.LENGTH_SHORT).show()
                     }else
