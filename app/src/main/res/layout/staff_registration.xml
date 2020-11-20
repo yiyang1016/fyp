@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    tools:context=".StaffRegistration">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="369dp"
+        android:layout_height="600dp"
+        android:background="@drawable/radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.492">
+
+        <TextView
+            android:id="@+id/lblStaffRegistrate"
+            android:layout_width="0dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="46dp"
+            android:text="Staff Registration"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtStaffName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lblStaffName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="41dp"
+            android:layout_marginBottom="10dp"
+            android:text="Name:"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            app:layout_constraintBottom_toBottomOf="@+id/txtStaffName"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/lblStaffic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="55dp"
+            android:text="IC Number:"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            app:layout_constraintBottom_toTopOf="@+id/lblStaffEmail"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/lblStaffEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Email:"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            app:layout_constraintBaseline_toBaselineOf="@+id/txtStaffEmailAddress"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/lblStaffPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="11dp"
+            android:text="Password:"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            app:layout_constraintBottom_toBottomOf="@+id/txtStaffRegisPassword"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/lblStaffCPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:text="Confirm Password"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            app:layout_constraintBaseline_toBaselineOf="@+id/txtStaffRegisConPassword"
+            app:layout_constraintEnd_toStartOf="@+id/txtStaffRegisConPassword"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/txtStaffName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="27dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/txtStaffICNumber"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/txtStaffICNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:ems="10"
+            android:inputType="phone"
+            app:layout_constraintBaseline_toBaselineOf="@+id/lblStaffic"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/txtStaffEmailAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="29dp"
+            android:layout_marginBottom="20dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toTopOf="@+id/txtStaffRegisPassword"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/txtStaffRegisPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="33dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@+id/txtStaffRegisConPassword"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/txtStaffRegisConPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@+id/txtStaffPhone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblStaffCPassword" />
+
+        <Button
+            android:id="@+id/btnStaffCreate"
+            android:layout_width="109dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/blue_button_corner"
+            android:text="Sign Up"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtStaffPhone" />
+
+        <TextView
+            android:id="@+id/lblStaffPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="72dp"
+            android:layout_marginBottom="76dp"
+            android:text="Phone No:"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lblStaffCPassword" />
+
+        <EditText
+            android:id="@+id/txtStaffPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="65dp"
+            android:ems="10"
+            android:inputType="phone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnStaffCreate"
+            app:layout_constraintStart_toEndOf="@+id/btnStaffCreate" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

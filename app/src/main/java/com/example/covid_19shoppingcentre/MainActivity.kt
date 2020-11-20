@@ -82,6 +82,13 @@ class MainActivity : AppCompatActivity() {
                     )
                     startActivity(i)
                 }
+                R.id.nav_staffRegistration -> {
+                    val i = Intent(
+                        this@MainActivity,
+                        StaffRegistration::class.java
+                    )
+                    startActivity(i)
+                }
                 R.id.nav_generateQR->{
                     val i = Intent(
                         this@MainActivity,

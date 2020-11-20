@@ -20,6 +20,9 @@
             android:id="@+id/nav_storeRegistration"
             android:title="Store Registration"/>
         <item
+            android:id="@+id/nav_staffRegistration"
+            android:title="Staff Registration"/>
+        <item
             android:id="@+id/nav_MaleFemalePieChart"
             android:title="PieChart Male and Female"/>
 

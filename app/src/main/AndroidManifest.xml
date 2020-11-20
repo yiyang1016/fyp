@@ -33,11 +33,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PieChartMaleFemale"></activity>
+        <activity android:name=".StaffRegistration"></activity>
+        <activity android:name=".PieChartMaleFemale" />
         <activity android:name=".GenerateDailyReport" />
         <activity android:name=".uploadStorePicture" />
         <activity android:name=".storeRegistration" />
-        <activity android:name=".Yiyang" />
+        <!--<activity android:name=".Yiyang" />-->
         <activity android:name=".questionMobile" />
         <activity android:name=".tabletStoreCurrentCust" />
         <activity android:name=".tabletStoreLoginVarification" />
@@ -60,7 +61,6 @@
             android:name=".social_distance_score_history"
             android:label="Score History"
             android:parentActivityName=".MainActivity" />
-
         <activity
             android:name=".ViewPlace"
             android:label="Hospital Near Me"
@@ -100,9 +100,8 @@
         <activity android:name=".Store_List" />
         <activity
             android:name=".MainActivity"
-            android:label="MidValley">
-        </activity>
-        <activity android:name=".MemberRegister"/>
+            android:label="MidValley"></activity>
+        <activity android:name=".MemberRegister" />
         <activity android:name=".MemberLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -110,9 +109,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".QRCodeGenerator"/>
-
-
 
         <service
             android:name=".checkService"
