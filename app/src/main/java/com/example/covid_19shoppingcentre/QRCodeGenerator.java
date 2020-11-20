@@ -32,6 +32,7 @@ public class QRCodeGenerator extends AppCompatActivity{
         int height = point.y;
         int smallerDimension = Math.min(width, height);
         smallerDimension = smallerDimension * 3 / 4;
+
         QRGEncoder qrgEncode = new QRGEncoder(generateWord, null, QRGContents.Type.TEXT,  smallerDimension);
         qrgEncode.setColorBlack(Color.BLACK);
         qrgEncode.setColorWhite(Color.WHITE);
@@ -39,7 +40,7 @@ public class QRCodeGenerator extends AppCompatActivity{
             Bitmap qrBits = qrgEncode.getBitmap();
             qrImage.setImageBitmap(qrBits);
         }catch (Exception e){
-            e.printStackTrace();;
+            e.printStackTrace();
         }
     }
 }

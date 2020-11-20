@@ -42,8 +42,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var memberID:String = intent.getStringExtra("MemberID")
 
+
+        val memberID:String = intent.getStringExtra("MemberID")
+        //Toast.makeText(this,memberID,Toast.LENGTH_SHORT).show()
         toggle = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
@@ -104,16 +106,19 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_distanceTrackingBtn ->{
                     val intent = Intent(this, distance_tracking::class.java)
+                    intent.putExtra("MemberID", memberID)
                     startActivity(intent)
                 }
 
                  R.id.nav_nearestHostpitalBtn -> {
                     val intent = Intent(this, nearby_hospital::class.java)
+                     intent.putExtra("MemberID", memberID)
                     startActivity(intent)
                 }
 
                 R.id.nav_history -> {
                     val intent = Intent(this, social_distance_score_history::class.java)
+                    intent.putExtra("MemberID", memberID)
                     startActivity(intent)
                 }
                 R.id.nav_review ->{
@@ -239,6 +244,7 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(
                 this@MainActivity,
                 ReserveStore_List::class.java
+
             )
             startActivity(i)
         }

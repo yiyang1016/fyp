@@ -45,6 +45,7 @@ class distance_tracking : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_distance_tracking)
+
         var count = 0
         var secondCount = 0
         bleScanHandler = Handler()
@@ -236,6 +237,7 @@ class distance_tracking : AppCompatActivity() {
     }
 
     fun marksDeduct(marks: Int) {
+        val id = intent.getStringExtra("MemberID")
         val ref = FirebaseDatabase.getInstance().getReference("SocialDistanceScore")
         var scoreId = ""
         val refSearch =
@@ -270,13 +272,13 @@ class distance_tracking : AppCompatActivity() {
                         newId,
                         "Close Contact",
                         marks,
-                        formatted, "M00004"
+                        formatted, id
                     )
 
                     ref.child(newId).setValue(data)
 
                     val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
-                        .orderByChild("Id").equalTo("M00004")
+                        .orderByChild("Id").equalTo(id)
                     refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError) {
                             val text = "Connection Failed"
@@ -290,7 +292,7 @@ class distance_tracking : AppCompatActivity() {
                                     if(current <= 70 || current <= 50 || current <= 30){
                                         showNotification("Warning Message", "Social Distance Mark Low than $current. Please keep social distance before get bar!")
                                     }
-                                    database.child("M00004").child("CurrentScore").setValue(current)
+                                    database.child(id).child("CurrentScore").setValue(current)
                                 }
                             } else {
                                 Toast.makeText(applicationContext, "CurrentScore Missing from the database", Toast.LENGTH_SHORT)

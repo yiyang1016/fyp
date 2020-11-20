@@ -19,10 +19,12 @@ class social_distance_score_history : AppCompatActivity() {
     lateinit var  mRecyclerView: RecyclerView
     lateinit var FirebaseRecyclerAdapter : FirebaseRecyclerAdapter<Score, ScoreViewHolder>
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_social_distance_score_history)
 
+        val id = intent.getStringExtra("MemberID")
         val dialogBuilder = AlertDialog.Builder(this@social_distance_score_history, R.style.CustomAlertDialog)
 
         val view = layoutInflater.inflate(R.layout.distance_rule, null)
@@ -40,7 +42,7 @@ class social_distance_score_history : AppCompatActivity() {
 
         mDatabase = FirebaseDatabase.getInstance().getReference("SocialDistanceScore")
         //Pass in member id
-        logRecycleView("M00004")
+        logRecycleView(id)
     }
 
     private fun logRecycleView(memberId : String){
