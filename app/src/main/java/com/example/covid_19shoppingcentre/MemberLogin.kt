@@ -29,12 +29,13 @@ class MemberLogin : AppCompatActivity() {
 
             checkUser.addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    Toast.makeText(applicationContext, "Error",Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.exists()){
-                        var pass: String = snapshot.child(userID).child("IC_Number").value.toString()
+                        var pass: String = snapshot.child(userID).child("Password").value.toString()
+                        var role = snapshot.child(userID).child("Role").value.toString()
 
                         if(pass == userPassword){
                             Toast.makeText(
@@ -42,8 +43,17 @@ class MemberLogin : AppCompatActivity() {
                                 "Login Successfully",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val i = Intent(this@MemberLogin, MainActivity::class.java)
-                            i.putExtra("MemberID", userID )
+                            if(role == "staff"){
+                                val i = Intent(this@MemberLogin, StaffMainActivity::class.java)
+                                i.putExtra("MemberID", userID )
+                                startActivity(i)
+                            } else if (role == "member") {
+                                val i = Intent(this@MemberLogin, MainActivity::class.java)
+                                i.putExtra("MemberID", userID)
+                                startActivity(i)
+                            }
+                            val i = Intent(this@MemberLogin, questionMobile::class.java)
+                            i.putExtra("MemberID", userID)
                             startActivity(i)
                         }else
                             Toast.makeText(applicationContext, pass,Toast.LENGTH_SHORT).show()

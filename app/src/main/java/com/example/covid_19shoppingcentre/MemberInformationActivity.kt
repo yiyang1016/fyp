@@ -47,7 +47,6 @@ class MemberInformationActivity : AppCompatActivity() {
         setActionBar()
 
         val temperatures = resources.getStringArray(R.array.Temperature)
-
         val checkInButton = findViewById<Button>(R.id.checkInBtn)
         val backButton = findViewById<Button>(R.id.backBtn)
         val spinner = findViewById<Spinner>(R.id.temperatureSpinner)
@@ -74,7 +73,6 @@ class MemberInformationActivity : AppCompatActivity() {
                             checkInButton.setBackgroundColor(R.color.greyColor)
                         }
                         temperatures[position].toString() == "Please Select a Temperature" -> {
-                            bodyTemperatureResult.text = "Please Select a Temperature"
                             checkInButton.isEnabled = false
                             checkInButton.setBackgroundColor(R.color.greyColor)
                         }
@@ -92,6 +90,28 @@ class MemberInformationActivity : AppCompatActivity() {
                 }
             }
         }
+
+        val dataSent = intent.getStringExtra("EXTRA_MESSAGE")
+
+        val query = userDatabase.child("Member").orderByChild("Id").equalTo(dataSent)
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (snapshot in snapshot.children) {
+                        var compare = snapshot.child("HealthyStatus").value.toString()
+                        if (compare == "Danger"){
+                            checkInButton.isEnabled = false
+                            spinner.isEnabled = false
+                            bodyTemperatureResult.text = "This member is currently in Danger State"
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         checkInButton.setOnClickListener {
             checkInMember()

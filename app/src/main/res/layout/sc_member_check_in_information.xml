@@ -295,7 +295,7 @@
                 android:layout_width="180dp"
                 android:layout_height="200dp"
                 android:layout_marginStart="325dp"
-                android:text="Status"
+                android:text="Please Select a Temperature"
                 android:textColor="#000000"
                 android:textSize="9pt"
                 app:layout_constraintBottom_toBottomOf="parent"

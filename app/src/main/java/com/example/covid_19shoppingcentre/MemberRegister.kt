@@ -80,17 +80,22 @@ class MemberRegister : AppCompatActivity() {
             userPassword = txtRegisPassword.text.toString()
             confirmPass = txtRegisConPassword.text.toString()
             phone = txtPhone.text.toString()
-            var role = "staff"
+            var role = "member"
 
             val intent1 = Intent(this@MemberRegister, MemberLogin::class.java).apply {
             }
 
             if (userName.isNotEmpty() && email.isNotEmpty() && userPassword.isNotEmpty() && confirmPass.isNotEmpty() && phone.isNotEmpty()){
                 if (userPassword == confirmPass) {
-                    if (icNum.length == 12) {
+                    if (icNum.length == 14) {
                         if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                            userDatabase.child(userID)
-                                .setValue(Member(icNum, userID, userName, phone, email, confirmPass, role))
+                            userDatabase.child(userID).child("IC_Number").setValue(icNum)
+                            userDatabase.child(userID).child("Id").setValue(userID)
+                            userDatabase.child(userID).child("Name").setValue(userName)
+                            userDatabase.child(userID).child("PhoneNumber").setValue(phone)
+                            userDatabase.child(userID).child("Email").setValue(email)
+                            userDatabase.child(userID).child("Password").setValue(confirmPass)
+                            userDatabase.child(userID).child("Role").setValue(role)
                             Toast.makeText(
                                 applicationContext,
                                 "YOUR USER ID IS $userID",
