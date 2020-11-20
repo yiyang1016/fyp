@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                     ReserveStore_List::class.java
                 )
                 startActivity(i)
-            }
+                }
                 R.id.nav_reservation_list -> {
                     val i = Intent(
                         this@MainActivity,
@@ -76,6 +76,20 @@ class MainActivity : AppCompatActivity() {
                     val i = Intent(
                         this@MainActivity,
                         tabletStoreLoginVarification::class.java
+                    )
+                    startActivity(i)
+                }
+                R.id.nav_MaleFemalePieChart -> {
+                    val i = Intent(
+                        this@MainActivity,
+                        PieChartMaleFemale::class.java
+                    )
+                    startActivity(i)
+                }
+                R.id.nav_GenerateDailyReport -> {
+                    val i = Intent(
+                        this@MainActivity,
+                        GenerateDailyReport::class.java
                     )
                     startActivity(i)
                 }

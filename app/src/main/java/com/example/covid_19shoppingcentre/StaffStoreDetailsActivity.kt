@@ -33,7 +33,7 @@ import java.time.format.DateTimeFormatter
 class StaffStoreDetailsActivity : AppCompatActivity() {
 
     private var Database = FirebaseDatabase.getInstance().getReference()
-    lateinit var  mRecyclerView: RecyclerView
+    lateinit var mRecyclerView: RecyclerView
     lateinit var mDatabase : DatabaseReference
     lateinit var m1Database : DatabaseReference
     lateinit var FirebaseRecyclerAdapter : FirebaseRecyclerAdapter<CheckInScCustomer, CustomerViewHolder>

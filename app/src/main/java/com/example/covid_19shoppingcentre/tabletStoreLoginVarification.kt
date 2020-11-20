@@ -43,12 +43,12 @@ class tabletStoreLoginVarification : AppCompatActivity() {
                         )
                         startActivity(intent)
                     } else {
-                        Toast.makeText(applicationContext, "wrong password", Toast.LENGTH_SHORT)
+                        Toast.makeText(applicationContext, "Incorrect ID or Password", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(applicationContext, "00", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
                 }
             })
         }

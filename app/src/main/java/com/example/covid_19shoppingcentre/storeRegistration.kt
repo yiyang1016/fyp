@@ -94,12 +94,6 @@ class storeRegistration : AppCompatActivity() {
                 numberIndentity = "0000"
             }
 
-            Toast.makeText(
-                applicationContext,
-                count.toString(),
-                Toast.LENGTH_SHORT
-            ).show()
-
             val picurl = intent.getStringExtra("PictureURL")
             storeID = "ST"+numberIndentity.toString()+count.toString()
             /*name = txtStoreName.getText().toString()

@@ -16,6 +16,13 @@
         <item
             android:id="@+id/nav_storeRegistration"
             android:title="Store Registration"/>
+        <item
+            android:id="@+id/nav_MaleFemalePieChart"
+            android:title="PieChart Male and Female"/>
+
+        <item
+            android:id="@+id/nav_GenerateDailyReport"
+            android:title="Generate Daily Report"/>
 
         <item
             android:id="@+id/nav_distanceTrackingBtn"
