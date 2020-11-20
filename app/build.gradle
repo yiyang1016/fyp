@@ -46,6 +46,10 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.firebase:firebase-database:19.5.0'
+    implementation fileTree(dir: 'lib', include: ['*.aar', '*.jar'], exclude: [])
+    implementation files('lib\\activation.jar')
+    implementation files('lib\\additionnal.jar')
+    implementation files('lib\\mail.jar')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -53,7 +57,6 @@ dependencies {
 
     //Picasso Load Image
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    //implementation 'com.squareup.picasso:picasso:2.71828'
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
@@ -100,6 +103,21 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
     implementation 'com.google.android.material:material:1.0.0'
+
+    //libraries(QR Code Generator)
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
+    implementation 'com.google.zxing:core:3.3.2'
+    //ADDED
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.android.gms:play-services-vision:19.0.0'
+
+    //libraries(QR Scanner)
+    implementation 'com.github.nisrulz:qreader:2.1.2'
+    implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.google.android.gms:play-services-vision:18.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+
 
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
 

@@ -14,6 +14,9 @@
             android:id="@+id/nav_storeLogin"
             android:title="Store Login"/>
         <item
+            android:id="@+id/nav_generateQR"
+            android:title="Generate QR code" />
+        <item
             android:id="@+id/nav_storeRegistration"
             android:title="Store Registration"/>
         <item

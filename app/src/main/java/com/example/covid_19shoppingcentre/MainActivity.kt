@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        var memberID:String = intent.getStringExtra("MemberID")
 
         toggle = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                     ReserveStore_List::class.java
                 )
                 startActivity(i)
-                }
+            }
                 R.id.nav_reservation_list -> {
                     val i = Intent(
                         this@MainActivity,
@@ -77,6 +78,14 @@ class MainActivity : AppCompatActivity() {
                         this@MainActivity,
                         tabletStoreLoginVarification::class.java
                     )
+                    startActivity(i)
+                }
+                R.id.nav_generateQR->{
+                    val i = Intent(
+                        this@MainActivity,
+                        QRCodeGenerator::class.java
+                    )
+                    i.putExtra("MemberID", memberID)
                     startActivity(i)
                 }
                 R.id.nav_MaleFemalePieChart -> {
@@ -215,6 +224,7 @@ class MainActivity : AppCompatActivity() {
             // Start the service
             startService(intent1)
         } else {
+            Toast.makeText(applicationContext,"service already running",Toast.LENGTH_SHORT).show()
         }
 
         //Display First Two Store
