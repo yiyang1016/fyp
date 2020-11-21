@@ -38,16 +38,7 @@ class GenerateDailyReport : AppCompatActivity() {
 
         setActionBar()
 
-        btnGenDailyRe.setOnClickListener {
-            Toast.makeText(
-                applicationContext,
-                "Test1",
-                Toast.LENGTH_SHORT
-            ).show()
-            createPDFFile(ReportCommon.getAppPath(this@GenerateDailyReport)+file_name)
-        }
-
-        /*Dexter.withActivity(this@GenerateDailyReport)
+        Dexter.withActivity(this@GenerateDailyReport)
             .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .withListener(object:PermissionListener{
                 override fun onPermissionGranted(response: PermissionGrantedResponse?) {
@@ -85,7 +76,7 @@ class GenerateDailyReport : AppCompatActivity() {
                     ).show()
                 }
 
-            })*/
+            })
 
     }
 
