@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    tools:context=".tabletStoreControlMain">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="364dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:text="Midvalley Shopping Mall"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logoImgStoreControl"
+        android:layout_width="155dp"
+        android:layout_height="171dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.137"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/btnRegisterNewStore"
+        android:layout_width="472dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/button_staff_main"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="20dp"
+        android:text="Register New Store"
+        android:textColor="#FFFFFF"
+        android:textSize="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvStoreControl" />
+
+    <TextView
+        android:id="@+id/tvStoreControl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="192dp"
+        android:layout_marginTop="32dp"
+        android:text="Store Control"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImgStoreControl" />
+
+    <Button
+        android:id="@+id/btnSetStoreLimit"
+        android:layout_width="472dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/button_staff_main"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="20dp"
+        android:text="Set Store Limitation"
+        android:textColor="#FFFFFF"
+        android:textSize="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegisterNewStore" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,20 +9,22 @@
     tools:context=".tabletSetLimitation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="736dp"
-        android:layout_height="385dp"
-        android:background="@drawable/green_coner"
+        android:layout_width="535dp"
+        android:layout_height="421dp"
+        android:background="@drawable/button_staff_main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/tvSetLimitation"
+        app:layout_constraintVertical_bias="0.167">
 
         <TextView
             android:id="@+id/tvNewLimit"
-            android:layout_width="503dp"
-            android:layout_height="47dp"
+            android:layout_width="512dp"
+            android:layout_height="84dp"
             android:text="Enter New Number of Customer Limitation :"
-            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.66"
@@ -47,23 +49,22 @@
 
         <TextView
             android:id="@+id/tvCurrentCust"
-            android:layout_width="373dp"
-            android:layout_height="32dp"
+            android:layout_width="427dp"
+            android:layout_height="57dp"
             android:text="Current Number of Limitation :"
-            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.545"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.104" />
+            app:layout_constraintVertical_bias="0.095" />
 
         <TextView
             android:id="@+id/tvCurrentNumerLimit"
             android:layout_width="144dp"
             android:layout_height="33dp"
             android:background="@drawable/distance_tracking_round_button"
-            android:text="12"
             android:textAlignment="center"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -79,6 +80,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_staff_main"
             android:text="Comfirm"
+            android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.746"
@@ -86,4 +88,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.875" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvSetLimitation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="Set Customer Lmitation"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

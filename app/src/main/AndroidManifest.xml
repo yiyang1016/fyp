@@ -33,7 +33,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DashboardMain"></activity>
+
+        <activity android:name=".tabletSetLimitation"></activity>
+        <activity android:name=".tabletStoreControlMain"
+            android:parentActivityName=".Store_List"></activity>
+        <activity
+            android:name=".DashboardMain"
+            android:parentActivityName=".StaffMainActivity" />
         <activity
             android:name=".GenerateDailyReportJava"
             android:parentActivityName=".StaffMainActivity" />
@@ -42,11 +48,11 @@
             android:parentActivityName=".StaffMainActivity" />
         <activity
             android:name=".PieChartMaleFemale"
-            android:parentActivityName=".StaffMainActivity" />
+            android:parentActivityName=".DashboardMain" />
         <activity android:name=".uploadStorePicture" />
         <activity
             android:name=".storeRegistration"
-            android:parentActivityName=".StaffMainActivity" /> <!-- <activity android:name=".Yiyang" /> -->
+            android:parentActivityName=".tabletStoreControlMain" />
         <activity android:name=".questionMobile" />
         <activity android:name=".tabletStoreCurrentCust" />
         <activity

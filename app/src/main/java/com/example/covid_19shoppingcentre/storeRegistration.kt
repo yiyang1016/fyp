@@ -17,6 +17,7 @@ import com.example.covid_19shoppingcentre.models.addShoppingCentreCheckIn
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_store__list.*
+import kotlinx.android.synthetic.main.member_login.*
 import kotlinx.android.synthetic.main.store_registration.*
 
 class storeRegistration : AppCompatActivity() {
@@ -56,12 +57,24 @@ class storeRegistration : AppCompatActivity() {
 
         btnUpPic.setOnClickListener{
             name = txtStoreName.getText().toString()
+            pass = txtPassword.getText().toString()
+            des = txtStoreDes.getText().toString()
+            floor = txtStoreFloor.getText().toString()
+            slot = txtStoreSlot.getText().toString()
+            limit = txtStoreLimit.getText().toString()
+
 
             val i = Intent(
                 this@storeRegistration,
                 uploadStorePicture::class.java
             )
             i.putExtra("regisStoreName", name)
+            i.putExtra("regisPass", pass)
+            i.putExtra("regisDes", des)
+            i.putExtra("regisFloor", floor)
+            i.putExtra("regisSlot", slot)
+            i.putExtra("regisLimit", limit)
+
             startActivity(i)
         }
 
@@ -80,7 +93,6 @@ class storeRegistration : AppCompatActivity() {
                     ).show()
                 }
             })
-
 
 
             count = count + 1
@@ -115,20 +127,62 @@ class storeRegistration : AppCompatActivity() {
             }
 
             if(count >1) {
-                Database.child(storeID).child("Store_Name").setValue(txtStoreName.getText().toString())
-                Database.child(storeID).child("Store_Description").setValue(txtStoreDes.getText().toString())
-                Database.child(storeID).child("Store_Password").setValue(txtStorePass.getText().toString())
-                Database.child(storeID).child("Store_Floor").setValue(txtStoreFloor.getText().toString())
-                Database.child(storeID).child("Store_Slot").setValue(txtStoreSlot.getText().toString())
-                Database.child(storeID).child("Store_Limitation").setValue(txtStoreLimit.getText().toString())
-                Database.child(storeID).child("Store_Image").setValue(picurl)
-                Toast.makeText(
-                    applicationContext,
-                    "New Store is Added",
-                    Toast.LENGTH_SHORT
-                ).show()
-                startActivity(intent2)
+                if (txtStoreName.getText().toString() == "") {
+                    Toast.makeText(applicationContext, "Plaese Enter Store Name", Toast.LENGTH_SHORT).show()
+                }
+                else if (txtStoreDes.getText().toString() == ""){
+                    Toast.makeText(applicationContext, "Plaese Enter Store Description", Toast.LENGTH_SHORT).show()
+                }
+                else if (txtStorePass.getText().toString() == ""){
+                    Toast.makeText(applicationContext, "Plaese Enter Store Password", Toast.LENGTH_SHORT).show()
+                }
+                else if (txtStoreFloor.getText().toString() == ""){
+                    Toast.makeText(applicationContext, "Plaese Enter Store Floor", Toast.LENGTH_SHORT).show()
+                }
+                else if (txtStoreSlot.getText().toString() == ""){
+                    Toast.makeText(applicationContext, "Plaese Enter Store Slot", Toast.LENGTH_SHORT).show()
+                }
+                else if (txtStoreLimit.getText().toString() == ""){
+                    Toast.makeText(applicationContext, "Plaese Enter Store Name", Toast.LENGTH_SHORT).show()
+                }
+                else if (picurl == "") {
+                    Toast.makeText(applicationContext, "Plaese Upload Store Picture", Toast.LENGTH_SHORT).show()
+                }
+                else if (txtStorePass.getText().toString().length < 5) {
+                    Toast.makeText(applicationContext, "Password Should more then 5 digit", Toast.LENGTH_SHORT).show()
+                }
+                else if (txtStoreSlot.getText().toString().length != 5){
+                    Toast.makeText(applicationContext, "Please Enter corrent Slot ID", Toast.LENGTH_SHORT).show()
+                }
+                else if (txtStoreSlot.getText().toString().length != 5){
+                    Toast.makeText(applicationContext, "Please Enter corrent Slot ID", Toast.LENGTH_SHORT).show()
+                }
+                else if (txtStoreFloor.getText().toString() != "G" && txtStoreFloor.getText().toString() != "F1" && txtStoreFloor.getText().toString() != "F2"){
+                    Toast.makeText(applicationContext, "Please Enter corrent Floor", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    Database.child(storeID).child("Store_Name")
+                        .setValue(txtStoreName.getText().toString())
+                    Database.child(storeID).child("Store_Description")
+                        .setValue(txtStoreDes.getText().toString())
+                    Database.child(storeID).child("Store_Password")
+                        .setValue(txtStorePass.getText().toString())
+                    Database.child(storeID).child("Store_Floor")
+                        .setValue(txtStoreFloor.getText().toString())
+                    Database.child(storeID).child("Store_Slot")
+                        .setValue(txtStoreSlot.getText().toString())
+                    Database.child(storeID).child("Store_Limitation")
+                        .setValue(txtStoreLimit.getText().toString())
+                    Database.child(storeID).child("Store_Image").setValue(picurl)
+                    Toast.makeText(
+                        applicationContext,
+                        "New Store is Added",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    startActivity(intent2)
+                }
             }
+
         }
     }
 }

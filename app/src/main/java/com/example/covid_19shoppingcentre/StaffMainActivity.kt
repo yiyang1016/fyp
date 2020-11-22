@@ -81,6 +81,13 @@ class StaffMainActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+
+        btnStaffRegisMain.setOnClickListener{
+            val intent = Intent(this, StaffRegistration::class.java).apply {
+                putExtra("EXTRA_MESSAGE", "message")
+            }
+            startActivity(intent)
+        }
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {

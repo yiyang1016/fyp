@@ -26,7 +26,7 @@ class tabletSetLimitation : AppCompatActivity() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         nDatabase = FirebaseDatabase.getInstance().getReference("Store");
 
-        storeID = "ST00001"
+        val storeID = intent.getStringExtra("store_ID")
 
         val ref = nDatabase.child(storeID)
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -48,13 +48,14 @@ class tabletSetLimitation : AppCompatActivity() {
         })
 
         btnComfirmChangeLimit.setOnClickListener{
-            mDatabase.child("Store").child(storeID).child("Store_Limitation").setValue(etNewNumber.text.toString())
+
+            mDatabase.child("Store").child(storeID).child("Store_Limitation").setValue(Integer.parseInt(etNewNumber.text.toString()))
             Toast.makeText(applicationContext, "Successful Edit", Toast.LENGTH_SHORT)
                 .show()
 
             val intent = Intent(
                 this@tabletSetLimitation,
-                tabletStoreCurrentCust::class.java
+                tabletStoreControlMain::class.java
             )
             startActivity(intent)
         }

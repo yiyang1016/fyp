@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Store ID :"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.282"
@@ -23,31 +23,35 @@
 
     <EditText
         android:id="@+id/tfPasswordStore"
-        android:layout_width="217dp"
-        android:layout_height="32dp"
-        android:background="#FFFFFF"
+        android:layout_width="260dp"
+        android:layout_height="54dp"
+        android:background="@drawable/button_staff_main"
         android:ems="10"
         android:inputType="textPassword"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.631" />
+        app:layout_constraintVertical_bias="0.472" />
 
     <EditText
         android:id="@+id/tfStoreID"
-        android:layout_width="194dp"
-        android:layout_height="34dp"
-        android:background="#FFFFFF"
+        android:layout_width="236dp"
+        android:layout_height="48dp"
+        android:background="@drawable/button_staff_main"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.295" />
+        app:layout_constraintVertical_bias="0.181" />
 
     <TextView
         android:id="@+id/tvPassword"
@@ -55,26 +59,27 @@
         android:layout_height="wrap_content"
         android:text="Password :"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.293"
+        app:layout_constraintHorizontal_bias="0.298"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.454" />
+        app:layout_constraintVertical_bias="0.369" />
 
     <Button
         android:id="@+id/btnStoreLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="129dp"
+        android:layout_height="69dp"
         android:background="@drawable/button_staff_main"
         android:text="Login"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#77FF00"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.635"
+        app:layout_constraintHorizontal_bias="0.653"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.945" />
+        app:layout_constraintVertical_bias="0.71" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,6 +55,15 @@ class Store_List :AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {
             }
         })
+
+        btnControl.setOnClickListener {
+            val i = Intent(
+                this@Store_List,
+                tabletStoreControlMain::class.java
+            )
+            startActivity(i)
+        }
+
     }
 
     private fun logRecyclerView(){

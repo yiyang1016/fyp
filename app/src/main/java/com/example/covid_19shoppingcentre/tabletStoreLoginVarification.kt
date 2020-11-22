@@ -39,8 +39,9 @@ class tabletStoreLoginVarification : AppCompatActivity() {
                         Toast.makeText(applicationContext, "Successfull Login", Toast.LENGTH_SHORT).show()
                         val intent = Intent(
                             this@tabletStoreLoginVarification,
-                            tabletStoreCurrentCust::class.java
+                            tabletSetLimitation::class.java
                         )
+                        intent.putExtra("store_ID", storeID)
                         startActivity(intent)
                     } else {
                         Toast.makeText(applicationContext, "Incorrect ID or Password", Toast.LENGTH_SHORT)

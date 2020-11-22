@@ -11,6 +11,8 @@ import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.list_layout.view.*
+import kotlinx.android.synthetic.main.member_login.*
+import kotlinx.android.synthetic.main.store_registration.*
 import kotlinx.android.synthetic.main.upload_store_picture.*
 import java.lang.reflect.Array.get
 
@@ -60,6 +62,11 @@ class uploadStorePicture : AppCompatActivity() {
 
         val intent = intent
         val name = intent.getStringExtra("regisStoreName")
+        val pass = intent.getStringExtra("regisPass")
+        val des = intent.getStringExtra("regisDes")
+        val floor = intent.getStringExtra("regisFloor")
+        val slot = intent.getStringExtra("regisSlot")
+        val limit = intent.getStringExtra("regisLimit")
 
         storageReference = FirebaseStorage.getInstance().getReference(name)
 
@@ -76,6 +83,12 @@ class uploadStorePicture : AppCompatActivity() {
                 storeRegistration::class.java
             )
             i.putExtra("PictureURL", passURL)
+            i.putExtra("regisStoreName", name)
+            i.putExtra("regisPass", pass)
+            i.putExtra("regisDes", des)
+            i.putExtra("regisFloor", floor)
+            i.putExtra("regisSlot", slot)
+            i.putExtra("regisLimit", limit)
             startActivity(i)
         }
     }

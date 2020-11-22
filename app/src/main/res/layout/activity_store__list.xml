@@ -12,9 +12,9 @@
         android:id="@+id/searchStore"
         android:layout_width="173dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="6dp"
+        android:layout_toStartOf="@+id/btnControl"
         android:background="#FFFFFF"
         android:ems="10"
         android:inputType="textPersonName|textCapCharacters"
@@ -22,13 +22,13 @@
 
     <TextView
         android:id="@id/text1"
-        android:layout_width="200dp"
+        android:layout_width="344dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="11dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="18dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="29dp"
         android:layout_toStartOf="@+id/searchStore"
         android:text="Store Name:"
         android:textColor="#FFFFFF"
@@ -38,7 +38,19 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="740dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="70dp" />
+        android:layout_marginTop="85dp" />
+
+    <Button
+        android:id="@+id/btnControl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="3dp"
+        android:background="@drawable/button_staff_main"
+        android:text="Control"
+        android:textColor="#FFFFFF" />
 </RelativeLayout>
