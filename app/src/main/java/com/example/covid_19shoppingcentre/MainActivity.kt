@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_GenerateDailyReport -> {
                     val i = Intent(
                         this@MainActivity,
-                        GenerateDailyReport::class.java
+                        GenerateDailyReportJava::class.java
                     )
                     startActivity(i)
                 }

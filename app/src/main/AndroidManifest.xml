@@ -33,12 +33,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StaffRegistration"></activity>
+        <activity android:name=".GenerateDailyReportJava"></activity>
+        <activity android:name=".StaffRegistration" />
         <activity android:name=".PieChartMaleFemale" />
         <activity android:name=".GenerateDailyReport" />
         <activity android:name=".uploadStorePicture" />
-        <activity android:name=".storeRegistration" />
-        <!--<activity android:name=".Yiyang" />-->
+        <activity android:name=".storeRegistration" /> <!-- <activity android:name=".Yiyang" /> -->
         <activity android:name=".questionMobile" />
         <activity android:name=".tabletStoreCurrentCust" />
         <activity android:name=".tabletStoreLoginVarification" />
@@ -100,7 +100,7 @@
         <activity android:name=".Store_List" />
         <activity
             android:name=".MainActivity"
-            android:label="MidValley"></activity>
+            android:label="MidValley" />
         <activity android:name=".MemberRegister" />
         <activity android:name=".MemberLogin">
             <intent-filter>
