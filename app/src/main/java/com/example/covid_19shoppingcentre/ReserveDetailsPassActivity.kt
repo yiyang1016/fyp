@@ -34,6 +34,7 @@ class ReserveDetailsPassActivity : AppCompatActivity() {
         val reserveT = intent.getStringExtra("time")
         val reserveD = intent.getStringExtra("date")
         val statu = intent.getStringExtra("status")
+        val memberI = intent.getStringExtra("memberIdDetails")
 
         storeName.text = storeN
         time.text = reserveT
@@ -64,6 +65,7 @@ class ReserveDetailsPassActivity : AppCompatActivity() {
 
         okBtn.setOnClickListener{
             val intent = Intent(this, Reservation_List::class.java)
+            intent.putExtra("memberid", memberI)
             startActivity(intent)
         }
     }

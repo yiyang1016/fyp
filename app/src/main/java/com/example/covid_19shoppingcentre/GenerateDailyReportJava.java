@@ -103,17 +103,16 @@ public class GenerateDailyReportJava extends AppCompatActivity {
             //custom font
             BaseFont fontName = BaseFont.createFont("assets/fonts/SourceSansPro-Regular.otf", "UTF-8", BaseFont.EMBEDDED);
 
-
             //Create titles of Document
             Font titleFont = new Font(fontName, 36f, Font.NORMAL,BaseColor.BLACK);
-            addNewItem(document, "Order Details", Element.ALIGN_CENTER, titleFont);
+            addNewItem(document, "Daily Reports", Element.ALIGN_CENTER, titleFont);
 
             //add more
             Font orderNumberFont = new Font(fontName, fontSize,Font.NORMAL, colorAccent);
-            addNewItem(document, "Order No:", Element.ALIGN_LEFT, orderNumberFont);
+            //addNewItem(document, "Order No:", Element.ALIGN_LEFT, orderNumberFont);
 
             Font orderNumberValueFont = new Font(fontName, fontSize,Font.NORMAL, BaseColor.BLACK);
-            addNewItem(document, "#717171", Element.ALIGN_LEFT, orderNumberValueFont);
+            //addNewItem(document, "#717171", Element.ALIGN_LEFT, orderNumberValueFont);
 
             addLineSeperator(document);
 
