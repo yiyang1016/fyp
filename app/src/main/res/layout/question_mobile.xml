@@ -11,7 +11,7 @@
         android:layout_width="354dp"
         android:layout_height="582dp"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="29dp"
         android:background="@drawable/radius"
         app:layout_constraintEnd_toEndOf="parent"

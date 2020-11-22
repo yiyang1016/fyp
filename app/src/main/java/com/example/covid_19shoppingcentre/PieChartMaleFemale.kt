@@ -1,14 +1,12 @@
 package com.example.covid_19shoppingcentre
 
-import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -72,7 +70,10 @@ class PieChartMaleFemale : AppCompatActivity() {
 
                 value.add(PieEntry(a.toFloat(),"Male"))
                 value.add(PieEntry(b.toFloat(),"Female"))
-                pds = PieDataSet(value,"Test")
+
+
+                pds = PieDataSet(value,"Percentage of Male and Female")
+                pds.valueTextSize = 35f
                 pds.colors = listColors
 
                 pieChart.data = PieData(pds)
