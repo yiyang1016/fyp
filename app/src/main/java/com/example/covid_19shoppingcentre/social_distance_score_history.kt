@@ -1,5 +1,6 @@
 package com.example.covid_19shoppingcentre
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ import kotlinx.android.synthetic.main.social_distance_history_layout.view.*
 import android.graphics.Color
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
 
 class social_distance_score_history : AppCompatActivity() {
     lateinit var mDatabase : DatabaseReference
@@ -23,7 +25,7 @@ class social_distance_score_history : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_social_distance_score_history)
-
+        setActionBar()
         val id = intent.getStringExtra("MemberID")
         val dialogBuilder = AlertDialog.Builder(this@social_distance_score_history, R.style.CustomAlertDialog)
 
@@ -82,7 +84,13 @@ class social_distance_score_history : AppCompatActivity() {
         //Handle action bar item clicks here.
         //The action bar will automatically handle clicks on the Home/Up button, so long
         //as you specify a parent activity in AndroidManfest.xml
-        return when (item.itemId){
+        val id = intent.getStringExtra("MemberID")
+
+        val intent1 = Intent(this, MainActivity::class.java).apply {
+            putExtra("MemberID", id)
+        }
+        startActivity(intent1)
+         when (item.itemId){
             R.id.rule ->{
                 val dialogBuilder = AlertDialog.Builder(this@social_distance_score_history, R.style.CustomAlertDialog)
 
@@ -97,5 +105,11 @@ class social_distance_score_history : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+        return false
+    }
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Score History"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 }

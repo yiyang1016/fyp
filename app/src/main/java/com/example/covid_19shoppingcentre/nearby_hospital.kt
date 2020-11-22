@@ -12,8 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.covid_19shoppingcentre.Common.Common
@@ -70,7 +72,7 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
 
         //Init Service
         mService = Common.googleApiService
-
+        setActionBar()
         //Request runtime permission
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(checkLocationPermission()){
@@ -271,5 +273,21 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
              true
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = intent.getStringExtra("MemberID")
+
+        val intent1 = Intent(this, MainActivity::class.java).apply {
+            putExtra("MemberID", id)
+        }
+        startActivity(intent1)
+        return false
+    }
+
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Hospital Near Me"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 }

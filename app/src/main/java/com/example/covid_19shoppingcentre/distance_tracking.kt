@@ -18,6 +18,7 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.core.app.NotificationCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
@@ -46,6 +47,7 @@ class distance_tracking : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_distance_tracking)
 
+        setActionBar()
         var count = 0
         var secondCount = 0
         bleScanHandler = Handler()
@@ -263,16 +265,14 @@ class distance_tracking : AppCompatActivity() {
                     val num = 100000 + cal
                     val newId = "S" + num.toString().substring(1, 6)
 
-                    val currentDate = LocalDateTime.now()
-
-                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                    val formatted = currentDate.format(formatter)
-
+                    val currentDateTime1  = LocalDateTime.now()
+                    val dateFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                    val dateText1 = currentDateTime1.format(dateFormat1)
                     val data = SocialDistanceScore(
                         newId,
                         "Close Contact",
                         marks,
-                        formatted, id
+                        dateText1, id
                     )
 
                     ref.child(newId).setValue(data)
@@ -314,20 +314,49 @@ class distance_tracking : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = intent.getStringExtra("MemberID")
+
+        val intent1 = Intent(this, MainActivity::class.java).apply {
+            putExtra("MemberID", id)
+        }
+        startActivity(intent1)
+
         //Handle action bar item clicks here.
         //The action bar will automatically handle clicks on the Home/Up button, so long
         //as you specify a parent activity in AndroidManfest.xml
-        return when (item.itemId){
+        when (item.itemId){
             R.id.historyBtn ->{
                 val intent = Intent(this, social_distance_score_history::class.java)
                 startActivity(intent)
                 return true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
+        return false
     }
 
     override fun onPause() {
         super.onPause()
+
     }
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Distance Tracking"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val st  = status.text.toString()
+        outState.putString("savedString", st)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        status.setText(savedInstanceState.getString("savedString"))
+    }
+
+
 }

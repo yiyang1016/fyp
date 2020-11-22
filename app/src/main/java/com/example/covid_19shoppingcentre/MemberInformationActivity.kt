@@ -241,10 +241,6 @@ class MemberInformationActivity : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
 
-                                    val current = LocalDateTime.now()
-
-                                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                                    val formatted = current.format(formatter)
 
                                     val refSearch = FirebaseDatabase.getInstance().getReference().child("SocialDistanceScore")
                                         .orderByChild("member_Id").equalTo(dataSent).limitToLast(1)
@@ -254,10 +250,13 @@ class MemberInformationActivity : AppCompatActivity() {
                                             Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
                                         }
 
+                                        val currentDateTime1  = LocalDateTime.now()
+                                        val dateFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                                        val dateText1 = currentDateTime1.format(dateFormat1)
                                         override fun onDataChange(p0: DataSnapshot) {
                                             if (p0.exists()) {
                                                 for (p0 in p0.children) {
-                                                    if(p0.child("score_Date").value.toString() != formatted){
+                                                    if(p0.child("score_Date").value.toString() != dateText1.toString()){
                                                         resetMark()
                                                     }
                                                 }
@@ -327,16 +326,15 @@ class MemberInformationActivity : AppCompatActivity() {
                     val num = 100000 + cal
                     val newId = "S" + num.toString().substring(1, 6)
 
-                    val current = LocalDateTime.now()
-
-                    val formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy")
-                    val formatted = current.format(formatter)
+                    val currentDateTime1  = LocalDateTime.now()
+                    val dateFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                    val dateText1 = currentDateTime1.format(dateFormat1)
 
                     val data = SocialDistanceScore(
                         newId,
                         "Check In",
                         100,
-                        formatted, dataSent.toString()
+                        dateText1, dataSent.toString()
                     )
 
                     ref.child(newId).setValue(data)

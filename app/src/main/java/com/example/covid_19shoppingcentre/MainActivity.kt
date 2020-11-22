@@ -44,10 +44,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val memberID = intent.getStringExtra("MemberID")
+
         //Toast.makeText(this,memberID,Toast.LENGTH_SHORT).show()
         toggle = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -223,7 +225,7 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.setLayoutManager(LinearLayoutManager(this))
         mDatabase = Firebase.database.reference
             //FirebaseDatabase.getInstance().getReference("Store").limitToFirst(2)
-        logRecyclerView()
+        logRecyclerView(memberID)
 
         storeList_btn.setOnClickListener {
             val i = Intent(
@@ -252,7 +254,7 @@ class MainActivity : AppCompatActivity() {
                         displayScoreText.setText(p0.child("CurrentScore").value.toString())
                     }
                 }else{
-                    Toast.makeText(applicationContext, "Haiyaa", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, memberID, Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -270,8 +272,11 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
-    private fun logRecyclerView(){
-        val memberID:String = intent.getStringExtra("MemberID")
+    private fun logRecyclerView(id: CharSequence?){
+
+        //val memberID:String = intent.getStringExtra("MemberID")
+
+
 
         FirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Store, Store_List.StoreViewHolder>(
             Store::class.java,
@@ -295,7 +300,7 @@ class MainActivity : AppCompatActivity() {
                                     this@MainActivity,
                                     ReserveStore_List::class.java
                                 )
-                                i.putExtra("memberid", memberID)
+                                i.putExtra("memberid", id)
                                 startActivity(i)
                             }
                             val storeId = snapshot.key.toString()
@@ -362,5 +367,6 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
 }
 

@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -19,6 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.StringBuilder
 import android.widget.ListView
+import androidx.appcompat.app.ActionBar
 import com.example.covid_19shoppingcentre.nearby_hospital
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -33,6 +35,7 @@ class ViewPlace : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_place)
 
+        setActionBar()
         //Init Service
         mService = Common.googleApiService
 
@@ -133,5 +136,21 @@ class ViewPlace : AppCompatActivity() {
         url.append("&photoreference=$photo_reference")
         url.append("&key=AIzaSyDQFRH8H5JA_Tw6Rnwne4CVB2VaNagqvsM")
         return url.toString()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = intent.getStringExtra("MemberID")
+
+        val intent1 = Intent(this, nearby_hospital::class.java).apply {
+            putExtra("MemberID", id)
+        }
+        startActivity(intent1)
+        return false
+    }
+
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Hospital Near Me"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 }
