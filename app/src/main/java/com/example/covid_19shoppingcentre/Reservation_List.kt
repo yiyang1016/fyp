@@ -79,7 +79,7 @@ class Reservation_List :AppCompatActivity() {
     }
 
     private fun logRecyclerView(){
-        val memberI = "M00001"
+        val memberI = intent.getStringExtra("memberid")
 
         FirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Reserve, ReserveViewHolder>(
             Reserve::class.java,
@@ -102,6 +102,7 @@ class Reservation_List :AppCompatActivity() {
                             i.putExtra("time", p1.time.toString())
                             i.putExtra("date", p1.date.toString())
                             i.putExtra("status", p1.status.toString())
+                            i.putExtra("memberIdDetails", memberI)
                             startActivity(i)
                         }
 
@@ -119,7 +120,7 @@ class Reservation_List :AppCompatActivity() {
     }
 
     private fun logRecyclerView1(){
-        val memberI = "M00001"
+        val memberI = intent.getStringExtra("memberid")
 
         FirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Reserve, ReserveViewHolder>(
             Reserve::class.java,
@@ -142,6 +143,7 @@ class Reservation_List :AppCompatActivity() {
                             i.putExtra("time", p1.time.toString())
                             i.putExtra("date", p1.date.toString())
                             i.putExtra("status", p1.status.toString())
+                            i.putExtra("memberIdDetails", memberI)
                             startActivity(i)
                         }
 
@@ -162,8 +164,10 @@ class Reservation_List :AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = intent.getStringExtra("memberid")
+
         val intent1 = Intent(this, MainActivity::class.java).apply {
-            putExtra("EXTRA_MESSAGE", "message")
+            putExtra("MemberID", id)
         }
         startActivity(intent1)
         return false
@@ -174,45 +178,4 @@ class Reservation_List :AppCompatActivity() {
         actionBar!!.title = "Reservation List"
         actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
-
-//    private fun executeHandler() {
-//        //If the handler and runnable are null we create it the first time.
-//        if (handler == null && runnable == null) {
-//            handler = Handler()
-//            runnable = object : Runnable {
-//                @RequiresApi(Build.VERSION_CODES.O)
-//                override fun run() {
-//                    //Updating firebase store/getting
-//                    checkTime()
-//                    notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//                    checkNotification()
-//                    //And we execute it again
-//                    handler!!.postDelayed(this, EVERY_EIGHT_SECOND)
-//                }
-//            }
-//        } else {
-//            handler?.postDelayed(runnable, EVERY_EIGHT_SECOND)
-//        }
-//    }
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    override fun onResume() {
-//        super.onResume()
-//        //execute the handler again.
-//        executeHandler()
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        //we remove the callback
-//        //handler?.removeCallbacks(runnable)
-//        //and we set the status to offline.
-//    }
-//
-//    override fun onStop() {
-//        super.onStop()
-//        //we remove the callback
-//        executeHandler()
-//        //and we set the status to offline.
-//    }
 }

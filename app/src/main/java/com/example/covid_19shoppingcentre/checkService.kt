@@ -106,9 +106,10 @@ class checkService : Service() {
                 try{
                     for (s0 in s0.children){
                         if (s0.child("status").value.toString() == "active" && s0.child("date").value.toString() == dateText.toString()){
-                            if(s0.child("hour").value.toString().toInt() == hourNow && minuteNow == 50){
+                            if(s0.child("hour").value.toString().toInt() == 15 /*&& minuteNow >= 50*/){
                                 val time = s0.child("time").value.toString()
                                 val name = s0.child("storeName").value.toString()
+                                Toast.makeText(applicationContext, "got come here", Toast.LENGTH_SHORT).show()
                                 notification(time, name)
                             }
                         }
@@ -195,15 +196,28 @@ class checkService : Service() {
         val alarmSound =
             RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
+        val mNotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         try{
             val intent = Intent(this, Reservation_List::class.java)
             val pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    "COVID-19 Shopping Centre",
+                    "Reservation",
+                    NotificationManager.IMPORTANCE_HIGH
+                )
+                channel.description = "You had a Reservation in $N at $d"
+                mNotificationManager.createNotificationChannel(channel)
+            }
+
             builder = NotificationCompat.Builder(this, channelId)
                 .setContentTitle("Reservation")
                 .setContentText("You had a Reservation in $N at $d")
-                .setSmallIcon(R.drawable.hand_sanitizer)
+                .setSmallIcon(R.drawable.logo)
                 .setAutoCancel(true)
                 .setPriority(2)
                 .setSound(alarmSound)
@@ -211,7 +225,7 @@ class checkService : Service() {
                 .setLargeIcon(
                     BitmapFactory.decodeResource(
                         this.resources,
-                        R.drawable.hand_sanitizer
+                        R.drawable.logo
                     )
                 )
                 .setContentIntent(pendingIntent)

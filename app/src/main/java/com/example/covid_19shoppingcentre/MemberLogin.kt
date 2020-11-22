@@ -23,7 +23,7 @@ class MemberLogin : AppCompatActivity() {
         btnLogin.setOnClickListener{
             val userID = txtUserid.text.toString()
             val userPassword = txtPassword.text.toString()
-            lblWelcome.setText(userID)
+//            lblWelcome.setText(userID)
             //getData
             var checkUser:Query = userDatabase.orderByKey().equalTo(userID)
 
@@ -43,20 +43,11 @@ class MemberLogin : AppCompatActivity() {
                                 "Login Successfully",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            if(role == "staff"){
-                                val i = Intent(this@MemberLogin, StaffMainActivity::class.java)
-                                i.putExtra("MemberID", userID )
-                                startActivity(i)
-                            } else if (role == "member") {
-                                val i = Intent(this@MemberLogin, MainActivity::class.java)
-                                i.putExtra("MemberID", userID)
-                                startActivity(i)
-                            }
                             val i = Intent(this@MemberLogin, questionMobile::class.java)
                             i.putExtra("MemberID", userID)
                             startActivity(i)
                         }else
-                            Toast.makeText(applicationContext, pass,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "wrong password",Toast.LENGTH_SHORT).show()
                     }else
                         Toast.makeText(applicationContext, "Member ID doesn't exists $userID",Toast.LENGTH_SHORT).show()
                 }

@@ -1,8 +1,9 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.covid_19shoppingcentre.Common
 
 import java.io.File
 import android.content.Context
-import android.os.Environment
 import com.example.covid_19shoppingcentre.R
 
 object ReportCommon {

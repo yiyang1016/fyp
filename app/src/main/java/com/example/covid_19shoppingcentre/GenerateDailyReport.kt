@@ -30,7 +30,7 @@ import java.io.*
 
 class GenerateDailyReport : AppCompatActivity() {
 
-    val file_name : String = "Daily Report.pdf"
+    val file_name : String = "Daily_Report.pdf"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,15 +42,10 @@ class GenerateDailyReport : AppCompatActivity() {
             .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .withListener(object:PermissionListener{
                 override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                    Toast.makeText(
-                        applicationContext,
-                        "Test2",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     btnGenDailyRe.setOnClickListener {
                         Toast.makeText(
                             applicationContext,
-                            "Test1",
+                            "button clicked",
                             Toast.LENGTH_SHORT
                         ).show()
                         createPDFFile(ReportCommon.getAppPath(this@GenerateDailyReport)+file_name)
@@ -61,11 +56,6 @@ class GenerateDailyReport : AppCompatActivity() {
                     permission: PermissionRequest?,
                     token: PermissionToken?
                 ) {
-                    Toast.makeText(
-                        applicationContext,
-                        "Test3",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
 
                 override fun onPermissionDenied(response: PermissionDeniedResponse?) {
@@ -86,30 +76,25 @@ class GenerateDailyReport : AppCompatActivity() {
             File(path).delete()
         try {
             val document = Document()
+
+            //save
+            PdfWriter.getInstance(document,  FileOutputStream(path))
+            //open to write
+            document.open()
+
+            //setting
+            document.pageSize = PageSize.A4
+            document.addCreationDate()
+            document.addAuthor("FYP Project")
+            document.addCreator("Choo Yao Song")
+
             Toast.makeText(
                 applicationContext,
                 "Test4",
                 Toast.LENGTH_SHORT
             ).show()
 
-            PdfWriter.getInstance(document,  FileOutputStream(path))
-            Toast.makeText(
-                applicationContext,
-                "Test3",
-                Toast.LENGTH_SHORT
-            ).show()
-            document.open()
-            Toast.makeText(
-                applicationContext,
-                "Test2",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            document.pageSize = PageSize.A4
-            document.addCreationDate()
-            document.addAuthor("FYP Project")
-            document.addCreator("Choo Yao Song")
-
+            //font Setting
             val colorAccent = BaseColor(0,153,204,255)
             val headingFontSize = 20.0f
             val valueFontSize = 26.0f
@@ -122,16 +107,19 @@ class GenerateDailyReport : AppCompatActivity() {
             val headingStyle = Font(fontName, headingFontSize,Font.NORMAL,colorAccent)
             addNewItem(document, "Order No:", Element.ALIGN_LEFT, headingStyle)
 
-            val valueStyle = Font(fontName, headingFontSize,Font.NORMAL,colorAccent)
+            val valueStyle = Font(fontName, headingFontSize,Font.NORMAL, BaseColor.BLACK)
             addNewItem(document, "#123123", Element.ALIGN_LEFT, valueStyle)
 
-            addLineSpace(document)
+            //addLineSpace(document)
+
             addLineSeperator(document)
-            addNewItem(document, "Order Date:", Element.ALIGN_LEFT, valueStyle)
+
+            addNewItem(document, "Order Date:", Element.ALIGN_LEFT, headingStyle)
             addNewItem(document, "03/08/2019", Element.ALIGN_LEFT, valueStyle)
 
             addLineSeperator(document)
-            addNewItem(document, "Account Name", Element.ALIGN_LEFT, valueStyle)
+
+            addNewItem(document, "Account Name", Element.ALIGN_LEFT, headingStyle)
             addNewItem(document, "Yao Song", Element.ALIGN_LEFT, valueStyle)
 
             addLineSeperator(document)
@@ -140,14 +128,17 @@ class GenerateDailyReport : AppCompatActivity() {
             addNewItem(document, "Product Details", Element.ALIGN_CENTER,titleStyle)
 
             addLineSeperator(document)
+
             addNewItemWithLeftAndRight(document,"Pizza 25","(0.0%)", titleStyle,valueStyle)
             addNewItemWithLeftAndRight(document,"12.0*1000","12000.0", titleStyle,valueStyle)
 
             addLineSeperator(document)
+
             addNewItemWithLeftAndRight(document,"Pizza 25","(0.0%)", titleStyle,valueStyle)
             addNewItemWithLeftAndRight(document,"12.0*1000","12000.0", titleStyle,valueStyle)
 
             addLineSeperator(document)
+
             addLineSpace(document)
             addLineSpace(document)
 
@@ -155,12 +146,9 @@ class GenerateDailyReport : AppCompatActivity() {
 
             document.close()
 
-            Toast.makeText(
-                applicationContext,
-                "Report has Generated",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(applicationContext, "Report has Generated", Toast.LENGTH_SHORT).show()
 
+            printPDF()
         } catch (e:Exception){
             Log.e("Error", ""+e.message)
         }
@@ -201,7 +189,7 @@ class GenerateDailyReport : AppCompatActivity() {
     }
 
     @Throws(DocumentException::class)
-    private fun addNewItem(document: Document, text:String, align:Int, style: Font){
+    private fun addNewItem(document: Document, text: String, align: Int, style: Font){
         val chunk = Chunk(text,style)
         val p = Paragraph(chunk)
         p.alignment = align

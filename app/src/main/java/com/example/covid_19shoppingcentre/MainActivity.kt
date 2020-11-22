@@ -43,8 +43,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        val memberID:String = intent.getStringExtra("MemberID")
+        val memberID = intent.getStringExtra("MemberID")
         //Toast.makeText(this,memberID,Toast.LENGTH_SHORT).show()
         toggle = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -59,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                     this@MainActivity,
                     ReserveStore_List::class.java
                 )
+                    i.putExtra("memberid", memberID)
                 startActivity(i)
             }
                 R.id.nav_reservation_list -> {
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                         this@MainActivity,
                         Reservation_List::class.java
                     )
+                    i.putExtra("memberid", memberID)
                     startActivity(i)
                 }
                 R.id.nav_storeList -> {
@@ -230,13 +231,12 @@ class MainActivity : AppCompatActivity() {
 
         val serviceClass = checkService::class.java
         val intent1 = Intent(applicationContext, serviceClass)
-        intent1.putExtra("MemberId", "M00001")
+        intent1.putExtra("MemberId", memberID)
 
         if (!isServiceRunning(serviceClass)) {
             // Start the service
             startService(intent1)
         } else {
-            Toast.makeText(applicationContext,"service already running",Toast.LENGTH_SHORT).show()
         }
 
         //Display First Two Store
@@ -251,8 +251,8 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(
                 this@MainActivity,
                 ReserveStore_List::class.java
-
             )
+            i.putExtra("memberid", memberID)
             startActivity(i)
         }
 
@@ -260,144 +260,8 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        /*StaffMainPage.setOnClickListener {
-            stopService(intent1)
-            val intent = Intent(this, StaffMainActivity::class.java)
-            startActivity(intent)
-        }
-
-        reserveBtn.setOnClickListener {
-            val intent = Intent(this, ReserveStore_List::class.java)
-            startActivity(intent)
-        }
-
-        reserveListBtn.setOnClickListener{
-            val intent = Intent(this, Reservation_List::class.java)
-            startActivity(intent)
-        }
-
-        store_list.setOnClickListener {
-            val intent = Intent(this, Store_List::class.java)
-            startActivity(intent)
-        }
-
-        sdchBtn.setOnClickListener {
-            val intent = Intent(this, social_distance_score_history::class.java)
-            startActivity(intent)
-        }
-        btnDistance_tracking.setOnClickListener {
-            val intent = Intent(this, distance_tracking::class.java)
-            startActivity(intent)
-        }
-
-        btnNearbyHospital.setOnClickListener {
-            val intent = Intent(this, nearby_hospital::class.java)
-            startActivity(intent)
-        }
-
-        btnStoreLogin.setOnClickListener {
-            val intent = Intent(this, tabletStoreLoginVarification::class.java)
-            startActivity(intent)
-        }
-
-        btnQuestionaire.setOnClickListener{
-            val intent = Intent(this, questionMobile::class.java)
-            startActivity(intent)
-        }
-
-        review.setOnClickListener {
-            val dialogBuilder = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
-
-            val view = layoutInflater.inflate(R.layout.customer_review, null)
-            dialogBuilder.setView(view)
-            val alertDialog = dialogBuilder.create()
-            alertDialog.show()
-
-            val submitButton = view.btnSubmit
-            submitButton.setOnClickListener {
-                if (view.review1.rating.toInt() == 0 || view.review2.rating.toInt() == 0 ||
-                    view.review3.rating.toInt() == 0 || view.review4.rating.toInt() == 0
-                ) {
-                    val errordialogBuilder =
-                        AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
-                    val view1 = layoutInflater.inflate(R.layout.customer_review_empty_field, null)
-                    errordialogBuilder.setView(view1)
-                    val alertDialog1 = errordialogBuilder.create()
-                    alertDialog1.show()
-                    view1.okbtn.setOnClickListener {
-                        alertDialog1.cancel()
-                    }
-                } else {
-                    val ref = FirebaseDatabase.getInstance().getReference("Review")
-                    var reviewId = ""
-                    val refSearch =
-                        FirebaseDatabase.getInstance().getReference("Review").orderByKey()
-                            .limitToLast(1)
-
-                    refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(error: DatabaseError) {
-                            val text = "Connection Failed"
-                            Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
-                        }
-
-                        override fun onDataChange(p0: DataSnapshot) {
-                            if (p0.exists()) {
-                                for (p0 in p0.children) {
-                                    val reviewsId = p0.getValue(ReviewIdClass::class.java)
-                                    reviewId = reviewsId.toString()
-                                }
-
-                                val cal = ((reviewId.substring(2, 7)).toInt()) + 1
-                                val num = 100000 + cal
-                                val newId = "RV" + num.toString().substring(1,6)
-
-                                val editText = view.review5
-                                if (editText.text.toString() != null) {
-                                    val showString = editText.text.toString()
-
-                                    var feedback = ""
-                                    feedback = view.review5.text.toString()
-
-                                    val data = Review(
-                                        newId,
-                                        view.review1.rating.toInt(),
-                                        view.review2.rating.toInt(),
-                                        view.review3.rating.toInt(),
-                                        view.review4.rating.toInt(),
-                                        feedback
-                                    )
-
-                                    ref.child(newId).setValue(data).addOnCompleteListener {
-                                        val submissiondialogBuilder = AlertDialog.Builder(
-                                            this@MainActivity,
-                                            R.style.CustomAlertDialog
-                                        )
-                                        alertDialog.cancel()
-                                        val view2 = layoutInflater.inflate(
-                                            R.layout.customer_review_submission,
-                                            null
-                                        )
-                                        submissiondialogBuilder.setView(view2)
-                                        val alertDialog = submissiondialogBuilder.create()
-                                        alertDialog.show()
-                                        view2.okbtn.setOnClickListener {
-                                            alertDialog.cancel()
-                                        }
-                                    }
-
-                                }
-                            }
-
-                        }
-                    })
-
-                }
-
-            }
-
-        }*/
         //Get Today Score
-        val refSearch = FirebaseDatabase.getInstance().getReference().child("Member").orderByChild("Id").equalTo("M00004")
+        val refSearch = FirebaseDatabase.getInstance().getReference().child("Member").orderByChild("Id").equalTo(memberID)
         refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 val text = "Connection Failed"
@@ -408,7 +272,6 @@ class MainActivity : AppCompatActivity() {
                 if (p0.exists()) {
                     for (p0 in p0.children) {
                         displayScoreText.setText(p0.child("CurrentScore").value.toString())
-                        Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
                     }
                 }else{
                     Toast.makeText(applicationContext, "Haiyaa", Toast.LENGTH_SHORT).show()
@@ -430,6 +293,8 @@ class MainActivity : AppCompatActivity() {
         return false
     }
     private fun logRecyclerView(){
+        val memberID:String = intent.getStringExtra("MemberID")
+
         FirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<Store, Store_List.StoreViewHolder>(
             Store::class.java,
             R.layout.list_layout,
@@ -452,6 +317,7 @@ class MainActivity : AppCompatActivity() {
                                     this@MainActivity,
                                     ReserveStore_List::class.java
                                 )
+                                i.putExtra("memberid", memberID)
                                 startActivity(i)
                             }
                             val storeId = snapshot.key.toString()

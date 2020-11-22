@@ -18,8 +18,8 @@ class PdfDocumentAdapter(context: Context, path:String): PrintDocumentAdapter() 
     internal var path = ""
 
     init {
-        this.context = context;
-        this.path = path;
+        this.context = context
+        this.path = path
     }
 
     override fun onLayout(
@@ -41,10 +41,10 @@ class PdfDocumentAdapter(context: Context, path:String): PrintDocumentAdapter() 
     }
 
     override fun onWrite(
-        pages: Array<out PageRange>?,
-        destination: ParcelFileDescriptor?,
+        pageRanges: Array<out PageRange>?,
+        parcelFileDescriptor: ParcelFileDescriptor?,
         cancellationSignal: CancellationSignal?,
-        callback: WriteResultCallback?
+        writeResultCallback: WriteResultCallback?
     ) {
         var inputS : InputStream?=null
         var out : OutputStream?=null
@@ -52,17 +52,16 @@ class PdfDocumentAdapter(context: Context, path:String): PrintDocumentAdapter() 
         try{
             val file = File(path)
             inputS = FileInputStream(file)
-            out = FileOutputStream(destination!!.fileDescriptor)
+            out = FileOutputStream(parcelFileDescriptor!!.fileDescriptor)
 
-            if(!cancellationSignal!!.isCanceled)
-            {
+            if(!cancellationSignal!!.isCanceled) {
                 inputS.copyTo(out)
-                callback!!.onWriteFinished(arrayOf(PageRange.ALL_PAGES))
+                writeResultCallback!!.onWriteFinished(arrayOf(ALL_PAGES))
             }
             else
-                callback!!.onWriteCancelled()
+                writeResultCallback!!.onWriteCancelled()
         }catch(e:Exception){
-            callback!!.onWriteFailed(e.message)
+            writeResultCallback!!.onWriteFailed(e.message)
             Log.e("Error", e.message)
         }finally{
             try{
@@ -73,5 +72,4 @@ class PdfDocumentAdapter(context: Context, path:String): PrintDocumentAdapter() 
             }
         }
     }
-
 }

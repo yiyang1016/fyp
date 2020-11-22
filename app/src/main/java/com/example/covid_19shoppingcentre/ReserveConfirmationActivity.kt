@@ -69,12 +69,12 @@ class ReserveConfirmationActivity : AppCompatActivity() {
         val reserveDate = intent.getStringExtra("reserveDate")
         val storeI = intent.getStringExtra("storeId")
         val reserveTime = intent.getStringExtra("reserveTime")
+        val memberI = intent.getStringExtra("memberid3")
 
         val statusNow = "active"
-        val memberI = "M00001"
 
         val intent1 = Intent(this, Reservation_List::class.java).apply {
-            putExtra("whatMessage", "message")
+            putExtra("memberid", memberI)
         }
 
         val query = Database.child("Reservation")
@@ -100,11 +100,11 @@ class ReserveConfirmationActivity : AppCompatActivity() {
         val storeN = intent.getStringExtra("storeName")
         val reserveDate = intent.getStringExtra("reserveDate")
         val reserveTime = intent.getStringExtra("reserveTime")
+        val memberI = intent.getStringExtra("memberid3")
 
         val query = Database.child("ReservationList")
 
         val statusNow = "active"
-        val memberI = "M00001"
         val needTime: String
 
         if (reserveTime.toString() == "10:00 AM") {
@@ -210,12 +210,14 @@ class ReserveConfirmationActivity : AppCompatActivity() {
         val storeN = intent.getStringExtra("storeName")
         val reserveD = intent.getStringExtra("reserveDate")
         val storeI = intent.getStringExtra("storeId")
+        val idd = intent.getStringExtra("memberid3")
 
         val intent1 = Intent(this, ReserveTime::class.java).apply {
             putExtra("storeName", storeN)
             putExtra("storePic", pic)
             putExtra("storeId", storeI)
             putExtra("ReserveDate", reserveD)
+            putExtra("memberid2", idd)
         }
         startActivity(intent1)
         return false

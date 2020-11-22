@@ -69,8 +69,10 @@ class ReserveDetailsPassActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val memberI = intent.getStringExtra("memberIdDetails")
+
         val intent1 = Intent(this, Reservation_List::class.java).apply {
-            putExtra("EXTRA_MESSAGE", "message")
+            putExtra("memberid", memberI)
         }
         startActivity(intent1)
         return false

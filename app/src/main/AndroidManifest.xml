@@ -45,7 +45,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="edmt.dev.kotlinpdfprint.fileprovider"
+            android:authorities="com.example.covid_19shoppingcentre"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -82,16 +82,11 @@
             android:name=".QRScannerActivity"
             android:label="QR Scanner" />
         <activity android:name=".CustomerInformationActivity" />
-        <activity
-            android:name=".ReserveStore_List"
-            android:label="Store List"
-            android:parentActivityName=".MainActivity" />
+        <activity android:name=".ReserveStore_List" />
         <activity android:name=".ReserveDate" />
         <activity android:name=".ReserveTime" />
         <activity android:name=".ReserveConfirmationActivity" />
-        <activity
-            android:name=".Reservation_List"
-            android:launchMode="singleTop" />
+        <activity android:name=".Reservation_List" />
         <activity
             android:name=".ReserveDetailsActivity"
             android:launchMode="singleTop" />

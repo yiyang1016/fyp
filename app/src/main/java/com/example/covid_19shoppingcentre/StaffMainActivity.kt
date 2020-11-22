@@ -39,7 +39,6 @@ class StaffMainActivity : AppCompatActivity() {
             // Start the service
             startService(intent1)
         } else {
-            Toast.makeText(applicationContext,"service already running",Toast.LENGTH_SHORT).show()
         }
 
         val SC_Customer_CheckIn = findViewById<Button>(R.id.SCCheckInBtn)

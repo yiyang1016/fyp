@@ -117,14 +117,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:18.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
-
-
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
     //Report Libraries
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'com.karumi:dexter:5.0.0'
-
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
 

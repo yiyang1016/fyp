@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +22,12 @@ public class QRCodeGenerator extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generate_qr_code);
+
+        Button buttonX = (Button)findViewById(R.id.button10);
+
         //CHANGE TO GENERATE USERID AFTER COMBINE
         Intent intent = getIntent();
-        String generateWord = intent.getStringExtra("MemberEmail");;
+        String generateWord = intent.getStringExtra("MemberID");;
         ImageView qrImage = findViewById(R.id.imgViewQRCode);
         WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
@@ -42,5 +47,14 @@ public class QRCodeGenerator extends AppCompatActivity{
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        buttonX.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getBaseContext(), MainActivity.class);
+                i.putExtra("MemberID", generateWord);
+                startActivity(i);
+            }
+        });
     }
 }

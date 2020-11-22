@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +26,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-
 class ReserveStore_List :AppCompatActivity() {
 
     lateinit var  mRecyclerView: RecyclerView
@@ -41,7 +42,7 @@ class ReserveStore_List :AppCompatActivity() {
         mRecyclerView.setLayoutManager(LinearLayoutManager(this))
         mDatabase = FirebaseDatabase.getInstance().getReference("Store")
         logRecyclerView()
-
+        setActionBar()
 
         searchStore.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -71,6 +72,7 @@ class ReserveStore_List :AppCompatActivity() {
                 findId.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (snapshot in snapshot.children) {
+                            var idd = intent.getStringExtra("memberid")
                             p0.mView.setOnClickListener {
                                 val i = Intent(
                                     this@ReserveStore_List,
@@ -78,8 +80,8 @@ class ReserveStore_List :AppCompatActivity() {
                                 )
                                 i.putExtra("StoreName", p1.Store_Name.toString())
                                 i.putExtra("StorePic", p1.Store_Image)
+                                i.putExtra("memberid1", idd)
                                 startActivity(i)
-
                             }
                             val storeId = snapshot.key.toString()
                             var customerCountInt = 0
@@ -224,12 +226,15 @@ class ReserveStore_List :AppCompatActivity() {
                     findId.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (snapshot in snapshot.children) {
+                                var idd = intent.getStringExtra("memberid")
                                 p0.mView.setOnClickListener {
                                     val i = Intent(
                                         this@ReserveStore_List,
                                         ReserveDate::class.java
                                     )
                                     i.putExtra("StoreName", p1.Store_Name.toString())
+                                    i.putExtra("StorePic", p1.Store_Image)
+                                    i.putExtra("memberid1", idd)
                                     startActivity(i)
 
                                 }
@@ -288,5 +293,21 @@ class ReserveStore_List :AppCompatActivity() {
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.slide_down_reverse, R.anim.slide_up_reverse)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = intent.getStringExtra("memberid")
+
+        val intent1 = Intent(this, MainActivity::class.java).apply {
+            putExtra("MemberID", id)
+        }
+        startActivity(intent1)
+        return false
+    }
+
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Store List"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 }

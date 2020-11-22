@@ -38,6 +38,7 @@ class ReserveDetailsActivity : AppCompatActivity() {
         val reserveD = intent.getStringExtra("date")
         val statu = intent.getStringExtra("status")
 
+
         storeName.text = storeN
         time.text = reserveT
         status.text = statu
@@ -71,7 +72,7 @@ class ReserveDetailsActivity : AppCompatActivity() {
     }
 
     private fun cancelReservation() {
-        val memberI = "M00001"
+        val memberI = intent.getStringExtra("memberIdDetails")
         val storeN = intent.getStringExtra("name")
         val reserveT = intent.getStringExtra("time")
         val reserveD = intent.getStringExtra("date")
@@ -103,7 +104,7 @@ class ReserveDetailsActivity : AppCompatActivity() {
     }
 
     private fun cancelList() {
-        val memberI = "M00001"
+        val memberI = intent.getStringExtra("memberIdDetails")
         val storeN = intent.getStringExtra("name")
         val reserveT = intent.getStringExtra("time")
         val reserveD = intent.getStringExtra("date")
@@ -127,8 +128,10 @@ class ReserveDetailsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val memberI = intent.getStringExtra("memberIdDetails")
+
         val intent1 = Intent(this, Reservation_List::class.java).apply {
-            putExtra("EXTRA_MESSAGE", "message")
+            putExtra("memberid", memberI)
         }
         startActivity(intent1)
         return false

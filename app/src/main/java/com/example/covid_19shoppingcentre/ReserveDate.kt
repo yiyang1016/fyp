@@ -32,6 +32,8 @@ class ReserveDate : AppCompatActivity() {
 
         setActionBar()
 
+        var idd = intent.getStringExtra("memberid1")
+
         val storeN = intent.getStringExtra("StoreName")
 
         val simpleDateFormat = SimpleDateFormat("dd/MM/yy")
@@ -56,6 +58,7 @@ class ReserveDate : AppCompatActivity() {
         val query = Database.child("Store").orderByChild("Store_Name").equalTo(storeN)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(s0: DataSnapshot) {
+                var idd = intent.getStringExtra("memberid1")
                 try {
                     for (s0 in s0.children) {
                         val storeId = s0.key.toString()
@@ -72,6 +75,7 @@ class ReserveDate : AppCompatActivity() {
                             i.putExtra("storeName", storeN)
                             i.putExtra("storeId", storeId)
                             i.putExtra("storePic", pic)
+                            i.putExtra("memberid2", idd)
                             startActivity(i)
                         }
                     }
@@ -87,8 +91,10 @@ class ReserveDate : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var idd = intent.getStringExtra("memberid1")
+
         val intent1 = Intent(this, ReserveStore_List::class.java).apply {
-            putExtra("EXTRA_MESSAGE", "message")
+            putExtra("memberid", idd)
         }
         startActivity(intent1)
         return false
