@@ -35,6 +35,7 @@ class QRCodeScanner : AppCompatActivity(){
     private var bodyTemp: String? =null
     private var userDatabase =  FirebaseDatabase.getInstance().getReference("NewCheckInStore")
     private var mDatabase = FirebaseDatabase.getInstance().getReference("ShoppingCentre")
+    private var Database = FirebaseDatabase.getInstance().getReference()
     private lateinit var checkInStoreId:String
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,6 +108,20 @@ class QRCodeScanner : AppCompatActivity(){
                         val date = getCurrentDateTime()
                     val currentDateTime = date.toString("yyyy/MM/dd")
                     val hourFormat = date.toString("hh:mm aa")
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        val currentDateTime1  = LocalDateTime.now()
+                        val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                        val dateText = currentDateTime1.format(dateFormat)
+                        val hourMinuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
+                        val hourFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
+                        val hourMinuteText = currentDateTime1.format(hourMinuteFormat)
+                        val hourFormatText = currentDateTime1.format(hourFormat1)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
                         checkInDate = currentDateTime
                     checkInTime = hourFormat
                         mDatabase.addListenerForSingleValueEvent(object: ValueEventListener{
@@ -124,6 +139,13 @@ class QRCodeScanner : AppCompatActivity(){
                                         }
                                         userDatabase.child(checkInStoreId).setValue(MemberCheckInStore(checkInDate,checkInTime,customerId,status,
                                             storeId!!,bodyTemp))
+
+                                        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("checkInTime").setValue(hourMinuteText.toString())
+                                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("checkOutTime").setValue("pending")
+                                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("customerId").setValue(customerId.toString())
+                                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("status").setValue("active")
+                                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                     }else{
                                         Toast.makeText(this@QRCodeScanner, "Please checked in at the Shopping Mall Main entrance",Toast.LENGTH_SHORT).show()
                                     }
@@ -140,6 +162,18 @@ class QRCodeScanner : AppCompatActivity(){
                         val hourFormat = date.toString("hh:mm aa")
                         checkOutTime  = hourFormat
                         userDatabase.child(checkInStoreId!!).child("checkOutTime").setValue(checkOutTime)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        val currentDateTime2  = LocalDateTime.now()
+                        val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                        val dateText = currentDateTime2.format(dateFormat)
+                        val hourFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
+                        val hourFormatText = currentDateTime2.format(hourFormat1)
+
+                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("checkOutTime").setValue(checkOutTime.toString())
+                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("status").setValue("pass")
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     }else{
                         Toast.makeText(this, "Please Scan the correct store QR code", Toast.LENGTH_LONG).show()
                     }
