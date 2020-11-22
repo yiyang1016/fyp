@@ -76,40 +76,12 @@ class MainActivity : AppCompatActivity() {
                     )
                     startActivity(i)
                 }
-                R.id.nav_storeLogin -> {
-                    val i = Intent(
-                        this@MainActivity,
-                        tabletStoreLoginVarification::class.java
-                    )
-                    startActivity(i)
-                }
-                R.id.nav_staffRegistration -> {
-                    val i = Intent(
-                        this@MainActivity,
-                        StaffRegistration::class.java
-                    )
-                    startActivity(i)
-                }
                 R.id.nav_generateQR->{
                     val i = Intent(
                         this@MainActivity,
                         QRCodeGenerator::class.java
                     )
                     i.putExtra("MemberID", memberID)
-                    startActivity(i)
-                }
-                R.id.nav_MaleFemalePieChart -> {
-                    val i = Intent(
-                        this@MainActivity,
-                        PieChartMaleFemale::class.java
-                    )
-                    startActivity(i)
-                }
-                R.id.nav_GenerateDailyReport -> {
-                    val i = Intent(
-                        this@MainActivity,
-                        GenerateDailyReportJava::class.java
-                    )
                     startActivity(i)
                 }
                 R.id.nav_distanceTrackingBtn ->{
@@ -217,13 +189,6 @@ class MainActivity : AppCompatActivity() {
 
                         }
                     }
-                }
-                R.id.nav_storeRegistration -> {
-                    val i = Intent(
-                        this@MainActivity,
-                        storeRegistration::class.java
-                    )
-                    startActivity(i)
                 }
             }
             true

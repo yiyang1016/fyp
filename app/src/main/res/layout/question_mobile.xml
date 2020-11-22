@@ -8,14 +8,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="632dp"
+        android:layout_width="354dp"
+        android:layout_height="582dp"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="29dp"
         android:background="@drawable/radius"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -23,35 +23,29 @@
             android:id="@+id/tfQ2"
             android:layout_width="34dp"
             android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             android:text="Q2"
-            app:layout_constraintBottom_toTopOf="@+id/tfquestion4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cbBreath"
-            app:layout_constraintVertical_bias="0.588" />
+            app:layout_constraintTop_toBottomOf="@+id/cbBreath" />
 
         <CheckBox
             android:id="@+id/cbNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="12dp"
             android:text="No"
-            app:layout_constraintBottom_toTopOf="@+id/tfquestion4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.638"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cbFever"
-            app:layout_constraintVertical_bias="0.962" />
+            app:layout_constraintStart_toEndOf="@+id/cbBreath"
+            app:layout_constraintTop_toBottomOf="@+id/cbHead" />
 
         <TextView
             android:id="@+id/tfquestion"
-            android:layout_width="153dp"
-            android:layout_height="45dp"
-            android:text="Question"
+            android:layout_width="185dp"
+            android:layout_height="44dp"
+            android:text="Questionnaire"
             android:textColor="@color/cardview_dark_background"
             android:textSize="30sp"
-            app:layout_constraintBottom_toTopOf="@+id/tfquestion1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -60,32 +54,25 @@
             android:id="@+id/tfquestion1"
             android:layout_width="321dp"
             android:layout_height="30dp"
-            android:layout_marginStart="7dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="7dp"
+            android:layout_marginTop="4dp"
             android:text="Do you have any following Symtoms?"
             android:textColor="@color/cardview_dark_background"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tfQ1"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/tfQ1" />
 
         <TextView
             android:id="@+id/tfquestion2"
             android:layout_width="340dp"
             android:layout_height="48dp"
+            android:layout_marginTop="8dp"
             android:text="Do you been Red Zone or traveled outside of Malaysia in past 14 days?"
             android:textColor="@color/cardview_dark_background"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.642"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.76" />
+            app:layout_constraintTop_toBottomOf="@+id/tfQ3" />
 
         <TextView
             android:id="@+id/tfquestion4"
@@ -94,83 +81,71 @@
             android:text="Do you have close contact with someone has laboratory-confirmed Covid-19 diagnoisi in past 14 days?"
             android:textColor="@color/cardview_dark_background"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tfQ2" />
 
         <TextView
             android:id="@+id/tfQ1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Q1"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.047"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.092" />
+            app:layout_constraintTop_toBottomOf="@+id/tfquestion" />
 
         <CheckBox
             android:id="@+id/cbHead"
             android:layout_width="184dp"
             android:layout_height="31dp"
-            android:layout_marginBottom="428dp"
+            android:layout_marginTop="16dp"
             android:text="Head or Muscle Aches"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintHorizontal_bias="0.094"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/cbCough" />
 
         <CheckBox
             android:id="@+id/cbSoreThroat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
             android:text="SoreThroat"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.396"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.215" />
+            app:layout_constraintStart_toEndOf="@+id/cbCough"
+            app:layout_constraintTop_toBottomOf="@+id/tfquestion1" />
 
         <CheckBox
             android:id="@+id/cbFever"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
             android:text="Fever"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.783"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.215" />
+            app:layout_constraintHorizontal_bias="0.027"
+            app:layout_constraintStart_toEndOf="@+id/cbSoreThroat"
+            app:layout_constraintTop_toBottomOf="@+id/tfquestion1" />
 
         <CheckBox
             android:id="@+id/cbBreath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             android:text="Difficulty Breathing"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.078"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.353" />
+            app:layout_constraintTop_toBottomOf="@+id/cbHead" />
 
         <RadioGroup
             android:id="@+id/rgYesNo3"
             android:layout_width="73dp"
             android:layout_height="66dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.056"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tfquestion2"
-            app:layout_constraintVertical_bias="0.229">
+            app:layout_constraintTop_toBottomOf="@+id/tfquestion2">
 
             <RadioButton
                 android:id="@+id/rbQ3Yes"
@@ -190,12 +165,10 @@
             android:id="@+id/rgYesNo2"
             android:layout_width="186dp"
             android:layout_height="56dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.047"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.625">
+            app:layout_constraintTop_toBottomOf="@+id/tfquestion4">
 
             <RadioButton
                 android:id="@+id/rbQ2Yes"
@@ -214,38 +187,31 @@
             android:id="@+id/tfQ3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:text="Q3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.047"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.693" />
+            app:layout_constraintTop_toBottomOf="@+id/rgYesNo2" />
 
         <CheckBox
             android:id="@+id/cbCough"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="Cough"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.056"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.215" />
+            app:layout_constraintTop_toBottomOf="@+id/tfquestion1" />
 
         <Button
             android:id="@+id/questionNextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="516dp"
+            android:layout_marginStart="144dp"
+            android:layout_marginTop="56dp"
             android:text="Next"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.954"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toEndOf="@+id/rgYesNo3"
+            app:layout_constraintTop_toBottomOf="@+id/tfquestion2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

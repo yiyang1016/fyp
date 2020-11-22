@@ -50,6 +50,7 @@ public class GenerateDailyReportJava extends AppCompatActivity {
 
         btn_create_pdf = (Button)findViewById(R.id.btn_create_pdf);
 
+
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {

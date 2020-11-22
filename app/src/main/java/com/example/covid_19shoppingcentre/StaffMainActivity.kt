@@ -67,6 +67,20 @@ class StaffMainActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+
+        btnDashBoardMain.setOnClickListener{
+            val intent = Intent(this, DashboardMain::class.java).apply {
+                putExtra("EXTRA_MESSAGE", "message")
+            }
+            startActivity(intent)
+        }
+
+        btnReportStaffMain.setOnClickListener{
+            val intent = Intent(this, GenerateDailyReportJava::class.java).apply {
+                putExtra("EXTRA_MESSAGE", "message")
+            }
+            startActivity(intent)
+        }
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {

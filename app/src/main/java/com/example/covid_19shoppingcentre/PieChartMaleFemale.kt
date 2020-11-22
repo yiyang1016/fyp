@@ -65,9 +65,9 @@ class PieChartMaleFemale : AppCompatActivity() {
                     }
                 }
 
-                listColors.add(resources.getColor(R.color.greyColor))
+                listColors.add(Color.YELLOW)
                 //value.add(PieEntry(male.toFloat(),"Male"))
-                listColors.add(resources.getColor(R.color.colorAccent))
+                listColors.add(Color.MAGENTA)
                 //value.add(PieEntry(female.toFloat(),"Female"))
 
                 value.add(PieEntry(a.toFloat(),"Male"))
@@ -81,7 +81,7 @@ class PieChartMaleFemale : AppCompatActivity() {
                 pieChart.setUsePercentValues(true)
                 pieChart.isDrawHoleEnabled = false
                 pieChart.description.isEnabled = false
-                pieChart.setEntryLabelColor(R.color.colorPrimaryDark)
+                pieChart.setEntryLabelColor(Color.BLUE)
                 pieChart.animateY(1400, Easing.EaseInOutQuad)
             }
             override fun onCancelled(error: DatabaseError) {

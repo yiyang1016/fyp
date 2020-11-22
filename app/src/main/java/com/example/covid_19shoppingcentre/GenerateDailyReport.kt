@@ -1,5 +1,5 @@
 package com.example.covid_19shoppingcentre
-
+/*
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -209,4 +209,4 @@ class GenerateDailyReport : AppCompatActivity() {
         actionBar!!.title = "Report"
         actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
-}
+}*/

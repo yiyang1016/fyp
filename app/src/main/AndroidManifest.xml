@@ -33,15 +33,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GenerateDailyReportJava"></activity>
-        <activity android:name=".StaffRegistration" />
-        <activity android:name=".PieChartMaleFemale" />
-        <activity android:name=".GenerateDailyReport" />
+        <activity android:name=".DashboardMain"></activity>
+        <activity
+            android:name=".GenerateDailyReportJava"
+            android:parentActivityName=".StaffMainActivity" />
+        <activity
+            android:name=".StaffRegistration"
+            android:parentActivityName=".StaffMainActivity" />
+        <activity
+            android:name=".PieChartMaleFemale"
+            android:parentActivityName=".StaffMainActivity" />
         <activity android:name=".uploadStorePicture" />
-        <activity android:name=".storeRegistration" /> <!-- <activity android:name=".Yiyang" /> -->
+        <activity
+            android:name=".storeRegistration"
+            android:parentActivityName=".StaffMainActivity" /> <!-- <activity android:name=".Yiyang" /> -->
         <activity android:name=".questionMobile" />
         <activity android:name=".tabletStoreCurrentCust" />
-        <activity android:name=".tabletStoreLoginVarification" />
+        <activity
+            android:name=".tabletStoreLoginVarification"
+            android:parentActivityName=".StaffMainActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -104,7 +114,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".QRCodeGenerator"/>
+        <activity android:name=".QRCodeGenerator" />
+
         <service
             android:name=".checkService"
             android:enabled="true"
