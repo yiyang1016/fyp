@@ -35,7 +35,6 @@ class MemberLogin : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.exists()){
                         var pass: String = snapshot.child(userID).child("Password").value.toString()
-                        var role = snapshot.child(userID).child("Role").value.toString()
 
                         if(pass == userPassword){
                             Toast.makeText(

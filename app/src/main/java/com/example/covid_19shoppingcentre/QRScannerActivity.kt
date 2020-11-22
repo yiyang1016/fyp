@@ -83,4 +83,11 @@ class QRScannerActivity :AppCompatActivity() {
         if(qrEader != null)
             qrEader!!.releaseAndCleanup()
     }
+
+    override fun onBackPressed() {
+        val intent1 = Intent(this, StaffMainActivity::class.java).apply {
+            putExtra("EXTRA_MESSAGE", "message")
+        }
+        startActivity(intent1)
+    }
 }

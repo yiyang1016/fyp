@@ -76,6 +76,11 @@ private var userDatabase = FirebaseDatabase.getInstance().getReference()
             startActivity(intent)
         }
 
+        btnLogout.setOnClickListener{
+            val intent = Intent(this, MemberLogin::class.java)
+            startActivity(intent)
+        }
+
         btnCustomerRecord.setOnClickListener {
             val intent = Intent(this, CustomerRecordSelecting::class.java)
             startActivity(intent)
