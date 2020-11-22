@@ -114,6 +114,11 @@
             android:label="MidValley" />
         <activity android:name=".MemberRegister" />
         <activity android:name=".MemberLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".QRCodeGenerator" />
         <activity android:name=".BodyTemperature">

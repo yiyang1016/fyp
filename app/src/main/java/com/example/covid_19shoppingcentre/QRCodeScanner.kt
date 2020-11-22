@@ -74,8 +74,6 @@ class QRCodeScanner : AppCompatActivity(){
             }
         })
 
-
-
         btnCamActivate.setOnClickListener{
             val scanner = IntentIntegrator(this)
             scanner.initiateScan()

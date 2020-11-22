@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.covid_19shoppingcentre"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -124,5 +124,7 @@ dependencies {
     //Report Libraries
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'com.karumi:dexter:5.0.0'
+
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 }
 
