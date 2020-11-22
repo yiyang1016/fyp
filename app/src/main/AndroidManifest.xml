@@ -42,7 +42,7 @@
             android:parentActivityName=".StaffMainActivity" />
         <activity
             android:name=".GenerateDailyReportJava"
-            android:parentActivityName=".StaffMainActivity" />
+            android:parentActivityName=".StaffMainActivity"/>
         <activity
             android:name=".StaffRegistration"
             android:parentActivityName=".StaffMainActivity" />

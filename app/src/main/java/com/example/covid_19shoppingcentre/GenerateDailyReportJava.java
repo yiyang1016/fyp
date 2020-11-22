@@ -10,6 +10,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -167,7 +168,6 @@ public class GenerateDailyReportJava extends AppCompatActivity {
 
             printPDF();
 
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -206,9 +206,7 @@ public class GenerateDailyReportJava extends AppCompatActivity {
 
     private void addLineSpace(Document document) throws DocumentException {
         document.add(new Paragraph(""));
-
     }
-
 
     private void addNewItem(Document document, String text, int align, Font font) throws DocumentException {
         Chunk chunk = new Chunk(text,font);
@@ -216,5 +214,4 @@ public class GenerateDailyReportJava extends AppCompatActivity {
         paragraph.setAlignment(align);
         document.add(paragraph);
     }
-
 }

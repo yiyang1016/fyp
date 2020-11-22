@@ -69,10 +69,10 @@ class MainActivity : AppCompatActivity() {
                     i.putExtra("memberid", memberID)
                     startActivity(i)
                 }
-                R.id.nav_storeList -> {
+                R.id.nav_logout -> {
                     val i = Intent(
                         this@MainActivity,
-                        StaffMainActivity::class.java
+                        MemberLogin::class.java
                     )
                     startActivity(i)
                 }

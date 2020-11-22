@@ -20,6 +20,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
@@ -177,5 +179,14 @@ class Reservation_List :AppCompatActivity() {
         val actionBar: ActionBar? = supportActionBar
         actionBar!!.title = "Reservation List"
         actionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onBackPressed() {
+        val id = intent.getStringExtra("memberid")
+
+        val intent1 = Intent(this, MainActivity::class.java).apply {
+            putExtra("MemberID", id)
+        }
+        startActivity(intent1)
     }
 }

@@ -1,15 +1,15 @@
 package com.example.covid_19shoppingcentre
 
-import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.member_login.*
+
 
 class MemberLogin : AppCompatActivity() {
     //firebase
@@ -61,7 +61,9 @@ class MemberLogin : AppCompatActivity() {
             val i = Intent(this@MemberLogin, MemberRegister::class.java)
             startActivity(i)
         }
-
     }
 
+    override fun onBackPressed() {
+        Toast.makeText(applicationContext, "Cannot go back",Toast.LENGTH_SHORT).show()
+    }
 }

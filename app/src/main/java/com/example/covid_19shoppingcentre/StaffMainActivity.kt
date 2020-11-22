@@ -63,10 +63,10 @@ private var userDatabase = FirebaseDatabase.getInstance().getReference()
         }
 
         SC_View_Store.setOnClickListener{
-            val intent = Intent(this, Store_List::class.java).apply {
+            val intent1 = Intent(this, Store_List::class.java).apply {
                 putExtra("EXTRA_MESSAGE", "message")
             }
-            startActivity(intent)
+            startActivity(intent1)
         }
 
         btnDashBoardMain.setOnClickListener{
@@ -153,5 +153,9 @@ private var userDatabase = FirebaseDatabase.getInstance().getReference()
             }
         }
         return false
+    }
+
+    override fun onBackPressed() {
+        Toast.makeText(applicationContext, "Cannot go back",Toast.LENGTH_SHORT).show()
     }
 }

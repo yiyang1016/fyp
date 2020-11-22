@@ -38,7 +38,7 @@ class Store_List :AppCompatActivity() {
         overridePendingTransition(R.anim.slide_up, R.anim.slide_down)
 
         mRecyclerView = findViewById(R.id.listView)
-        mRecyclerView.setHasFixedSize(true )
+        mRecyclerView.setHasFixedSize(true)
         mRecyclerView.setLayoutManager(LinearLayoutManager(this))
         mDatabase = FirebaseDatabase.getInstance().getReference("Store")
 

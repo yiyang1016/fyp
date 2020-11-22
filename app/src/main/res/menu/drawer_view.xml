@@ -9,9 +9,6 @@
             android:id="@+id/nav_reservation_list"
             android:title="Reservation List"/>
         <item
-            android:id="@+id/nav_storeList"
-            android:title="Reservation List1"/>
-        <item
             android:id="@+id/nav_generateQR"
             android:title="Generate QR code" />
 
@@ -33,4 +30,7 @@
         <item
             android:id="@+id/nav_memberMenu"
             android:title="View Record" />
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout" />
 </menu>
