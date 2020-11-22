@@ -117,6 +117,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:18.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
     //Report Libraries

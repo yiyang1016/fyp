@@ -101,6 +101,19 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("MemberID", memberID)
                     startActivity(intent)
                 }
+
+                R.id.nav_scanQR->{
+                    val intent = Intent(this, QRCodeScanner::class.java)
+                    intent.putExtra("MemberID", memberID)
+                    startActivity(intent)
+                }
+
+                R.id.nav_memberMenu->{
+                    val intent = Intent(this, QRCodeScanner::class.java)
+                    intent.putExtra("MemberID", memberID)
+                    startActivity(intent)
+                }
+
                 R.id.nav_review ->{
                     val dialogBuilder = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertDialog)
 

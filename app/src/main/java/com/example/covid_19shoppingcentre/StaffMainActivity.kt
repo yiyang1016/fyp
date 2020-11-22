@@ -76,6 +76,11 @@ private var userDatabase = FirebaseDatabase.getInstance().getReference()
             startActivity(intent)
         }
 
+        btnCustomerRecord.setOnClickListener {
+            val intent = Intent(this, CustomerRecordSelecting::class.java)
+            startActivity(intent)
+        }
+
         btnReportStaffMain.setOnClickListener{
 
             val currentDateTime  = LocalDateTime.now()

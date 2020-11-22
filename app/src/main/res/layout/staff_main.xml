@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/SCCheckInBtn"
-        android:layout_width="460dp"
-        android:layout_height="54dp"
+        android:layout_width="444dp"
+        android:layout_height="35dp"
         android:background="@drawable/button_staff_main"
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
@@ -25,10 +25,28 @@
         app:layout_constraintVertical_bias="0.392" />
 
     <Button
+        android:id="@+id/btnCustomerRecord"
+        android:layout_width="491dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/button_staff_main"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="20dp"
+        android:text="Customer Check In"
+        android:textColor="#FFFFFF"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDashBoardMain"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
         android:id="@+id/btnDashBoardMain"
         android:layout_width="458dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="28dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/button_staff_main"
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
@@ -41,9 +59,9 @@
 
     <Button
         android:id="@+id/SCCheckInCustomerBtn"
-        android:layout_width="448dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="25dp"
+        android:layout_width="442dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/button_staff_main"
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
@@ -52,16 +70,16 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SCCheckInBtn"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/viewStoreBtn"
-        android:layout_width="450dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="25dp"
+        android:layout_width="449dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/button_staff_main"
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
@@ -76,8 +94,8 @@
     <Button
         android:id="@+id/btnReportStaffMain"
         android:layout_width="455dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/button_staff_main"
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
@@ -92,8 +110,8 @@
     <Button
         android:id="@+id/btnStaffRegisMain"
         android:layout_width="472dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="28dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/button_staff_main"
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
@@ -121,8 +139,8 @@
 
     <ImageView
         android:id="@+id/logoImg"
-        android:layout_width="155dp"
-        android:layout_height="171dp"
+        android:layout_width="136dp"
+        android:layout_height="144dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

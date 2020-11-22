@@ -1,6 +1,6 @@
 package com.example.covid_19shoppingcentre
 
-class BodyTemperatureDetails {
+class MemberCheckInStore {
     var checkInDate: String?=null
     var checkInTime: String?=null
     var customerId: String?=null

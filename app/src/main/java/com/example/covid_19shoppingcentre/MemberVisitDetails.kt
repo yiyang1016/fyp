@@ -1,12 +1,12 @@
 package com.example.covid_19shoppingcentre
 
 class MemberVisitDetails {
-    var CheckInDate:String?=null
-    var CheckInTime: String? = null
-    var CheckOutTime: String? = null
-    var CustomerId: String? = null
-    var Status:String?= null
-    var StoreId:String?=null
+    var checkInDate:String?=null
+    var checkInTime: String? = null
+    var checkOutTime: String? = null
+    var customerId: String? = null
+    var status:String?= null
+    var storeId:String?=null
 
     constructor(){
 
@@ -14,19 +14,19 @@ class MemberVisitDetails {
 
 
     constructor(
-        CheckInDate: String?,
-        CheckInTime: String?,
-        CheckOutTime: String?,
-        CustomerId: String?,
-        Status: String?,
-        StoreId: String?
+        checkInDate: String?,
+        checkInTime: String?,
+        checkOutTime: String?,
+        customerId: String?,
+        status: String?,
+        storeId: String?
     ) {
-        this.CheckInDate = CheckInDate
-        this.CheckInTime = CheckInTime
-        this.CheckOutTime = CheckOutTime
-        this.CustomerId = CustomerId
-        this.Status = Status
-        this.StoreId = StoreId
+        this.checkInDate = checkInDate
+        this.checkInTime = checkInTime
+        this.checkOutTime= checkOutTime
+        this.customerId = customerId
+        this.status = status
+        this.storeId = storeId
     }
 
 
