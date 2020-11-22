@@ -123,9 +123,11 @@
         <activity android:name=".QRCodeGenerator" />
         <activity android:name=".BodyTemperature">
         </activity>
-        <activity android:name=".QRCodeScanner"></activity>
-        <activity android:name=".VisitHistory"></activity>
-        <activity android:name=".CustomerRecordSelecting"></activity>
+        <activity android:name=".QRCodeScanner"/>
+        <activity android:name=".VisitHistory"/>
+        <activity android:name=".CustomerRecordSelecting"/>
+        <activity android:name=".QRScannerCheckOutActivity"/>
+        <activity android:name=".CheckOutShoppingActivity"/>
 
         <service
             android:name=".checkService"

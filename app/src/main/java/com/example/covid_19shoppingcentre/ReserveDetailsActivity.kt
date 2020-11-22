@@ -78,7 +78,7 @@ class ReserveDetailsActivity : AppCompatActivity() {
         val reserveD = intent.getStringExtra("date")
 
         val intent1 = Intent(this, Reservation_List::class.java).apply {
-            putExtra("nothing", "message")
+            putExtra("memberid", memberI)
         }
 
         val getId = Database.child("Store").orderByChild("Store_Name").equalTo(storeN)

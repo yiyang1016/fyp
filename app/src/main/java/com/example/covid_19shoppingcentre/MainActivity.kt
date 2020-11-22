@@ -43,12 +43,35 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val currentDateTime  = LocalDateTime.now()
+        val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val dateText = currentDateTime.format(dateFormat)
+
         val memberID = intent.getStringExtra("MemberID")
+
+        var checkInside = Database.child("ShoppingCentre").child(dateText.toString()).child(memberID)
+
+        checkInside.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(q0: DataSnapshot) {
+                button.isEnabled = q0.child("status").value.toString() == "checkIn"
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         //Toast.makeText(this,memberID,Toast.LENGTH_SHORT).show()
         toggle = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+
+        button.setOnClickListener {
+            val intent = Intent(this, QRScannerCheckOutActivity::class.java).apply {
+                putExtra("memberid", memberID)
+            }
+            startActivity(intent)
+        }
 
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -234,10 +257,6 @@ class MainActivity : AppCompatActivity() {
             )
             i.putExtra("memberid", memberID)
             startActivity(i)
-        }
-
-        button.setOnClickListener {
-
         }
 
         //Get Today Score

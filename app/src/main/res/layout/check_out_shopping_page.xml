@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_gradient"
+    >
+
+    <TextView
+        android:id="@+id/checkOutText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:text="Check Out Successful"
+        android:textColor="#ffffff"
+        android:textSize="15pt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/InstructionText"
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="35dp"
+        android:gravity="center"
+        android:text="Please click the button below to return to main page"
+        android:textColor="#ffffff"
+        android:textSize="10pt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/okBtn"
+        android:layout_width="270dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="412dp"
+        android:background="@drawable/blue_button_corner"
+        android:enabled="true"
+        android:text="OK"
+        android:textColor="#FFFFFF"
+        android:textSize="19dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

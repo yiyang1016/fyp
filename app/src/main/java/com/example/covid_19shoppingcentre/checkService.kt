@@ -106,7 +106,7 @@ class checkService : Service() {
                 try{
                     for (s0 in s0.children){
                         if (s0.child("status").value.toString() == "active" && s0.child("date").value.toString() == dateText.toString()){
-                            if(s0.child("hour").value.toString().toInt() == 15 /*&& minuteNow >= 50*/){
+                            if(s0.child("hour").value.toString().toInt() == hourNow && minuteNow == 50){
                                 val time = s0.child("time").value.toString()
                                 val name = s0.child("storeName").value.toString()
                                 Toast.makeText(applicationContext, "got come here", Toast.LENGTH_SHORT).show()

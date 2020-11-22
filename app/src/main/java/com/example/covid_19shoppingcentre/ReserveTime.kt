@@ -107,7 +107,7 @@ class ReserveTime : AppCompatActivity() {
                 try {
                     if (s0.exists()) {
                         view.setOnClickListener {
-                            Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
+                            Toast.makeText(applicationContext, "You have either booking or already cancelled this time", Toast.LENGTH_SHORT).show() }
                         trying.setTextColor(Color.GRAY)
                         //trying.text = "Hello"
                     } else{
@@ -129,7 +129,7 @@ class ReserveTime : AppCompatActivity() {
                 try {
                     if (s0.exists()) {
                         view1.setOnClickListener {
-                            Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
+                            Toast.makeText(applicationContext, "You have either booking or already cancelled this time", Toast.LENGTH_SHORT).show() }
                         trying.setTextColor(Color.GRAY)
                     } else {
                         limitation1()
@@ -150,7 +150,7 @@ class ReserveTime : AppCompatActivity() {
                 try {
                     if (s0.exists()) {
                         view.setOnClickListener {
-                            Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
+                            Toast.makeText(applicationContext, "You have either booking or already cancelled this time", Toast.LENGTH_SHORT).show() }
                         trying.setTextColor(Color.GRAY)
                     } else {
                         limitation2()
@@ -171,7 +171,7 @@ class ReserveTime : AppCompatActivity() {
                 try {
                     if (s0.exists()) {
                         view.setOnClickListener {
-                            Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
+                            Toast.makeText(applicationContext, "You have either booking or already cancelled this time", Toast.LENGTH_SHORT).show() }
                         trying.setTextColor(Color.GRAY)
                     } else {
                         limitation3()
@@ -192,7 +192,7 @@ class ReserveTime : AppCompatActivity() {
                 try {
                     if (s0.exists()) {
                         view.setOnClickListener {
-                            Toast.makeText(applicationContext, "Already booked this time", Toast.LENGTH_SHORT).show() }
+                            Toast.makeText(applicationContext, "You have either booking or already cancelled this time", Toast.LENGTH_SHORT).show() }
                         trying.setTextColor(Color.GRAY)
                     } else {
                         limitation4()

@@ -33,7 +33,6 @@ class staffService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Toast.makeText(applicationContext, "staff service started", Toast.LENGTH_SHORT).show()
 
         // Do a periodic task
         mHandler = Handler()

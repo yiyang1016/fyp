@@ -50,6 +50,7 @@
         android:layout_marginTop="25dp"
         android:background="@drawable/logout_btn_layout"
         android:text="Check Out"
+        android:enabled="false"
         android:textColor="#FFFCFC"
         android:textSize="24sp"
         android:textStyle="bold" />
