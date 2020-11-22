@@ -107,7 +107,7 @@ class storeRegistration : AppCompatActivity() {
 
 
             //val writeStoreIn = AddStoreClass(name, des, pass, floor, slot, limit, picurl)
-            val intent2 = Intent(this, MainActivity::class.java).apply {
+            val intent2 = Intent(this, StaffMainActivity::class.java).apply {
                 putExtra("EXTRA_MESSAGE", "message")
             }
 

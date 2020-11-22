@@ -206,6 +206,8 @@
         android:background="@drawable/button_staff_main"
         android:ems="10"
         android:inputType="number"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/tvStoreRes7"
         app:layout_constraintTop_toBottomOf="@+id/txtStoreSlot" />
 

@@ -63,6 +63,17 @@ public class GenerateDailyReportJava extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generate_daily_report_java);
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime currentDateTime  = LocalDateTime.now();
+        DateTimeFormatter dateFormat  = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String dateText = currentDateTime.format(dateFormat);
+        count = 0;
+        countCheckIn = 0;
+        countCheckOut = 0;
+        countAbnormal = 0;
+
+
         btn_create_pdf = (Button)findViewById(R.id.btn_create_pdf);
 
         Dexter.withActivity(this)
@@ -70,9 +81,23 @@ public class GenerateDailyReportJava extends AppCompatActivity {
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
-                        btn_create_pdf .setOnClickListener(new View.OnClickListener(){
+                        btn_create_pdf.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view){
+
+                                reff = FirebaseDatabase.getInstance().getReference().child("ShoppingCentre");
+
+                                reff.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        count = count +1;
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
 
                                 createPDFFile(ReportCommonJava.getAppPath(GenerateDailyReportJava.this)+"test_pdf.pdf");
                             }
@@ -100,29 +125,11 @@ public class GenerateDailyReportJava extends AppCompatActivity {
         String dateText = currentDateTime.format(dateFormat);
         String name = getIntent().getStringExtra("Count");
         String printer = getIntent().getStringExtra("PrinterName");
-        String value = new String();
-
 
 
         if(new File(path).exists())
             new File(path).delete();
         try{
-            reff = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText);
-
-            reff.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot data : snapshot.getChildren()) {
-
-                        count++;
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
 
             Document document = new Document();
             //save
@@ -174,8 +181,8 @@ public class GenerateDailyReportJava extends AppCompatActivity {
             addLineSeperator(document);
 
             //Item
-            addNewItem(document, "Total Customer Now : " + count, Element.ALIGN_LEFT, orderNumberValueFont);
-            //addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
+            addNewItem(document, "Total Customer Now : " + name, Element.ALIGN_LEFT, orderNumberValueFont);
+            /* addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont); */
 
             addLineSpace(document);
 

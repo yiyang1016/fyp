@@ -66,7 +66,7 @@ class StaffRegistration : AppCompatActivity() {
             phone = txtStaffPhone.text.toString()
             var role = "staff"
 
-            val intent1 = Intent(this@StaffRegistration, MemberLogin::class.java).apply {
+            val intent1 = Intent(this@StaffRegistration, StaffMainActivity::class.java).apply {
             }
 
             if (userName.isNotEmpty() && email.isNotEmpty() && userPassword.isNotEmpty() && confirmPass.isNotEmpty() && phone.isNotEmpty()){
