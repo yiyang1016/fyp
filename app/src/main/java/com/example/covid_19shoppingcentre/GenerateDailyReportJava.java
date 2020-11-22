@@ -1,5 +1,6 @@
 package com.example.covid_19shoppingcentre;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -15,6 +16,12 @@ import android.widget.Toast;
 
 import com.example.covid_19shoppingcentre.Common.ReportCommonJava;
 import com.example.covid_19shoppingcentre.models.PdfDocumentAdapterJava;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -38,6 +45,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class GenerateDailyReportJava extends AppCompatActivity {
 
@@ -49,7 +58,6 @@ public class GenerateDailyReportJava extends AppCompatActivity {
         setContentView(R.layout.generate_daily_report_java);
 
         btn_create_pdf = (Button)findViewById(R.id.btn_create_pdf);
-
 
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -79,6 +87,11 @@ public class GenerateDailyReportJava extends AppCompatActivity {
     }
 
     private void createPDFFile(String path){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String name = getIntent().getStringExtra("Count");
+        String printer = getIntent().getStringExtra("PrinterName");
+
         if(new File(path).exists())
             new File(path).delete();
         try{
@@ -116,23 +129,23 @@ public class GenerateDailyReportJava extends AppCompatActivity {
 
             addLineSeperator(document);
 
-            addNewItem(document, "Order Data", Element.ALIGN_LEFT, orderNumberFont);
-            addNewItem(document, "3/4/2019", Element.ALIGN_LEFT, orderNumberValueFont);
+            addNewItem(document, "Generate Date", Element.ALIGN_LEFT, orderNumberFont);
+            addNewItem(document, dtf.format(now), Element.ALIGN_LEFT, orderNumberValueFont);
 
             addLineSeperator(document);
 
-            addNewItem(document, "Account Name:", Element.ALIGN_LEFT, orderNumberFont);
-            addNewItem(document, "Yao Song", Element.ALIGN_LEFT, orderNumberValueFont);
+            addNewItem(document, "Staff Name:", Element.ALIGN_LEFT, orderNumberFont);
+            addNewItem(document, printer, Element.ALIGN_LEFT, orderNumberValueFont);
 
             addLineSeperator(document);
 
             //Add Product order detail
             addLineSpace(document);
-            addNewItem(document,"product Detail", Element.ALIGN_CENTER, titleFont);
+            addNewItem(document,"Reports Detail", Element.ALIGN_CENTER, titleFont);
             addLineSeperator(document);
 
             //Item
-            addNewItemWithLeftAndRight(document, "Pizza 25", "(0.0%)", titleFont, orderNumberValueFont);
+            addNewItemWithLeftAndRight(document, "Today got " + name + " People" , "(0.0%)", titleFont, orderNumberValueFont);
             addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
 
             addLineSeperator(document);

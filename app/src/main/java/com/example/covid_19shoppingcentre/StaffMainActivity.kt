@@ -26,6 +26,7 @@ class StaffMainActivity : AppCompatActivity() {
 //    // Run on parallel
 //    private var handler: Handler? = null
 //    private var runnable: Runnable? = null
+private var userDatabase = FirebaseDatabase.getInstance().getReference()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,10 +77,56 @@ class StaffMainActivity : AppCompatActivity() {
         }
 
         btnReportStaffMain.setOnClickListener{
-            val intent = Intent(this, GenerateDailyReportJava::class.java).apply {
-                putExtra("EXTRA_MESSAGE", "message")
-            }
-            startActivity(intent)
+
+            val currentDateTime  = LocalDateTime.now()
+            val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+            val dateText = currentDateTime.format(dateFormat)
+            val id = intent.getStringExtra("MemberID")
+
+            val query = userDatabase.child("ShoppingCentre").child("20201116")
+            val query1 = userDatabase.child("Member").orderByChild("Id").equalTo(id)
+            query1.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (snapshot in snapshot.children) {
+                        if (snapshot.exists()) {
+                            val name = snapshot.child("Name").value.toString()
+                            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(s0: DataSnapshot) {
+                                    try {
+                                        var count = 0;
+                                        for (s0 in s0.children) {
+                                            count++
+                                        }
+                                        val intent = Intent(
+                                            this@StaffMainActivity,
+                                            GenerateDailyReportJava::class.java
+                                        ).apply {
+                                            putExtra("Count", count.toString())
+                                            putExtra("PrinterName", name)
+                                        }
+                                        startActivity(intent)
+                                    } catch (e: Exception) {
+                                        Toast.makeText(
+                                            applicationContext,
+                                            "ERROR$e",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            })
+                        }
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                }
+
+            })
         }
 
         btnStaffRegisMain.setOnClickListener{

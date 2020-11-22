@@ -89,7 +89,7 @@ class questionMobile : AppCompatActivity() {
 
                                             if(role == "staff"){
                                                 val i = Intent(this@questionMobile, StaffMainActivity::class.java)
-                                                i.putExtra("MemberID", getMemberId )
+                                                i.putExtra("MemberID", getMemberId)
                                                 startActivity(i)
                                             } else if (role == "member") {
                                                 val i = Intent(this@questionMobile, MainActivity::class.java)
