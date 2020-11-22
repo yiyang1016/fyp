@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_scanQR->{
-                    val intent = Intent(this, QRCodeScanner::class.java)
+                    val intent = Intent(this@MainActivity, QRCodeScanner::class.java)
                     intent.putExtra("MemberID", memberID)
                     startActivity(intent)
                 }

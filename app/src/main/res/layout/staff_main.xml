@@ -26,12 +26,12 @@
     <Button
         android:id="@+id/btnCustomerRecord"
         android:layout_width="491dp"
-        android:layout_height="35dp"
+        android:layout_height="32dp"
         android:layout_marginTop="18dp"
         android:background="@drawable/button_staff_main"
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
-        android:text="Customer Check In"
+        android:text="Customer Records"
         android:textColor="#FFFFFF"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,7 +44,7 @@
     <Button
         android:id="@+id/btnDashBoardMain"
         android:layout_width="458dp"
-        android:layout_height="35dp"
+        android:layout_height="43dp"
         android:layout_marginTop="18dp"
         android:background="@drawable/button_staff_main"
         android:gravity="left|center_vertical"

@@ -27,8 +27,7 @@ class QRCodeScanner : AppCompatActivity(){
     private var checkInTime: String?=null
     private var checkOutTime: String? =null
     /////////////////////////////////////////
-    val intent1: Intent = intent
-    private var customerId: String = intent1.getStringExtra("MemberID")
+    private var customerId: String?=null
     ////////////////////////////////////////
     private var status: String? =null
     private var storeId: String? =null
@@ -41,7 +40,10 @@ class QRCodeScanner : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.qr_scanner)
-
+        /////////////////////////////////////////////////////
+        val intent1: Intent = intent
+        customerId= intent1.getStringExtra("MemberID")
+        /////////////////////////////////////////////////////
         userDatabase.addListenerForSingleValueEvent( object: ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
@@ -110,7 +112,8 @@ class QRCodeScanner : AppCompatActivity(){
                         mDatabase.addListenerForSingleValueEvent(object: ValueEventListener{
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 for(i in snapshot.children){
-                                    if(i.hasChild(customerId!!)){
+                                    val comparedate = currentDateTime.replace("/","")
+                                    if(i.hasChild(customerId!!)&&i.key.toString()== comparedate&&i.child(customerId!!).child("status").value.toString() == "checkIn"){
                                         var tempString = i.child(customerId!!).child("bodyTemperature").value.toString()
                                         bodyTemp = tempString
                                         var temp = tempString.substring(0,4).toFloat()
@@ -119,10 +122,12 @@ class QRCodeScanner : AppCompatActivity(){
                                         }else{
                                             status="Normal"
                                         }
+                                        userDatabase.child(checkInStoreId).setValue(MemberCheckInStore(checkInDate,checkInTime,customerId,status,
+                                            storeId!!,bodyTemp))
+                                    }else{
+                                        Toast.makeText(this@QRCodeScanner, "Please checked in at the Shopping Mall Main entrance",Toast.LENGTH_SHORT).show()
                                     }
                                 }
-                                userDatabase.child(checkInStoreId).setValue(MemberCheckInStore(checkInDate,checkInTime,customerId,status,
-                                    storeId!!,bodyTemp))
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -131,14 +136,12 @@ class QRCodeScanner : AppCompatActivity(){
                         })
 
                  }else if(results == "O"){
-                        customerId = "M00001"
                         val date = getCurrentDateTime()
                         val hourFormat = date.toString("hh:mm aa")
                         checkOutTime  = hourFormat
-                        Log.d("PRINTOUTRESULT","====================================$checkOutTime==============================")
                         userDatabase.child(checkInStoreId!!).child("checkOutTime").setValue(checkOutTime)
                     }else{
-                        Toast.makeText(this, "Please Scan the correct store QR code", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Please Scan the correct store QR code", Toast.LENGTH_LONG).show()
                     }
                 }
             } else {
