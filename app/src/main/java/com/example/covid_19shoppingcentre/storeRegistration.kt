@@ -29,13 +29,13 @@ class storeRegistration : AppCompatActivity() {
     private lateinit var database: DatabaseReference
 
     lateinit var storeID: String
-    lateinit var name : String
-    lateinit var des : String
-    lateinit var pass : String
-    lateinit var floor : String
-    lateinit var slot : String
-    lateinit var limit : String
-    private var count : Long = 0
+     var name : String = ""
+     var des : String = ""
+     var pass : String = ""
+     var floor : String = ""
+     var slot : String = ""
+     var limit : String = ""
+     var count : Long = 0
     lateinit private var numberIndentity : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,26 +56,16 @@ class storeRegistration : AppCompatActivity() {
 
 
         btnUpPic.setOnClickListener{
-            name = txtStoreName.getText().toString()
-            pass = txtPassword.getText().toString()
-            des = txtStoreDes.getText().toString()
-            floor = txtStoreFloor.getText().toString()
-            slot = txtStoreSlot.getText().toString()
-            limit = txtStoreLimit.getText().toString()
+                name = txtStoreName.getText().toString()
 
+                val i = Intent(
+                    this@storeRegistration,
+                    uploadStorePicture::class.java
+                )
+                i.putExtra("regisStoreName", name)
 
-            val i = Intent(
-                this@storeRegistration,
-                uploadStorePicture::class.java
-            )
-            i.putExtra("regisStoreName", name)
-            i.putExtra("regisPass", pass)
-            i.putExtra("regisDes", des)
-            i.putExtra("regisFloor", floor)
-            i.putExtra("regisSlot", slot)
-            i.putExtra("regisLimit", limit)
+                startActivity(i)
 
-            startActivity(i)
         }
 
         btnAddStoreComfirm.setOnClickListener{
@@ -115,11 +105,6 @@ class storeRegistration : AppCompatActivity() {
             slot = txtStoreSlot.getText().toString()
             limit = txtStoreLimit.getText().toString()*/
 
-            Toast.makeText(
-                applicationContext,
-                storeID.toString(),
-                Toast.LENGTH_SHORT
-            ).show()
 
             //val writeStoreIn = AddStoreClass(name, des, pass, floor, slot, limit, picurl)
             val intent2 = Intent(this, MainActivity::class.java).apply {

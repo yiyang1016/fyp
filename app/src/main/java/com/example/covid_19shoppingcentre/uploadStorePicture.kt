@@ -41,6 +41,7 @@ class uploadStorePicture : AppCompatActivity() {
                 storageReference!!.downloadUrl
             }.addOnCompleteListener{task ->
                 if(task.isSuccessful){
+                    Toast.makeText(this@uploadStorePicture, "Successful Uploaded", Toast.LENGTH_SHORT).show()
                     val downloadUri = task.result
                     val url = downloadUri!!.toString().substring(0, downloadUri.toString().indexOf("&token"))
                     Log.d("DIRECTLINK", url)
@@ -62,11 +63,6 @@ class uploadStorePicture : AppCompatActivity() {
 
         val intent = intent
         val name = intent.getStringExtra("regisStoreName")
-        val pass = intent.getStringExtra("regisPass")
-        val des = intent.getStringExtra("regisDes")
-        val floor = intent.getStringExtra("regisFloor")
-        val slot = intent.getStringExtra("regisSlot")
-        val limit = intent.getStringExtra("regisLimit")
 
         storageReference = FirebaseStorage.getInstance().getReference(name)
 
@@ -75,6 +71,7 @@ class uploadStorePicture : AppCompatActivity() {
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
+
         }
 
         btnBackRes.setOnClickListener{
@@ -84,11 +81,6 @@ class uploadStorePicture : AppCompatActivity() {
             )
             i.putExtra("PictureURL", passURL)
             i.putExtra("regisStoreName", name)
-            i.putExtra("regisPass", pass)
-            i.putExtra("regisDes", des)
-            i.putExtra("regisFloor", floor)
-            i.putExtra("regisSlot", slot)
-            i.putExtra("regisLimit", limit)
             startActivity(i)
         }
     }

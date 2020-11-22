@@ -52,6 +52,11 @@ import java.time.format.DateTimeFormatter;
 public class GenerateDailyReportJava extends AppCompatActivity {
 
     Button btn_create_pdf;
+    DatabaseReference reff;
+    int count = 0;
+    int countCheckIn = 0;
+    int countCheckOut = 0;
+    int countAbnormal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +95,35 @@ public class GenerateDailyReportJava extends AppCompatActivity {
     private void createPDFFile(String path){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
+        LocalDateTime currentDateTime  = LocalDateTime.now();
+        DateTimeFormatter dateFormat  = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String dateText = currentDateTime.format(dateFormat);
         String name = getIntent().getStringExtra("Count");
         String printer = getIntent().getStringExtra("PrinterName");
+        String value = new String();
+
+
 
         if(new File(path).exists())
             new File(path).delete();
         try{
+            reff = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText);
+
+            reff.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot data : snapshot.getChildren()) {
+
+                        count++;
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
             Document document = new Document();
             //save
             PdfWriter.getInstance(document, new FileOutputStream(path));
@@ -146,21 +174,30 @@ public class GenerateDailyReportJava extends AppCompatActivity {
             addLineSeperator(document);
 
             //Item
-            addNewItemWithLeftAndRight(document, "Today got " + name + " People" , "(0.0%)", titleFont, orderNumberValueFont);
-            addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
+            addNewItem(document, "Total Customer Now : " + count, Element.ALIGN_LEFT, orderNumberValueFont);
+            //addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
 
-            addLineSeperator(document);
+            addLineSpace(document);
 
-            addNewItemWithLeftAndRight(document, "Pizza 25", "(0.0%)", titleFont, orderNumberValueFont);
-            addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
+            addNewItem(document, "Total Customer CheckIn Now : " + countCheckIn, Element.ALIGN_LEFT, orderNumberValueFont);
+
+            addLineSpace(document);
+
+            addNewItem(document, "Total Customer CheckOut Now : " + countCheckOut, Element.ALIGN_LEFT, orderNumberValueFont);
+
+            addLineSpace(document);
+
+            addNewItem(document, "Total Abnormal Record Now : " + countAbnormal, Element.ALIGN_LEFT, orderNumberValueFont);
+
+            //addNewItemWithLeftAndRight(document, "Pizza 25", "(0.0%)", titleFont, orderNumberValueFont);
+            //addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
 
             addLineSeperator(document);
 
             //Total
-            addLineSpace(document);
-            addLineSpace(document);
+            //addLineSpace(document);
+            //addLineSpace(document);
 
-            addNewItemWithLeftAndRight(document, "Total", "24000.0", titleFont, orderNumberValueFont);
 
             document.close();
 

@@ -88,7 +88,7 @@ private var userDatabase = FirebaseDatabase.getInstance().getReference()
             val dateText = currentDateTime.format(dateFormat)
             val id = intent.getStringExtra("MemberID")
 
-            val query = userDatabase.child("ShoppingCentre").child("20201116")
+            val query = userDatabase.child("ShoppingCentre").child(dateText)
             val query1 = userDatabase.child("Member").orderByChild("Id").equalTo(id)
             query1.addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
