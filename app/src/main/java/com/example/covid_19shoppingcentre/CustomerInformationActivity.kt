@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 class CustomerInformationActivity : AppCompatActivity() {
 
     private var userDatabase = FirebaseDatabase.getInstance().getReference()
-
+    private  var database = FirebaseDatabase.getInstance().getReference("Member")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +74,25 @@ class CustomerInformationActivity : AppCompatActivity() {
 
                     updateQuery.child(customerID).child("status").setValue(statusNow)
                     updateQuery.child(customerID).child("checkOutTime").setValue(checkOutTime).addOnCompleteListener {
+                        val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
+                            .orderByChild("Id").equalTo(id)
+                        refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onCancelled(error: DatabaseError) {
+                                val text = "Connection Failed"
+                                Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot) {
+                                if (p0.exists()) {
+                                    for (p0 in p0.children) {
+                                        database.child(id).child("DistanceScoreStatus").setValue(0)
+                                    }
+                                } else {
+                                    Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+                        })
                         Toast.makeText(
                             applicationContext,
                             "Check Out Successful",

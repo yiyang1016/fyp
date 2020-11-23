@@ -242,30 +242,41 @@ class MemberInformationActivity : AppCompatActivity() {
                                     ).show()
 
 
-                                    val refSearch = FirebaseDatabase.getInstance().getReference().child("SocialDistanceScore")
-                                        .orderByChild("member_Id").equalTo(dataSent).limitToLast(1)
+                                   // val refSearch = FirebaseDatabase.getInstance().getReference().child("SocialDistanceScore").orderByChild("member_Id").equalTo(dataSent).limitToLast(1)
+                                   /* val currentDateTime1  = LocalDateTime.now()
+                                    val dateFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                                    val dateText1 = currentDateTime1.format(dateFormat1)
+                                    val refSearch = FirebaseDatabase.getInstance().getReference("ShoppingCentre")
+                                    var d = refSearch.child(dateText1.toString()).orderByChild("customerId").equalTo(dataSent)
+                                    d.addListenerForSingleValueEvent(object : ValueEventListener {
+                                        override fun onCancelled(error: DatabaseError) {
+                                            val text = "Connection Failed"
+                                            Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                                        }
+                                        override fun onDataChange(p0: DataSnapshot) {
+                                            if(!p0.exists()){
+                                                resetMark()
+                                            }
+                                        }
+                                    })*/
+                                    val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
+                                        .orderByChild("Id").equalTo(dataSent)
                                     refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
                                         override fun onCancelled(error: DatabaseError) {
                                             val text = "Connection Failed"
                                             Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
                                         }
 
-                                        val currentDateTime1  = LocalDateTime.now()
-                                        val dateFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-                                        val dateText1 = currentDateTime1.format(dateFormat1)
                                         override fun onDataChange(p0: DataSnapshot) {
-                                            if (p0.exists()) {
-                                                for (p0 in p0.children) {
-                                                    if(p0.child("score_Date").value.toString() != dateText1.toString()){
+                                            for (p0 in p0.children) {
+                                                    var cStatus = p0.child("DistanceScoreStatus").value.toString()
+                                                    if(cStatus.toInt() == 0){
                                                         resetMark()
                                                     }
-                                                }
-                                            } else {
-                                                Toast.makeText(applicationContext, "Current Score Missing from the database", Toast.LENGTH_SHORT)
-                                                    .show()
                                             }
                                         }
                                     })
+
                                     startActivity(intent1)
                                 }
 
@@ -351,6 +362,7 @@ class MemberInformationActivity : AppCompatActivity() {
                             if (p0.exists()) {
                                 for (p0 in p0.children) {
                                     database.child(dataSent).child("CurrentScore").setValue(100)
+                                    database.child(dataSent).child("DistanceScoreStatus").setValue(1)
                                 }
                             } else {
                                 Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)

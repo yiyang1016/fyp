@@ -76,19 +76,18 @@
         <activity
             android:name=".social_distance_score_history"
             android:label="Score History"
-            android:parentActivityName=".MainActivity" />
+             />
         <activity
             android:name=".ViewPlace"
             android:label="Hospital Near Me"
-            android:parentActivityName=".nearby_hospital" />
+            />
         <activity
             android:name=".distance_tracking"
             android:label="Distance Tracking"
-            android:parentActivityName=".MainActivity" />
+            />
         <activity
             android:name=".nearby_hospital"
-            android:label="Hospital Near Me"
-            android:parentActivityName=".MainActivity" />
+            />
         <activity
             android:name=".StaffMainActivity"
             android:label="Staff Main Page" />

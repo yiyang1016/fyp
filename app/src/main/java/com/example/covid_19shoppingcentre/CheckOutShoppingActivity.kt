@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter
 
 class CheckOutShoppingActivity: AppCompatActivity() {
     private var userDatabase = FirebaseDatabase.getInstance().getReference()
-
+    private  var database = FirebaseDatabase.getInstance().getReference("Member")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.check_out_shopping_page)
@@ -32,6 +32,26 @@ class CheckOutShoppingActivity: AppCompatActivity() {
                 if (s0.exists()){
                     var query = userDatabase.child("ShoppingCentre").child(dateText.toString()).child(memberI.toString())
                     query.child("status").setValue(dataSent.toString()).addOnCompleteListener {
+
+                        val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
+                            .orderByChild("Id").equalTo(dataSent)
+                        refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onCancelled(error: DatabaseError) {
+                                val text = "Connection Failed"
+                                Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot) {
+                                if (p0.exists()) {
+                                    for (p0 in p0.children) {
+                                        database.child(dataSent).child("DistanceScoreStatus").setValue(0)
+                                    }
+                                } else {
+                                    Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+                        })
                     }
                 }
             }

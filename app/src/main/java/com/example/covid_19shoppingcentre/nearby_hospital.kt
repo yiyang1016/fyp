@@ -62,6 +62,9 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
     //pass current location lat and lng
     public var  currentLat = 0.0
     public var  currentLng = 0.0
+
+    var currentMember: String? = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nearby_hospital)
@@ -69,7 +72,7 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.maps) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
+        currentMember = intent.getStringExtra("MemberID")
         //Init Service
         mService = Common.googleApiService
         setActionBar()
@@ -150,7 +153,7 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
 
         val googlePlaceUrl = StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json")
         googlePlaceUrl.append("?location=$latitude,$longtitude")
-        googlePlaceUrl.append("&radius=10000") //1km
+        googlePlaceUrl.append("&radius=10000") //10km
         googlePlaceUrl.append("&type=$typePlace")
         googlePlaceUrl.append("&key=AIzaSyDQFRH8H5JA_Tw6Rnwne4CVB2VaNagqvsM")
 
@@ -239,7 +242,9 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onStop() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+
+        //fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+
         super.onStop()
     }
 

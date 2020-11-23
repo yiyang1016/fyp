@@ -12,18 +12,18 @@ import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_distance_tracking.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -39,7 +39,7 @@ class distance_tracking : AppCompatActivity() {
     private lateinit var bleScanCallback: BleScanCallback
     private var bleScanResults = mutableMapOf<String?, BluetoothDevice?>()
     private lateinit var bleScanHandler: Handler
-
+    var count = 0
     //    var deviceList = findViewById<EditText>(R.id.showDevice)
    // private lateinit var database:     DatabaseReference
     private var database = FirebaseDatabase.getInstance().getReference("Member")
@@ -48,7 +48,7 @@ class distance_tracking : AppCompatActivity() {
         setContentView(R.layout.activity_distance_tracking)
 
         setActionBar()
-        var count = 0
+
         var secondCount = 0
         bleScanHandler = Handler()
         bleManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -57,6 +57,9 @@ class distance_tracking : AppCompatActivity() {
             val bluetoothTurnOn = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(bluetoothTurnOn, REQUEST_BLUETOOTH_TURN_ON)
         }
+
+        //val getVisible = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
+        //startActivityForResult(getVisible, 0)
 
         bleImageButton.setOnClickListener { view ->
             //check Bluetooth status every 3 seconds
@@ -76,8 +79,8 @@ class distance_tracking : AppCompatActivity() {
                 }, 0)
 
                 status.text = "STATUS : ON"
-                count++
                 bleStartScan.run()
+                count++
                 val bluetoothScanninghandler = Handler()
                 bluetoothScanninghandler.postDelayed(object : Runnable {
                     override fun run() {
@@ -88,13 +91,22 @@ class distance_tracking : AppCompatActivity() {
                                 val rssi = value
                                 if (compareValues(rssi, -69) < 0) {
                                     marksDeduct(2)
-                                    showNotification("Close Distance", "Please Keep Your Social Distance More than 1.5 Meters.")
+                                    showNotification(
+                                        "Close Distance",
+                                        "Please Keep Your Social Distance More than 1.5 Meters."
+                                    )
                                 } else if (compareValues(rssi, -73) < 0) {
                                     marksDeduct(3)
-                                    showNotification("Close Distance", "Please Keep Your Social Distance More than 1.5 Meters.")
+                                    showNotification(
+                                        "Close Distance",
+                                        "Please Keep Your Social Distance More than 1.5 Meters."
+                                    )
                                 } else if (compareValues(rssi, -79) < 0) {
                                     marksDeduct(5)
-                                    showNotification("Close Distance", "Please Keep Your Social Distance More than 1.5 Meters.")
+                                    showNotification(
+                                        "Close Distance",
+                                        "Please Keep Your Social Distance More than 1.5 Meters."
+                                    )
                                 }
                             }
                         }
@@ -102,19 +114,19 @@ class distance_tracking : AppCompatActivity() {
                         bluetoothScanninghandler.postDelayed(this, 10000)//10 sec delay
                     }
                 }, 0)
-                secondCount++
+
+                /*secondCount++
                 if(secondCount == 1){
                     onPause()
                 }else if(secondCount == 2){
                     onResume()
                     secondCount = 0
-                }
+                }*/
             }else if(count == 1 ){
-                count = 0
-                status.text = "STATUS : OFF"
-                bleStopScan
-                secondCount++
                 onPause()
+                //secondCount++
+            }else{
+                onResume()
             }
 
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
@@ -136,7 +148,8 @@ class distance_tracking : AppCompatActivity() {
     private val bleStopScan = Runnable {
         if (bleScanner != null) {
             bleScanner.stopScan(bleScanCallback)
-            println(bleScanCallback.addRssi.map { "bleScanCallback.addRSSi" + it.key.toString() + '-' + it.value.toString()})
+            
+            //println(bleScanCallback.addRssi.map { "bleScanCallback.addRSSi" + it.key.toString() + '-' + it.value.toString()})
             bleScanResults.clear()
             bleScanCallback.resultOfScan.clear()
             bleScanCallback.addRssi.clear()
@@ -178,7 +191,11 @@ class distance_tracking : AppCompatActivity() {
             if (!resultOfScan.contains(deviceAddress)) {
                 resultOfScan.put(deviceAddress, bleDevice)
                 if (this.context != null) {
-                    //Toast.makeText(this.context,bleDevice?.name + ":" + bleDevice?.address + "RSSI" + rssiValue,Toast.LENGTH_SHORT).show()
+                    /*Toast.makeText(
+                        this.context,
+                        bleDevice?.name + ":" + bleDevice?.address + "RSSI" + rssiValue,
+                        Toast.LENGTH_SHORT
+                    ).show()*/
                     deviceNameAddress.put(bleDevice?.name, deviceAddress)
                     addRssi.put(deviceAddress, rssiValue)
                 }
@@ -265,7 +282,7 @@ class distance_tracking : AppCompatActivity() {
                     val num = 100000 + cal
                     val newId = "S" + num.toString().substring(1, 6)
 
-                    val currentDateTime1  = LocalDateTime.now()
+                    val currentDateTime1 = LocalDateTime.now()
                     val dateFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
                     val dateText1 = currentDateTime1.format(dateFormat1)
                     val data = SocialDistanceScore(
@@ -288,14 +305,22 @@ class distance_tracking : AppCompatActivity() {
                         override fun onDataChange(p0: DataSnapshot) {
                             if (p0.exists()) {
                                 for (p0 in p0.children) {
-                                    val current = Integer.parseInt(p0.child("CurrentScore").value.toString()) - marks
-                                    if(current <= 70 || current <= 50 || current <= 30){
-                                        showNotification("Warning Message", "Social Distance Mark Low than $current. Please keep social distance before get bar!")
+                                    val current =
+                                        Integer.parseInt(p0.child("CurrentScore").value.toString()) - marks
+                                    if (current <= 70 || current <= 50 || current <= 30) {
+                                        showNotification(
+                                            "Warning Message",
+                                            "Social Distance Mark Low than $current. Please keep social distance before get bar!"
+                                        )
                                     }
                                     database.child(id).child("CurrentScore").setValue(current)
                                 }
                             } else {
-                                Toast.makeText(applicationContext, "CurrentScore Missing from the database", Toast.LENGTH_SHORT)
+                                Toast.makeText(
+                                    applicationContext,
+                                    "CurrentScore Missing from the database",
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
                             }
                         }
@@ -325,7 +350,7 @@ class distance_tracking : AppCompatActivity() {
         //The action bar will automatically handle clicks on the Home/Up button, so long
         //as you specify a parent activity in AndroidManfest.xml
         when (item.itemId){
-            R.id.historyBtn ->{
+            R.id.historyBtn -> {
                 val intent = Intent(this, social_distance_score_history::class.java)
                 startActivity(intent)
                 return true
@@ -338,25 +363,19 @@ class distance_tracking : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-
+        count++
+        status.text = "STATUS : OFF"
+        bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
     }
+
     private fun setActionBar(){
         val actionBar: ActionBar? = supportActionBar
         actionBar!!.title = "Distance Tracking"
         actionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        val st  = status.text.toString()
-        outState.putString("savedString", st)
+    override fun onResume() {
+        super.onResume()
+        count = 0
     }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        status.setText(savedInstanceState.getString("savedString"))
-    }
-
-
 }
