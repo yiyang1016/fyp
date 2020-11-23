@@ -157,7 +157,7 @@ class storeRegistration : AppCompatActivity() {
                     Database.child(storeID).child("Store_Slot")
                         .setValue(txtStoreSlot.getText().toString())
                     Database.child(storeID).child("Store_Limitation")
-                        .setValue(txtStoreLimit.getText().toString())
+                        .setValue(txtStoreLimit.getText().toString().toInt())
                     Database.child(storeID).child("Store_Image").setValue(picurl)
                     Toast.makeText(
                         applicationContext,

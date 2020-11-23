@@ -11,7 +11,7 @@
         android:id="@+id/constraintLayout3"
         android:layout_width="369dp"
         android:layout_height="600dp"
-        android:background="@drawable/radius"
+        android:background="@drawable/button_staff_main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -28,7 +28,7 @@
             android:layout_marginEnd="60dp"
             android:layout_marginBottom="46dp"
             android:text="Staff Registration"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/white"
             android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/txtStaffName"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
             android:layout_marginStart="41dp"
             android:layout_marginBottom="10dp"
             android:text="Name:"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/txtStaffName"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -53,7 +53,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="55dp"
             android:text="IC Number:"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/lblStaffEmail"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Email:"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/white"
             app:layout_constraintBaseline_toBaselineOf="@+id/txtStaffEmailAddress"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -74,7 +74,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginBottom="11dp"
             android:text="Password:"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/txtStaffRegisPassword"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:text="Confirm Password"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/white"
             app:layout_constraintBaseline_toBaselineOf="@+id/txtStaffRegisConPassword"
             app:layout_constraintEnd_toStartOf="@+id/txtStaffRegisConPassword"
             app:layout_constraintStart_toStartOf="parent" />
@@ -97,6 +97,7 @@
             android:layout_marginBottom="27dp"
             android:ems="10"
             android:inputType="textPersonName"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/txtStaffICNumber"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -107,6 +108,7 @@
             android:layout_marginEnd="28dp"
             android:ems="10"
             android:inputType="phone"
+            android:textColor="@color/white"
             app:layout_constraintBaseline_toBaselineOf="@+id/lblStaffic"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -118,6 +120,7 @@
             android:layout_marginBottom="20dp"
             android:ems="10"
             android:inputType="textEmailAddress"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/txtStaffRegisPassword"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -129,6 +132,7 @@
             android:layout_marginBottom="33dp"
             android:ems="10"
             android:inputType="textPassword"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/txtStaffRegisConPassword"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -140,6 +144,7 @@
             android:layout_marginBottom="24dp"
             android:ems="10"
             android:inputType="textPassword"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/txtStaffPhone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/lblStaffCPassword" />
@@ -166,7 +171,7 @@
             android:layout_marginTop="72dp"
             android:layout_marginBottom="76dp"
             android:text="Phone No:"
-            android:textColor="@android:color/black"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/lblStaffCPassword" />
@@ -178,6 +183,7 @@
             android:layout_marginBottom="65dp"
             android:ems="10"
             android:inputType="phone"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/btnStaffCreate"
             app:layout_constraintStart_toEndOf="@+id/btnStaffCreate" />
