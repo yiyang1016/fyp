@@ -73,10 +73,8 @@ class CustomerInformationActivity : AppCompatActivity() {
                 var currentActive = 0
                 var run = 0
                 if (run == 0) {
-                    var checkStillInStore =
-                        userDatabase.child("CheckInStore").child(dateText.toString())
-                    checkStillInStore.addListenerForSingleValueEvent(object :
-                        ValueEventListener {
+                    var checkStillInStore = userDatabase.child("CheckInStore").child(dateText.toString())
+                    checkStillInStore.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(d0: DataSnapshot) {
                             if (d0.exists()) {
                                 for (x in 1..20) {
@@ -139,13 +137,51 @@ class CustomerInformationActivity : AppCompatActivity() {
                                             startActivity(intent)
                                             finish()
                                         }
+                                } else if (currentActive == 0 && currentPass == 0){
+                                    val statusNow = "checkOut"
+                                    val checkOutTime = hourMinuteText.toString().trim()
+
+                                    val updateQuery = FirebaseDatabase.getInstance()
+                                        .getReference("ShoppingCentre").child(dateText.toString())
+                                        .child(id)
+                                    val customerID = s0.key.toString()
+
+                                    updateQuery.child("status").setValue(statusNow)
+                                    updateQuery.child("checkOutTime").setValue(checkOutTime)
+                                        .addOnCompleteListener {
+                                            val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
+                                                .orderByChild("Id").equalTo(id)
+                                            refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+                                                override fun onCancelled(error: DatabaseError) {
+                                                    val text = "Connection Failed"
+                                                    Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                                                }
+
+                                                override fun onDataChange(p0: DataSnapshot) {
+                                                    if (p0.exists()) {
+                                                        for (p0 in p0.children) {
+                                                            database.child(id).child("DistanceScoreStatus").setValue(0)
+                                                        }
+                                                    } else {
+                                                        Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)
+                                                            .show()
+                                                    }
+                                                }
+                                            })
+                                            Toast.makeText(
+                                                applicationContext,
+                                                "Check Out Successful",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            startActivity(intent)
+                                            finish()
+                                        }
                                 }
                             }
                         }
 
                         override fun onCancelled(error: DatabaseError) {
-                            Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
                         }
                     })
                 }
