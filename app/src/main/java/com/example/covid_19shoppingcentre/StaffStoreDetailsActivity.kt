@@ -35,7 +35,6 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
     private var Database = FirebaseDatabase.getInstance().getReference()
     lateinit var mRecyclerView: RecyclerView
     lateinit var mDatabase : DatabaseReference
-    lateinit var m1Database : DatabaseReference
     lateinit var FirebaseRecyclerAdapter : FirebaseRecyclerAdapter<CheckInScCustomer, CustomerViewHolder>
 
     // CONSTANT
@@ -244,7 +243,13 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
         ) {
             override fun populateViewHolder(p0: CustomerViewHolder, p1: CheckInScCustomer, p2: Int) {
 //                if (p1.status.toString() == "active"){
+
                     p0.mView.CheckInTime.text = p1.checkInTime
+                if (p1.status == "pass") {
+                    p0.mView.CustomerStatus.text = "Checked Out"
+                } else if (p1.status == "active"){
+                    p0.mView.CustomerStatus.text = "Checking In"
+                }
 
                 val query = Database.child("ShoppingCentre").child(dateText.toString())
                     .orderByChild("customerId").equalTo(p1.customerId)

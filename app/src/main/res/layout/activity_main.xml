@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="84dp"
         android:gravity="center"
-        android:text="Welcome to MidValley Shopping Mall \nHope you enjoy your shopping "
+        android:text="Welcome to MidValley Shopping Mall \nHope you enjoy your shopping"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -50,7 +50,7 @@
         android:layout_marginTop="25dp"
         android:background="@drawable/logout_btn_layout"
         android:text="Check Out"
-        android:enabled="false"
+        android:enabled="true"
         android:textColor="#FFFCFC"
         android:textSize="24sp"
         android:textStyle="bold" />

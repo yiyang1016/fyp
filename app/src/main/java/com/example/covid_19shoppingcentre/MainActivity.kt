@@ -49,11 +49,51 @@ class MainActivity : AppCompatActivity() {
 
         val memberID = intent.getStringExtra("MemberID")
 
+        var displayname = Database.child("Member").orderByChild("Id").equalTo(memberID)
+        displayname.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(w0: DataSnapshot) {
+                for (w0 in w0.children){
+                    val name = w0.child("Name").value.toString()
+                    textView5.text =
+                        "Welcome $name to MidValley Shopping Mall \nHope you enjoy your shopping"
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+
         var checkInside = Database.child("ShoppingCentre").child(dateText.toString()).child(memberID)
 
         checkInside.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(q0: DataSnapshot) {
-                button.isEnabled = q0.child("status").value.toString() == "checkIn"
+                if (q0.exists()) {
+                    if (q0.child("status").value.toString() == "checkIn") {
+                        button.setOnClickListener {
+                            val intent = Intent(this@MainActivity, QRScannerCheckOutActivity::class.java).apply {
+                                putExtra("memberid", memberID)
+                            }
+                            startActivity(intent)
+                        }
+                    } else {
+                        button.setOnClickListener {
+                            Toast.makeText(
+                                applicationContext,
+                                "You have already checked out from the shopping centre",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                } else {
+                    button.setOnClickListener {
+                        Toast.makeText(
+                            applicationContext,
+                            "Please check in from the shopping centre first",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -65,13 +105,6 @@ class MainActivity : AppCompatActivity() {
         toggle = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-
-        button.setOnClickListener {
-            val intent = Intent(this, QRScannerCheckOutActivity::class.java).apply {
-                putExtra("memberid", memberID)
-            }
-            startActivity(intent)
-        }
 
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
