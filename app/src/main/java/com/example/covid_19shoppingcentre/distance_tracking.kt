@@ -1,6 +1,7 @@
 package com.example.covid_19shoppingcentre
 
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,6 +13,7 @@ import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -19,7 +21,9 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -32,7 +36,7 @@ import java.time.format.DateTimeFormatter
 class distance_tracking : AppCompatActivity() {
 
     private val REQUEST_BLUETOOTH_TURN_ON = 1
-    private val BLE_SCAN_PERIOD: Long = 10000
+    private val BLE_SCAN_PERIOD: Long = 100000
     private lateinit var bleAdapter: BluetoothAdapter
     private lateinit var bleManager: BluetoothManager
     private lateinit var bleScanner: BluetoothLeScanner
@@ -56,6 +60,30 @@ class distance_tracking : AppCompatActivity() {
         if (!bleAdapter.isEnabled) {
             val bluetoothTurnOn = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(bluetoothTurnOn, REQUEST_BLUETOOTH_TURN_ON)
+        }
+        val permissionCheck =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                Toast.makeText(
+                    this,
+                    "The permission to get BLE location data is required",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ), 1
+                )
+            }
+        } else {
+            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
         }
 
         //val getVisible = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
@@ -89,20 +117,21 @@ class distance_tracking : AppCompatActivity() {
                         if (bleScanCallback.addRssi.isNotEmpty()) {
                             for ((key, value) in bleScanCallback.addRssi) {
                                 val rssi = value
-                                if (compareValues(rssi, -73) < 0) {
-                                    marksDeduct(2)
+                                //compareValues(rssi, -73) < 0
+                                if (rssi > -63 && rssi <= 0) {
+                                    marksDeduct(5, rssi)
                                     showNotification(
                                         "Close Distance",
                                         "Please Keep Your Social Distance More than 1.5 Meters."
                                     )
-                                } else if (compareValues(rssi, -69) < 0) {
-                                    marksDeduct(3)
+                                }else if (rssi < -69 && rssi > -72) {
+                                    marksDeduct(3, rssi)
                                     showNotification(
                                         "Close Distance",
                                         "Please Keep Your Social Distance More than 1.5 Meters."
                                     )
-                                } else if (compareValues(rssi, -63) < 0) {
-                                    marksDeduct(5)
+                                }else if (rssi < -73 && rssi > -100) {
+                                    marksDeduct(2, rssi)
                                     showNotification(
                                         "Close Distance",
                                         "Please Keep Your Social Distance More than 1.5 Meters."
@@ -114,7 +143,7 @@ class distance_tracking : AppCompatActivity() {
                         bluetoothScanninghandler.postDelayed(this, 10000)//10 sec delay
                     }
                 }, 0)
-
+                bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
                 /*secondCount++
                 if(secondCount == 1){
                     onPause()
@@ -153,6 +182,7 @@ class distance_tracking : AppCompatActivity() {
             bleScanResults.clear()
             bleScanCallback.resultOfScan.clear()
             bleScanCallback.addRssi.clear()
+            //bleStartScan.run()
         }
         Toast.makeText(this.applicationContext, " BLE Scanning Ended", Toast.LENGTH_SHORT).show()
     }
@@ -162,13 +192,13 @@ class distance_tracking : AppCompatActivity() {
         var resultOfScan = resultMap
         private var context: Context? = null
         var deviceNameAddress: HashMap<String?, String?> = HashMap<String?, String?>()
-        var addRssi: HashMap<String?, Int?> = HashMap<String?, Int?>()
+        var addRssi: HashMap<String, Int> = HashMap<String, Int>()
 
         fun setContext(context: Context) {
             this.context = context
         }
 
-        override fun onScanResult(callbackType: Int, result: ScanResult?) {
+        override fun onScanResult(callbackType: Int, result: ScanResult) {
             addScanResult(result)
         }
 
@@ -184,10 +214,10 @@ class distance_tracking : AppCompatActivity() {
             ).show()
         }
 
-        fun addScanResult(scanResult: ScanResult?) {
-            val bleDevice = scanResult?.device
-            val deviceAddress = bleDevice?.address
-            val rssiValue = scanResult?.rssi
+        fun addScanResult(scanResult: ScanResult) {
+            val bleDevice = scanResult.device
+            val deviceAddress = bleDevice.address
+            val rssiValue = scanResult.rssi
             if (!resultOfScan.contains(deviceAddress)) {
                 resultOfScan.put(deviceAddress, bleDevice)
                 if (this.context != null) {
@@ -196,7 +226,7 @@ class distance_tracking : AppCompatActivity() {
                         bleDevice?.name + ":" + bleDevice?.address + "RSSI" + rssiValue,
                         Toast.LENGTH_SHORT
                     ).show()
-                    deviceNameAddress.put(bleDevice?.name, deviceAddress)
+                    //deviceNameAddress.put(bleDevice?.name, deviceAddress)
                     addRssi.put(deviceAddress, rssiValue)
                 }
             }
@@ -255,7 +285,7 @@ class distance_tracking : AppCompatActivity() {
         mNotificationManager.notify(0, mBuilder.build())
     }
 
-    fun marksDeduct(marks: Int) {
+    fun marksDeduct(marks: Int, rssiValue: Int) {
         val id = intent.getStringExtra("MemberID")
         val ref = FirebaseDatabase.getInstance().getReference("SocialDistanceScore")
         var scoreId = ""
@@ -289,10 +319,13 @@ class distance_tracking : AppCompatActivity() {
                         newId,
                         "Close Contact",
                         marks,
-                        dateText1, id
+                        dateText1, id, rssiValue
                     )
 
-                    ref.child(newId).setValue(data)
+                    ref.child(newId).setValue(data).addOnSuccessListener {
+                        Toast.makeText(applicationContext, "Added Successfully", Toast.LENGTH_SHORT)
+                            .show()
+                    }
 
                     val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
                         .orderByChild("Id").equalTo(id)
@@ -307,7 +340,7 @@ class distance_tracking : AppCompatActivity() {
                                 for (p0 in p0.children) {
                                     val current =
                                         Integer.parseInt(p0.child("CurrentScore").value.toString()) - marks
-                                    if (current <= 70 || current <= 50 || current <= 30) {
+                                    if (current == 70 || current == 50 || current == 30) {
                                         showNotification(
                                             "Warning Message",
                                             "Social Distance Mark Low than $current. Please keep social distance before get bar!"
@@ -351,7 +384,10 @@ class distance_tracking : AppCompatActivity() {
         //as you specify a parent activity in AndroidManfest.xml
         when (item.itemId){
             R.id.historyBtn -> {
-                val intent = Intent(this, social_distance_score_history::class.java)
+                val intent = Intent(this, social_distance_score_history::class.java).apply {
+                    putExtra("MemberID", id)
+                }
+
                 startActivity(intent)
                 return true
             }
@@ -362,10 +398,12 @@ class distance_tracking : AppCompatActivity() {
     }
 
     override fun onPause() {
-        super.onPause()
-        count++
+        count = 0
         status.text = "STATUS : OFF"
-        bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
+        bleStopScan
+        super.onPause()
+
+        //bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
     }
 
     private fun setActionBar(){
@@ -376,6 +414,6 @@ class distance_tracking : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        count = 0
+
     }
 }

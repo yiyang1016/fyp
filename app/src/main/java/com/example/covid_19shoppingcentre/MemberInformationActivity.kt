@@ -363,7 +363,7 @@ class MemberInformationActivity : AppCompatActivity() {
                         newId,
                         "Check In",
                         100,
-                        dateText1, dataSent.toString()
+                        dateText1, dataSent.toString(),0
                     )
 
                     ref.child(newId).setValue(data)

@@ -5,6 +5,6 @@ class SocialDistanceScore (
     var Title: String,
     var Score: Int,
     var Score_Date: String,
-    var Member_Id: String
-
+    var Member_Id: String,
+    var rssi: Int
 )

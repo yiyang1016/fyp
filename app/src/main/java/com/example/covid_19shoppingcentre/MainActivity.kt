@@ -292,6 +292,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(i)
         }
 
+        displayScoreText.setOnClickListener {
+            val intent = Intent(this, social_distance_score_history::class.java)
+            intent.putExtra("MemberID", memberID)
+            startActivity(intent)
+        }
         //Get Today Score
         val refSearch = FirebaseDatabase.getInstance().getReference().child("Member").orderByChild("Id").equalTo(memberID)
         refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
