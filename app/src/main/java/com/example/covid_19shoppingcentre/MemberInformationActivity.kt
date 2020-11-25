@@ -92,6 +92,37 @@ class MemberInformationActivity : AppCompatActivity() {
         }
 
         val dataSent = intent.getStringExtra("EXTRA_MESSAGE")
+        val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
+            .orderByChild("Id").equalTo(dataSent)
+        refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                val text = "Connection Failed"
+                Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                for (p0 in p0.children) {
+                    var cStatus = p0.child("CurrentScore").value.toString()
+                    if(cStatus.toInt() <= 20 ){
+                        val builder = AlertDialog.Builder(this@MemberInformationActivity, R.style.CustomAlertDialog)
+                        builder.setTitle("Warning Message")
+                        builder.setMessage("Member $dataSent bar from shopping centre. \nReason: Social Distance Score low than 20 marks.")
+                        //builder.setIcon(android.R.drawable.ic_dialog_alert)
+                        builder.setPositiveButton("Ok"){dialogInterface, which ->
+                            val intent = Intent(applicationContext, QRScannerActivity::class.java).apply {
+                                putExtra("EXTRA_MESSAGE", dataSent)
+                            }
+                            startActivity(intent)
+                        }
+                        // Create the AlertDialog
+                        val alertDialog: AlertDialog = builder.create()
+                        // Set other dialog properties
+                        alertDialog.setCancelable(false)
+                        alertDialog.show()
+                    }
+                }
+            }
+        })
 
         val query = userDatabase.child("Member").orderByChild("Id").equalTo(dataSent)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
@@ -241,24 +272,6 @@ class MemberInformationActivity : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
 
-
-                                   // val refSearch = FirebaseDatabase.getInstance().getReference().child("SocialDistanceScore").orderByChild("member_Id").equalTo(dataSent).limitToLast(1)
-                                   /* val currentDateTime1  = LocalDateTime.now()
-                                    val dateFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-                                    val dateText1 = currentDateTime1.format(dateFormat1)
-                                    val refSearch = FirebaseDatabase.getInstance().getReference("ShoppingCentre")
-                                    var d = refSearch.child(dateText1.toString()).orderByChild("customerId").equalTo(dataSent)
-                                    d.addListenerForSingleValueEvent(object : ValueEventListener {
-                                        override fun onCancelled(error: DatabaseError) {
-                                            val text = "Connection Failed"
-                                            Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
-                                        }
-                                        override fun onDataChange(p0: DataSnapshot) {
-                                            if(!p0.exists()){
-                                                resetMark()
-                                            }
-                                        }
-                                    })*/
                                     val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
                                         .orderByChild("Id").equalTo(dataSent)
                                     refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -268,12 +281,17 @@ class MemberInformationActivity : AppCompatActivity() {
                                         }
 
                                         override fun onDataChange(p0: DataSnapshot) {
-                                            for (p0 in p0.children) {
+                                                for (p0 in p0.children) {
                                                     var cStatus = p0.child("DistanceScoreStatus").value.toString()
-                                                    if(cStatus.toInt() == 0){
+                                                    if(cStatus == "null"){
+                                                        database.child(dataSent).child("DistanceScoreStatus").setValue(0)
+                                                        resetMark()
+                                                    }else if(cStatus.toInt() == 0){
                                                         resetMark()
                                                     }
-                                            }
+                                                }
+
+
                                         }
                                     })
 

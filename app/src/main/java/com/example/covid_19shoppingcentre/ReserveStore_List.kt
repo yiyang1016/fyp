@@ -48,7 +48,7 @@ class ReserveStore_List :AppCompatActivity() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val searchText = searchStore.text.toString().trim()
+                val searchText = searchStore.text.toString().toUpperCase().trim()
                 logRecyclerView(searchText)
             }
             override fun afterTextChanged(p0: Editable?) {

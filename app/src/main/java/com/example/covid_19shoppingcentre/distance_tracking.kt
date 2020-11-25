@@ -89,19 +89,19 @@ class distance_tracking : AppCompatActivity() {
                         if (bleScanCallback.addRssi.isNotEmpty()) {
                             for ((key, value) in bleScanCallback.addRssi) {
                                 val rssi = value
-                                if (compareValues(rssi, -69) < 0) {
+                                if (compareValues(rssi, -73) < 0) {
                                     marksDeduct(2)
                                     showNotification(
                                         "Close Distance",
                                         "Please Keep Your Social Distance More than 1.5 Meters."
                                     )
-                                } else if (compareValues(rssi, -73) < 0) {
+                                } else if (compareValues(rssi, -69) < 0) {
                                     marksDeduct(3)
                                     showNotification(
                                         "Close Distance",
                                         "Please Keep Your Social Distance More than 1.5 Meters."
                                     )
-                                } else if (compareValues(rssi, -79) < 0) {
+                                } else if (compareValues(rssi, -63) < 0) {
                                     marksDeduct(5)
                                     showNotification(
                                         "Close Distance",
@@ -191,11 +191,11 @@ class distance_tracking : AppCompatActivity() {
             if (!resultOfScan.contains(deviceAddress)) {
                 resultOfScan.put(deviceAddress, bleDevice)
                 if (this.context != null) {
-                    /*Toast.makeText(
+                    Toast.makeText(
                         this.context,
                         bleDevice?.name + ":" + bleDevice?.address + "RSSI" + rssiValue,
                         Toast.LENGTH_SHORT
-                    ).show()*/
+                    ).show()
                     deviceNameAddress.put(bleDevice?.name, deviceAddress)
                     addRssi.put(deviceAddress, rssiValue)
                 }

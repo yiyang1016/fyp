@@ -19,7 +19,7 @@ class MemberLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.member_login)
-
+        txtUserid.requestFocus()
         btnLogin.setOnClickListener{
             val userID = txtUserid.text.toString()
             val userPassword = txtPassword.text.toString()
