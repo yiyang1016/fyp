@@ -55,6 +55,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //JAVA Firebase
+
     //Picasso Load Image
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
@@ -62,6 +64,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     //implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
     //Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:2.3.0'
     //Firebase Storage

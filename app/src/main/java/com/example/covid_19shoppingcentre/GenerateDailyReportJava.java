@@ -57,6 +57,8 @@ public class GenerateDailyReportJava extends AppCompatActivity {
     int countCheckIn = 0;
     int countCheckOut = 0;
     int countAbnormal = 0;
+    String key;
+    String a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,6 @@ public class GenerateDailyReportJava extends AppCompatActivity {
         countCheckOut = 0;
         countAbnormal = 0;
 
-
         btn_create_pdf = (Button)findViewById(R.id.btn_create_pdf);
 
         Dexter.withActivity(this)
@@ -84,22 +85,48 @@ public class GenerateDailyReportJava extends AppCompatActivity {
                         btn_create_pdf.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view){
+//                                countCheckIn = 0;
+//                                countCheckOut = 0;
+//                                countAbnormal = 0;
 
-                                reff = FirebaseDatabase.getInstance().getReference().child("ShoppingCentre");
+                                reff = FirebaseDatabase.getInstance().getReference().child("ShoppingCentre").child(dateText);
 
                                 reff.addValueEventListener(new ValueEventListener() {
                                     @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        count = count +1;
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        count = 1;
+                                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                                            count = 2;
+                                            if(postSnapshot.exists()){
+                                                count = 3;
+                                                key = postSnapshot.getKey();
+                                                a = dataSnapshot.child(key).child("status").getValue().toString();
+                                                if(dataSnapshot.child(key).child("status").getValue().toString().equals("checkIn")){
+                                                    count = 4;
+                                                    countCheckIn = countCheckIn + 1;
+                                                }else if (dataSnapshot.child(key).child("status").getValue().toString().equals("checkOut")){
+                                                    count = 4;
+                                                    countCheckOut = countCheckOut + 1;
+                                                }else{
+                                                    count = 4;
+                                                    countAbnormal = countAbnormal + 1;
+                                                }
+                                            }
+
+                                        }
                                     }
 
                                     @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
+                                    public void onCancelled(DatabaseError error) {
+                                        Toast.makeText(getApplicationContext(),"Error Access Database",Toast.LENGTH_SHORT).show();
                                     }
                                 });
 
-                                createPDFFile(ReportCommonJava.getAppPath(GenerateDailyReportJava.this)+"test_pdf.pdf");
+                                if(count == 0) {
+                                    Toast.makeText(getApplicationContext(),"count =" + count,Toast.LENGTH_SHORT).show();
+                                }else{
+                                    createPDFFile(ReportCommonJava.getAppPath(GenerateDailyReportJava.this) + "test_pdf.pdf");
+                                }
                             }
                         });
                     }
@@ -181,20 +208,20 @@ public class GenerateDailyReportJava extends AppCompatActivity {
             addLineSeperator(document);
 
             //Item
-            addNewItem(document, "Total Customer Now : " + name, Element.ALIGN_LEFT, orderNumberValueFont);
+            addNewItem(document, "Total Customer : " + count, Element.ALIGN_LEFT, orderNumberValueFont);
             /* addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont); */
 
             addLineSpace(document);
 
-            addNewItem(document, "Total Customer CheckIn Now : " + countCheckIn, Element.ALIGN_LEFT, orderNumberValueFont);
+            addNewItem(document, "Total Customer CheckIn : " + countCheckIn, Element.ALIGN_LEFT, orderNumberValueFont);
 
             addLineSpace(document);
 
-            addNewItem(document, "Total Customer CheckOut Now : " + countCheckOut, Element.ALIGN_LEFT, orderNumberValueFont);
+            addNewItem(document, "Total Customer CheckOut : " + countCheckOut, Element.ALIGN_LEFT, orderNumberValueFont);
 
             addLineSpace(document);
 
-            addNewItem(document, "Total Abnormal Record Now : " + countAbnormal, Element.ALIGN_LEFT, orderNumberValueFont);
+            addNewItem(document, "Total Abnormal Record : " + countAbnormal, Element.ALIGN_LEFT, orderNumberValueFont);
 
             //addNewItemWithLeftAndRight(document, "Pizza 25", "(0.0%)", titleFont, orderNumberValueFont);
             //addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);

@@ -1,0 +1,356 @@
+Index: app/src/main/java/com/example/covid_19shoppingcentre/GenerateDailyReportJava.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.covid_19shoppingcentre;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.Manifest;\r\nimport android.content.Context;\r\nimport android.os.Bundle;\r\nimport android.print.PrintAttributes;\r\nimport android.print.PrintDocumentAdapter;\r\nimport android.print.PrintManager;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.Toast;\r\n\r\nimport com.example.covid_19shoppingcentre.Common.ReportCommonJava;\r\nimport com.example.covid_19shoppingcentre.models.PdfDocumentAdapterJava;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.Query;\r\nimport com.google.firebase.database.ValueEventListener;\r\nimport com.itextpdf.text.BaseColor;\r\nimport com.itextpdf.text.Chunk;\r\nimport com.itextpdf.text.Document;\r\nimport com.itextpdf.text.DocumentException;\r\nimport com.itextpdf.text.Element;\r\nimport com.itextpdf.text.Font;\r\nimport com.itextpdf.text.PageSize;\r\nimport com.itextpdf.text.Paragraph;\r\nimport com.itextpdf.text.pdf.BaseFont;\r\nimport com.itextpdf.text.pdf.PdfWriter;\r\nimport com.itextpdf.text.pdf.draw.LineSeparator;\r\nimport com.itextpdf.text.pdf.draw.VerticalPositionMark;\r\nimport com.karumi.dexter.Dexter;\r\nimport com.karumi.dexter.PermissionToken;\r\nimport com.karumi.dexter.listener.PermissionDeniedResponse;\r\nimport com.karumi.dexter.listener.PermissionGrantedResponse;\r\nimport com.karumi.dexter.listener.PermissionRequest;\r\nimport com.karumi.dexter.listener.single.PermissionListener;\r\n\r\nimport java.io.File;\r\nimport java.io.FileNotFoundException;\r\nimport java.io.FileOutputStream;\r\nimport java.io.IOException;\r\nimport java.time.LocalDateTime;\r\nimport java.time.format.DateTimeFormatter;\r\n\r\npublic class GenerateDailyReportJava extends AppCompatActivity {\r\n\r\n    Button btn_create_pdf;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.generate_daily_report_java);\r\n\r\n        btn_create_pdf = (Button)findViewById(R.id.btn_create_pdf);\r\n\r\n        Dexter.withActivity(this)\r\n                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)\r\n                .withListener(new PermissionListener() {\r\n                    @Override\r\n                    public void onPermissionGranted(PermissionGrantedResponse response) {\r\n                        btn_create_pdf .setOnClickListener(new View.OnClickListener(){\r\n                            @Override\r\n                            public void onClick(View view){\r\n\r\n                                createPDFFile(ReportCommonJava.getAppPath(GenerateDailyReportJava.this)+\"test_pdf.pdf\");\r\n                            }\r\n                        });\r\n                    }\r\n\r\n                    @Override\r\n                    public void onPermissionDenied(PermissionDeniedResponse response) {\r\n\r\n                    }\r\n\r\n                    @Override\r\n                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {\r\n\r\n                    }\r\n                })\r\n                .check();\r\n    }\r\n\r\n    private void createPDFFile(String path){\r\n        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(\"yyyy/MM/dd HH:mm:ss\");\r\n        LocalDateTime now = LocalDateTime.now();\r\n        String name = getIntent().getStringExtra(\"Count\");\r\n        String printer = getIntent().getStringExtra(\"PrinterName\");\r\n\r\n        if(new File(path).exists())\r\n            new File(path).delete();\r\n        try{\r\n            Document document = new Document();\r\n            //save\r\n            PdfWriter.getInstance(document, new FileOutputStream(path));\r\n\r\n            //open document\r\n            document.open();\r\n\r\n            //setting\r\n            document.setPageSize(PageSize.A4);\r\n            document.addCreationDate();\r\n            document.addAuthor(\"Enter Checking System\");\r\n            document.addCreator(\"Choo Yao Song\");\r\n\r\n            //font Setting\r\n            BaseColor colorAccent = new BaseColor(0,153,204,255);\r\n            float fontSize = 20.0f;\r\n            float valueFontSize = 26.0f;\r\n\r\n            //custom font\r\n            BaseFont fontName = BaseFont.createFont(\"assets/fonts/SourceSansPro-Regular.otf\", \"UTF-8\", BaseFont.EMBEDDED);\r\n\r\n            //Create titles of Document\r\n            Font titleFont = new Font(fontName, 36f, Font.NORMAL,BaseColor.BLACK);\r\n            addNewItem(document, \"Daily Reports\", Element.ALIGN_CENTER, titleFont);\r\n\r\n            //add more\r\n            Font orderNumberFont = new Font(fontName, fontSize,Font.NORMAL, colorAccent);\r\n            //addNewItem(document, \"Order No:\", Element.ALIGN_LEFT, orderNumberFont);\r\n\r\n            Font orderNumberValueFont = new Font(fontName, fontSize,Font.NORMAL, BaseColor.BLACK);\r\n            //addNewItem(document, \"#717171\", Element.ALIGN_LEFT, orderNumberValueFont);\r\n\r\n            addLineSeperator(document);\r\n\r\n            addNewItem(document, \"Generate Date\", Element.ALIGN_LEFT, orderNumberFont);\r\n            addNewItem(document, dtf.format(now), Element.ALIGN_LEFT, orderNumberValueFont);\r\n\r\n            addLineSeperator(document);\r\n\r\n            addNewItem(document, \"Staff Name:\", Element.ALIGN_LEFT, orderNumberFont);\r\n            addNewItem(document, printer, Element.ALIGN_LEFT, orderNumberValueFont);\r\n\r\n            addLineSeperator(document);\r\n\r\n            //Add Product order detail\r\n            addLineSpace(document);\r\n            addNewItem(document,\"Reports Detail\", Element.ALIGN_CENTER, titleFont);\r\n            addLineSeperator(document);\r\n\r\n            //Item\r\n            addNewItemWithLeftAndRight(document, \"Today got \" + name + \" People\" , \"(0.0%)\", titleFont, orderNumberValueFont);\r\n            addNewItemWithLeftAndRight(document, \"12.0*1000\", \"12000.0\", titleFont, orderNumberValueFont);\r\n\r\n            addLineSeperator(document);\r\n\r\n            addNewItemWithLeftAndRight(document, \"Pizza 25\", \"(0.0%)\", titleFont, orderNumberValueFont);\r\n            addNewItemWithLeftAndRight(document, \"12.0*1000\", \"12000.0\", titleFont, orderNumberValueFont);\r\n\r\n            addLineSeperator(document);\r\n\r\n            //Total\r\n            addLineSpace(document);\r\n            addLineSpace(document);\r\n\r\n            addNewItemWithLeftAndRight(document, \"Total\", \"24000.0\", titleFont, orderNumberValueFont);\r\n\r\n            document.close();\r\n\r\n            Toast.makeText(this, \"Success\", Toast.LENGTH_SHORT).show();\r\n\r\n            printPDF();\r\n\r\n\r\n        } catch (FileNotFoundException e) {\r\n            e.printStackTrace();\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        } catch (DocumentException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    private void printPDF() {\r\n        PrintManager printManager = (PrintManager)getSystemService(Context.PRINT_SERVICE);\r\n        try{\r\n            PrintDocumentAdapter printDocumentAdapter = new PdfDocumentAdapterJava(GenerateDailyReportJava.this, ReportCommonJava.getAppPath(GenerateDailyReportJava.this) + \"test_pdf.pdf\");\r\n            printManager.print(\"Document\", printDocumentAdapter, new PrintAttributes.Builder().build());\r\n        } catch (Exception e) {\r\n            Log.e(\"Error\", \"\"+e.getMessage());\r\n        }\r\n    }\r\n\r\n    private void addNewItemWithLeftAndRight(Document document, String textLeft, String textRight, Font textLeftFont, Font textRightFont) throws DocumentException {\r\n        Chunk chunkTextLeft = new Chunk(textLeft, textLeftFont);\r\n        Chunk chunkTextRight = new Chunk(textLeft, textRightFont);\r\n        Paragraph p = new Paragraph(chunkTextLeft);\r\n        p.add(new Chunk(new VerticalPositionMark()));\r\n        p.add(chunkTextRight);\r\n        document.add(p);\r\n    }\r\n\r\n    private void addLineSeperator(Document document) throws DocumentException {\r\n        LineSeparator lineSeparator = new LineSeparator();\r\n        lineSeparator.setLineColor(new BaseColor(0,0,0,68));\r\n        addLineSpace(document);\r\n        document.add(new Chunk(lineSeparator));\r\n        addLineSpace(document);\r\n    }\r\n\r\n    private void addLineSpace(Document document) throws DocumentException {\r\n        document.add(new Paragraph(\"\"));\r\n\r\n    }\r\n\r\n\r\n    private void addNewItem(Document document, String text, int align, Font font) throws DocumentException {\r\n        Chunk chunk = new Chunk(text,font);\r\n        Paragraph paragraph = new Paragraph(chunk);\r\n        paragraph.setAlignment(align);\r\n        document.add(paragraph);\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/covid_19shoppingcentre/GenerateDailyReportJava.java	(revision b7e04a99d365503ac49fae6a015aafe9f8d540ee)
++++ app/src/main/java/com/example/covid_19shoppingcentre/GenerateDailyReportJava.java	(date 1606073262617)
+@@ -51,6 +51,11 @@
+ public class GenerateDailyReportJava extends AppCompatActivity {
+ 
+     Button btn_create_pdf;
++    DatabaseReference reff;
++    int count = 0;
++    int countCheckIn = 0;
++    int countCheckOut = 0;
++    int countAbnormal = 0;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -89,12 +94,35 @@
+     private void createPDFFile(String path){
+         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+         LocalDateTime now = LocalDateTime.now();
++        LocalDateTime currentDateTime  = LocalDateTime.now();
++        DateTimeFormatter dateFormat  = DateTimeFormatter.ofPattern("yyyyMMdd");
++        String dateText = currentDateTime.format(dateFormat);
+         String name = getIntent().getStringExtra("Count");
+         String printer = getIntent().getStringExtra("PrinterName");
++        String value = new String();
++
++
+ 
+         if(new File(path).exists())
+             new File(path).delete();
+         try{
++            reff = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText);
++
++            reff.addValueEventListener(new ValueEventListener() {
++                @Override
++                public void onDataChange(@NonNull DataSnapshot snapshot) {
++                    for (DataSnapshot data : snapshot.getChildren()) {
++
++                        count++;
++                    }
++                }
++
++                @Override
++                public void onCancelled(@NonNull DatabaseError error) {
++
++                }
++            });
++
+             Document document = new Document();
+             //save
+             PdfWriter.getInstance(document, new FileOutputStream(path));
+@@ -145,21 +173,30 @@
+             addLineSeperator(document);
+ 
+             //Item
+-            addNewItemWithLeftAndRight(document, "Today got " + name + " People" , "(0.0%)", titleFont, orderNumberValueFont);
+-            addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
++            addNewItem(document, "Total Customer Now : " + count, Element.ALIGN_LEFT, orderNumberValueFont);
++            //addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
+ 
+-            addLineSeperator(document);
++            addLineSpace(document);
+ 
+-            addNewItemWithLeftAndRight(document, "Pizza 25", "(0.0%)", titleFont, orderNumberValueFont);
+-            addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
++            addNewItem(document, "Total Customer CheckIn Now : " + countCheckIn, Element.ALIGN_LEFT, orderNumberValueFont);
+ 
+-            addLineSeperator(document);
+-
+-            //Total
+             addLineSpace(document);
++
++            addNewItem(document, "Total Customer CheckOut Now : " + countCheckOut, Element.ALIGN_LEFT, orderNumberValueFont);
++
+             addLineSpace(document);
+ 
+-            addNewItemWithLeftAndRight(document, "Total", "24000.0", titleFont, orderNumberValueFont);
++            addNewItem(document, "Total Abnormal Record Now : " + countAbnormal, Element.ALIGN_LEFT, orderNumberValueFont);
++
++            //addNewItemWithLeftAndRight(document, "Pizza 25", "(0.0%)", titleFont, orderNumberValueFont);
++            //addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont);
++
++            addLineSeperator(document);
++
++            //Total
++            //addLineSpace(document);
++            //addLineSpace(document);
++
+ 
+             document.close();
+ 
+Index: app/src/main/java/com/example/covid_19shoppingcentre/storeRegistration.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.covid_19shoppingcentre\r\n\r\nimport android.content.Intent\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport android.text.Editable\r\nimport android.text.TextWatcher\r\nimport android.view.View\r\nimport com.firebase.ui.database.FirebaseRecyclerAdapter\r\nimport com.google.firebase.database.DatabaseReference\r\nimport com.google.firebase.database.FirebaseDatabase\r\nimport android.widget.Button\r\nimport android.widget.Toast\r\nimport androidx.core.view.isVisible\r\nimport com.example.covid_19shoppingcentre.models.AddStoreClass\r\nimport com.example.covid_19shoppingcentre.models.addShoppingCentreCheckIn\r\nimport com.google.firebase.database.*\r\nimport com.google.firebase.ktx.Firebase\r\nimport kotlinx.android.synthetic.main.activity_store__list.*\r\nimport kotlinx.android.synthetic.main.member_login.*\r\nimport kotlinx.android.synthetic.main.store_registration.*\r\n\r\nclass storeRegistration : AppCompatActivity() {\r\n\r\n    private var Database = FirebaseDatabase.getInstance().getReference(\"Store\")\r\n    lateinit var nDatabase: DatabaseReference\r\n    lateinit var FirebaseRecyclerAdapter: FirebaseRecyclerAdapter<Store, Store_List.StoreViewHolder>\r\n    private var userDatabase = FirebaseDatabase.getInstance().getReference()\r\n    private lateinit var database: DatabaseReference\r\n\r\n    lateinit var storeID: String\r\n    lateinit var name : String\r\n    lateinit var des : String\r\n    lateinit var pass : String\r\n    lateinit var floor : String\r\n    lateinit var slot : String\r\n    lateinit var limit : String\r\n    private var count : Long = 0\r\n    lateinit private var numberIndentity : String\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.store_registration)\r\n\r\n        nDatabase = FirebaseDatabase.getInstance().getReference(\"Store\");\r\n\r\n        txtStoreName.addTextChangedListener(object : TextWatcher {\r\n            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {\r\n            }\r\n            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {\r\n                btnUpPic.visibility = View.VISIBLE\r\n            }\r\n            override fun afterTextChanged(p0: Editable?) {\r\n            }\r\n        })\r\n\r\n\r\n        btnUpPic.setOnClickListener{\r\n            name = txtStoreName.getText().toString()\r\n            pass = txtPassword.getText().toString()\r\n            des = txtStoreDes.getText().toString()\r\n            floor = txtStoreFloor.getText().toString()\r\n            slot = txtStoreSlot.getText().toString()\r\n            limit = txtStoreLimit.getText().toString()\r\n\r\n\r\n            val i = Intent(\r\n                this@storeRegistration,\r\n                uploadStorePicture::class.java\r\n            )\r\n            i.putExtra(\"regisStoreName\", name)\r\n            i.putExtra(\"regisPass\", pass)\r\n            i.putExtra(\"regisDes\", des)\r\n            i.putExtra(\"regisFloor\", floor)\r\n            i.putExtra(\"regisSlot\", slot)\r\n            i.putExtra(\"regisLimit\", limit)\r\n\r\n            startActivity(i)\r\n        }\r\n\r\n        btnAddStoreComfirm.setOnClickListener{\r\n\r\n            val query = userDatabase.child(\"Store\")\r\n            query.addListenerForSingleValueEvent(object : ValueEventListener{\r\n                override fun onDataChange(s0: DataSnapshot) {\r\n                    count = s0.childrenCount\r\n                }\r\n                override fun onCancelled(error: DatabaseError) {\r\n                    Toast.makeText(\r\n                        applicationContext,\r\n                        \"Data Access Error\",\r\n                        Toast.LENGTH_SHORT\r\n                    ).show()\r\n                }\r\n            })\r\n\r\n\r\n            count = count + 1\r\n            if(count/10 >= 1){\r\n                numberIndentity = \"000\"\r\n            }else if(count/ 100 >= 1){\r\n                numberIndentity = \"00\"\r\n            }else if(count/ 1000 >= 1){\r\n                numberIndentity = \"\"\r\n            }else{\r\n                numberIndentity = \"0000\"\r\n            }\r\n\r\n            val picurl = intent.getStringExtra(\"PictureURL\")\r\n            storeID = \"ST\"+numberIndentity.toString()+count.toString()\r\n            /*name = txtStoreName.getText().toString()\r\n            des = txtStoreDes.getText().toString()\r\n            floor = txtStoreFloor.getText().toString()\r\n            pass = txtStorePass.getText().toString()\r\n            slot = txtStoreSlot.getText().toString()\r\n            limit = txtStoreLimit.getText().toString()*/\r\n\r\n            Toast.makeText(\r\n                applicationContext,\r\n                storeID.toString(),\r\n                Toast.LENGTH_SHORT\r\n            ).show()\r\n\r\n            //val writeStoreIn = AddStoreClass(name, des, pass, floor, slot, limit, picurl)\r\n            val intent2 = Intent(this, MainActivity::class.java).apply {\r\n                putExtra(\"EXTRA_MESSAGE\", \"message\")\r\n            }\r\n\r\n            if(count >1) {\r\n                if (txtStoreName.getText().toString() == \"\") {\r\n                    Toast.makeText(applicationContext, \"Plaese Enter Store Name\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (txtStoreDes.getText().toString() == \"\"){\r\n                    Toast.makeText(applicationContext, \"Plaese Enter Store Description\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (txtStorePass.getText().toString() == \"\"){\r\n                    Toast.makeText(applicationContext, \"Plaese Enter Store Password\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (txtStoreFloor.getText().toString() == \"\"){\r\n                    Toast.makeText(applicationContext, \"Plaese Enter Store Floor\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (txtStoreSlot.getText().toString() == \"\"){\r\n                    Toast.makeText(applicationContext, \"Plaese Enter Store Slot\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (txtStoreLimit.getText().toString() == \"\"){\r\n                    Toast.makeText(applicationContext, \"Plaese Enter Store Name\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (picurl == \"\") {\r\n                    Toast.makeText(applicationContext, \"Plaese Upload Store Picture\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (txtStorePass.getText().toString().length < 5) {\r\n                    Toast.makeText(applicationContext, \"Password Should more then 5 digit\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (txtStoreSlot.getText().toString().length != 5){\r\n                    Toast.makeText(applicationContext, \"Please Enter corrent Slot ID\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (txtStoreSlot.getText().toString().length != 5){\r\n                    Toast.makeText(applicationContext, \"Please Enter corrent Slot ID\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else if (txtStoreFloor.getText().toString() != \"G\" && txtStoreFloor.getText().toString() != \"F1\" && txtStoreFloor.getText().toString() != \"F2\"){\r\n                    Toast.makeText(applicationContext, \"Please Enter corrent Floor\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                else {\r\n                    Database.child(storeID).child(\"Store_Name\")\r\n                        .setValue(txtStoreName.getText().toString())\r\n                    Database.child(storeID).child(\"Store_Description\")\r\n                        .setValue(txtStoreDes.getText().toString())\r\n                    Database.child(storeID).child(\"Store_Password\")\r\n                        .setValue(txtStorePass.getText().toString())\r\n                    Database.child(storeID).child(\"Store_Floor\")\r\n                        .setValue(txtStoreFloor.getText().toString())\r\n                    Database.child(storeID).child(\"Store_Slot\")\r\n                        .setValue(txtStoreSlot.getText().toString())\r\n                    Database.child(storeID).child(\"Store_Limitation\")\r\n                        .setValue(txtStoreLimit.getText().toString())\r\n                    Database.child(storeID).child(\"Store_Image\").setValue(picurl)\r\n                    Toast.makeText(\r\n                        applicationContext,\r\n                        \"New Store is Added\",\r\n                        Toast.LENGTH_SHORT\r\n                    ).show()\r\n                    startActivity(intent2)\r\n                }\r\n            }\r\n\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/covid_19shoppingcentre/storeRegistration.kt	(revision b7e04a99d365503ac49fae6a015aafe9f8d540ee)
++++ app/src/main/java/com/example/covid_19shoppingcentre/storeRegistration.kt	(date 1606062420455)
+@@ -29,13 +29,13 @@
+     private lateinit var database: DatabaseReference
+ 
+     lateinit var storeID: String
+-    lateinit var name : String
+-    lateinit var des : String
+-    lateinit var pass : String
+-    lateinit var floor : String
+-    lateinit var slot : String
+-    lateinit var limit : String
+-    private var count : Long = 0
++     var name : String = ""
++     var des : String = ""
++     var pass : String = ""
++     var floor : String = ""
++     var slot : String = ""
++     var limit : String = ""
++     var count : Long = 0
+     lateinit private var numberIndentity : String
+ 
+     override fun onCreate(savedInstanceState: Bundle?) {
+@@ -56,26 +56,16 @@
+ 
+ 
+         btnUpPic.setOnClickListener{
+-            name = txtStoreName.getText().toString()
+-            pass = txtPassword.getText().toString()
+-            des = txtStoreDes.getText().toString()
+-            floor = txtStoreFloor.getText().toString()
+-            slot = txtStoreSlot.getText().toString()
+-            limit = txtStoreLimit.getText().toString()
+-
++                name = txtStoreName.getText().toString()
+ 
+-            val i = Intent(
+-                this@storeRegistration,
+-                uploadStorePicture::class.java
+-            )
+-            i.putExtra("regisStoreName", name)
+-            i.putExtra("regisPass", pass)
+-            i.putExtra("regisDes", des)
+-            i.putExtra("regisFloor", floor)
+-            i.putExtra("regisSlot", slot)
+-            i.putExtra("regisLimit", limit)
++                val i = Intent(
++                    this@storeRegistration,
++                    uploadStorePicture::class.java
++                )
++                i.putExtra("regisStoreName", name)
+ 
+-            startActivity(i)
++                startActivity(i)
++
+         }
+ 
+         btnAddStoreComfirm.setOnClickListener{
+@@ -115,11 +105,6 @@
+             slot = txtStoreSlot.getText().toString()
+             limit = txtStoreLimit.getText().toString()*/
+ 
+-            Toast.makeText(
+-                applicationContext,
+-                storeID.toString(),
+-                Toast.LENGTH_SHORT
+-            ).show()
+ 
+             //val writeStoreIn = AddStoreClass(name, des, pass, floor, slot, limit, picurl)
+             val intent2 = Intent(this, MainActivity::class.java).apply {
+Index: app/src/main/res/layout/store_registration.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@drawable/background_gradient\"\r\n    tools:context=\".storeRegistration\">\r\n\r\n    <EditText\r\n        android:id=\"@+id/txtStoreName\"\r\n        android:layout_width=\"217dp\"\r\n        android:layout_height=\"37dp\"\r\n        android:layout_marginStart=\"24dp\"\r\n        android:layout_marginTop=\"12dp\"\r\n        android:background=\"@drawable/button_staff_main\"\r\n        android:ems=\"10\"\r\n        android:inputType=\"textPersonName\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"1.0\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/tvStoreRes2\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/txtTitleStoreRes\" />\r\n\r\n    <EditText\r\n        android:id=\"@+id/txtStoreDes\"\r\n        android:layout_width=\"216dp\"\r\n        android:layout_height=\"40dp\"\r\n        android:layout_marginStart=\"40dp\"\r\n        android:layout_marginTop=\"8dp\"\r\n        android:background=\"@drawable/button_staff_main\"\r\n        android:ems=\"10\"\r\n        android:inputType=\"textPersonName\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"1.0\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/tvStoreRes4\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/txtStorePass\" />\r\n\r\n    <EditText\r\n        android:id=\"@+id/txtStoreSlot\"\r\n        android:layout_width=\"206dp\"\r\n        android:layout_height=\"32dp\"\r\n        android:layout_marginStart=\"28dp\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:background=\"@drawable/button_staff_main\"\r\n        android:ems=\"10\"\r\n        android:inputType=\"textPersonName\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/tvStoreRes3\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/txtStoreFloor\" />\r\n\r\n    <EditText\r\n        android:id=\"@+id/txtStorePass\"\r\n        android:layout_width=\"202dp\"\r\n        android:layout_height=\"32dp\"\r\n        android:layout_marginStart=\"32dp\"\r\n        android:layout_marginTop=\"8dp\"\r\n        android:background=\"@drawable/button_staff_main\"\r\n        android:ems=\"10\"\r\n        android:inputType=\"numberPassword\"\r\n        android:textColor=\"#FFFFFF\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/tvStoreRes\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/txtStoreName\" />\r\n\r\n    <EditText\r\n        android:id=\"@+id/txtStoreFloor\"\r\n        android:layout_width=\"213dp\"\r\n        android:layout_height=\"31dp\"\r\n        android:layout_marginStart=\"24dp\"\r\n        android:layout_marginTop=\"12dp\"\r\n        android:background=\"@drawable/button_staff_main\"\r\n        android:ems=\"10\"\r\n        android:inputType=\"textPersonName\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/tvStoreRes5\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/txtStoreDes\" />\r\n\r\n    <Button\r\n        android:id=\"@+id/btnAddStoreComfirm\"\r\n        android:layout_width=\"189dp\"\r\n        android:layout_height=\"66dp\"\r\n        android:layout_marginTop=\"52dp\"\r\n        android:background=\"@drawable/button_staff_main\"\r\n        android:text=\"Comfirm\"\r\n        android:textColor=\"#FBFBFB\"\r\n        android:textSize=\"18sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.927\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/txtStoreLimit\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/txtTitleStoreRes\"\r\n        android:layout_width=\"387dp\"\r\n        android:layout_height=\"46dp\"\r\n        android:layout_marginTop=\"4dp\"\r\n        android:gravity=\"center\"\r\n        android:text=\"Store Registration\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"30sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.544\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/tvStoreRes\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"44dp\"\r\n        android:layout_marginTop=\"12dp\"\r\n        android:text=\"Password :\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/tvStoreRes2\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/tvStoreRes3\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"84dp\"\r\n        android:layout_marginTop=\"24dp\"\r\n        android:text=\"Slot ID :\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/tvStoreRes5\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/tvStoreRes7\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"4dp\"\r\n        android:layout_marginTop=\"12dp\"\r\n        android:text=\"Customer Limit :\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/tvStoreRes3\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/tvStoreRes2\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"20dp\"\r\n        android:layout_marginTop=\"12dp\"\r\n        android:text=\" Store Name :\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/txtTitleStoreRes\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/tvStoreRes4\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"28dp\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:text=\"Description :\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/tvStoreRes\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/tvStoreRes5\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"24dp\"\r\n        android:layout_marginTop=\"12dp\"\r\n        android:text=\"Floor Locate :\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textSize=\"24sp\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/tvStoreRes4\" />\r\n\r\n    <Button\r\n        android:id=\"@+id/btnUpPic\"\r\n        android:layout_width=\"141dp\"\r\n        android:layout_height=\"68dp\"\r\n        android:layout_marginTop=\"52dp\"\r\n        android:layout_marginEnd=\"40dp\"\r\n        android:background=\"@drawable/button_staff_main\"\r\n        android:text=\"Upload Picture\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:visibility=\"invisible\"\r\n        app:layout_constraintEnd_toStartOf=\"@+id/btnAddStoreComfirm\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/txtStoreLimit\" />\r\n\r\n    <EditText\r\n        android:id=\"@+id/txtStoreLimit\"\r\n        android:layout_width=\"119dp\"\r\n        android:layout_height=\"43dp\"\r\n        android:layout_marginStart=\"40dp\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:background=\"@drawable/button_staff_main\"\r\n        android:ems=\"10\"\r\n        android:inputType=\"number\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/tvStoreRes7\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/txtStoreSlot\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/store_registration.xml	(revision b7e04a99d365503ac49fae6a015aafe9f8d540ee)
++++ app/src/main/res/layout/store_registration.xml	(date 1606060147202)
+@@ -9,33 +9,33 @@
+ 
+     <EditText
+         android:id="@+id/txtStoreName"
+-        android:layout_width="217dp"
+-        android:layout_height="37dp"
++        android:layout_width="179dp"
++        android:layout_height="35dp"
+         android:layout_marginStart="24dp"
+-        android:layout_marginTop="12dp"
++        android:layout_marginTop="8dp"
+         android:background="@drawable/button_staff_main"
+         android:ems="10"
+         android:inputType="textPersonName"
+         android:textColor="#FFFFFF"
+         android:textSize="24sp"
+         app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="1.0"
++        app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toEndOf="@+id/tvStoreRes2"
+         app:layout_constraintTop_toBottomOf="@+id/txtTitleStoreRes" />
+ 
+     <EditText
+         android:id="@+id/txtStoreDes"
+-        android:layout_width="216dp"
+-        android:layout_height="40dp"
++        android:layout_width="189dp"
++        android:layout_height="34dp"
+         android:layout_marginStart="40dp"
+-        android:layout_marginTop="8dp"
++        android:layout_marginTop="16dp"
+         android:background="@drawable/button_staff_main"
+         android:ems="10"
+         android:inputType="textPersonName"
+         android:textColor="#FFFFFF"
+         android:textSize="24sp"
+         app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="1.0"
++        app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toEndOf="@+id/tvStoreRes4"
+         app:layout_constraintTop_toBottomOf="@+id/txtStorePass" />
+ 
+@@ -43,7 +43,7 @@
+         android:id="@+id/txtStoreSlot"
+         android:layout_width="206dp"
+         android:layout_height="32dp"
+-        android:layout_marginStart="28dp"
++        android:layout_marginStart="32dp"
+         android:layout_marginTop="20dp"
+         android:background="@drawable/button_staff_main"
+         android:ems="10"
+@@ -55,15 +55,16 @@
+ 
+     <EditText
+         android:id="@+id/txtStorePass"
+-        android:layout_width="202dp"
+-        android:layout_height="32dp"
++        android:layout_width="178dp"
++        android:layout_height="30dp"
+         android:layout_marginStart="32dp"
+-        android:layout_marginTop="8dp"
++        android:layout_marginTop="16dp"
+         android:background="@drawable/button_staff_main"
+         android:ems="10"
+         android:inputType="numberPassword"
+         android:textColor="#FFFFFF"
+         app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toEndOf="@+id/tvStoreRes"
+         app:layout_constraintTop_toBottomOf="@+id/txtStoreName" />
+ 
+@@ -79,7 +80,7 @@
+         android:textColor="#FFFFFF"
+         android:textSize="24sp"
+         app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="0.0"
++        app:layout_constraintHorizontal_bias="0.2"
+         app:layout_constraintStart_toEndOf="@+id/tvStoreRes5"
+         app:layout_constraintTop_toBottomOf="@+id/txtStoreDes" />
+ 
+@@ -200,7 +201,7 @@
+         android:id="@+id/txtStoreLimit"
+         android:layout_width="119dp"
+         android:layout_height="43dp"
+-        android:layout_marginStart="40dp"
++        android:layout_marginStart="24dp"
+         android:layout_marginTop="20dp"
+         android:background="@drawable/button_staff_main"
+         android:ems="10"
+Index: app/src/main/java/com/example/covid_19shoppingcentre/uploadStorePicture.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.covid_19shoppingcentre\r\n\r\nimport android.app.AlertDialog\r\nimport android.content.Intent\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport android.util.Log\r\nimport android.widget.Toast\r\nimport com.google.firebase.storage.FirebaseStorage\r\nimport com.google.firebase.storage.StorageReference\r\nimport com.squareup.picasso.Picasso\r\nimport dmax.dialog.SpotsDialog\r\nimport kotlinx.android.synthetic.main.list_layout.view.*\r\nimport kotlinx.android.synthetic.main.member_login.*\r\nimport kotlinx.android.synthetic.main.store_registration.*\r\nimport kotlinx.android.synthetic.main.upload_store_picture.*\r\nimport java.lang.reflect.Array.get\r\n\r\nclass uploadStorePicture : AppCompatActivity() {\r\n\r\n    lateinit var alertDialog: AlertDialog\r\n    lateinit var storageReference: StorageReference\r\n\r\n\r\n    lateinit var passURL: String\r\n\r\n    companion object{\r\n        private val PICK_IMAGE_CODE = 1000\r\n    }\r\n\r\n    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {\r\n        super.onActivityResult(requestCode, resultCode, data)\r\n        if(requestCode == PICK_IMAGE_CODE){\r\n            alertDialog.show()\r\n            val uploadTask = storageReference!!.putFile(data!!.data!!)\r\n            val task = uploadTask.continueWithTask {\r\n                task ->\r\n                if (!task.isSuccessful) {\r\n                    Toast.makeText(this@uploadStorePicture, \"Failed\", Toast.LENGTH_SHORT).show()\r\n                }\r\n                storageReference!!.downloadUrl\r\n            }.addOnCompleteListener{task ->\r\n                if(task.isSuccessful){\r\n                    val downloadUri = task.result\r\n                    val url = downloadUri!!.toString().substring(0, downloadUri.toString().indexOf(\"&token\"))\r\n                    Log.d(\"DIRECTLINK\", url)\r\n                    alertDialog.dismiss()\r\n                    Picasso.with(this@uploadStorePicture).load(url).into(ivStorePic)\r\n                    passURL = url\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.upload_store_picture)\r\n\r\n        val builder = AlertDialog.Builder(this)\r\n        alertDialog = builder.create()\r\n        alertDialog.show()\r\n\r\n        val intent = intent\r\n        val name = intent.getStringExtra(\"regisStoreName\")\r\n        val pass = intent.getStringExtra(\"regisPass\")\r\n        val des = intent.getStringExtra(\"regisDes\")\r\n        val floor = intent.getStringExtra(\"regisFloor\")\r\n        val slot = intent.getStringExtra(\"regisSlot\")\r\n        val limit = intent.getStringExtra(\"regisLimit\")\r\n\r\n        storageReference = FirebaseStorage.getInstance().getReference(name)\r\n\r\n        btnUploadComfirm.setOnClickListener {\r\n            val intent = Intent()\r\n            intent.type = \"image/*\"\r\n            intent.action = Intent.ACTION_GET_CONTENT\r\n            startActivityForResult(Intent.createChooser(intent, \"Select Picture\"), PICK_IMAGE_CODE)\r\n        }\r\n\r\n        btnBackRes.setOnClickListener{\r\n            val i = Intent(\r\n                this@uploadStorePicture,\r\n                storeRegistration::class.java\r\n            )\r\n            i.putExtra(\"PictureURL\", passURL)\r\n            i.putExtra(\"regisStoreName\", name)\r\n            i.putExtra(\"regisPass\", pass)\r\n            i.putExtra(\"regisDes\", des)\r\n            i.putExtra(\"regisFloor\", floor)\r\n            i.putExtra(\"regisSlot\", slot)\r\n            i.putExtra(\"regisLimit\", limit)\r\n            startActivity(i)\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/covid_19shoppingcentre/uploadStorePicture.kt	(revision b7e04a99d365503ac49fae6a015aafe9f8d540ee)
++++ app/src/main/java/com/example/covid_19shoppingcentre/uploadStorePicture.kt	(date 1606062970565)
+@@ -41,6 +41,7 @@
+                 storageReference!!.downloadUrl
+             }.addOnCompleteListener{task ->
+                 if(task.isSuccessful){
++                    Toast.makeText(this@uploadStorePicture, "Successful Uploaded", Toast.LENGTH_SHORT).show()
+                     val downloadUri = task.result
+                     val url = downloadUri!!.toString().substring(0, downloadUri.toString().indexOf("&token"))
+                     Log.d("DIRECTLINK", url)
+@@ -62,11 +63,6 @@
+ 
+         val intent = intent
+         val name = intent.getStringExtra("regisStoreName")
+-        val pass = intent.getStringExtra("regisPass")
+-        val des = intent.getStringExtra("regisDes")
+-        val floor = intent.getStringExtra("regisFloor")
+-        val slot = intent.getStringExtra("regisSlot")
+-        val limit = intent.getStringExtra("regisLimit")
+ 
+         storageReference = FirebaseStorage.getInstance().getReference(name)
+ 
+@@ -75,6 +71,7 @@
+             intent.type = "image/*"
+             intent.action = Intent.ACTION_GET_CONTENT
+             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
++
+         }
+ 
+         btnBackRes.setOnClickListener{
+@@ -84,11 +81,6 @@
+             )
+             i.putExtra("PictureURL", passURL)
+             i.putExtra("regisStoreName", name)
+-            i.putExtra("regisPass", pass)
+-            i.putExtra("regisDes", des)
+-            i.putExtra("regisFloor", floor)
+-            i.putExtra("regisSlot", slot)
+-            i.putExtra("regisLimit", limit)
+             startActivity(i)
+         }
+     }
+Index: app/src/main/java/com/example/covid_19shoppingcentre/StaffMainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.covid_19shoppingcentre\r\n\r\nimport android.app.ActivityManager\r\nimport android.content.Context\r\nimport android.content.Intent\r\nimport android.media.Image\r\nimport android.os.Build\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport android.os.Handler\r\nimport android.widget.Button\r\nimport android.widget.Toast\r\nimport androidx.annotation.RequiresApi\r\nimport com.google.firebase.database.DataSnapshot\r\nimport com.google.firebase.database.DatabaseError\r\nimport com.google.firebase.database.FirebaseDatabase\r\nimport com.google.firebase.database.ValueEventListener\r\nimport kotlinx.android.synthetic.main.staff_main.*\r\nimport java.time.LocalDateTime\r\nimport java.time.format.DateTimeFormatter\r\n\r\nclass StaffMainActivity : AppCompatActivity() {\r\n//    private var Database = FirebaseDatabase.getInstance().getReference()\r\n//    private val EVERY_EIGHT_SECOND: Long = 1000\r\n//\r\n//    // Run on parallel\r\n//    private var handler: Handler? = null\r\n//    private var runnable: Runnable? = null\r\nprivate var userDatabase = FirebaseDatabase.getInstance().getReference()\r\n\r\n    @RequiresApi(Build.VERSION_CODES.O)\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.staff_main)\r\n\r\n        val serviceClass = staffService::class.java\r\n        val intent1 = Intent(applicationContext, serviceClass)\r\n\r\n        if (!isServiceRunning(serviceClass)) {\r\n            // Start the service\r\n            startService(intent1)\r\n        } else {\r\n        }\r\n\r\n        val SC_Customer_CheckIn = findViewById<Button>(R.id.SCCheckInBtn)\r\n        val SC_CheckedIn_Customer = findViewById<Button>(R.id.SCCheckInCustomerBtn)\r\n        val SC_View_Store = findViewById<Button>(R.id.viewStoreBtn)\r\n\r\n        logoImg.setImageDrawable(resources.getDrawable(R.drawable.logo))\r\n\r\n        SC_Customer_CheckIn.setOnClickListener{\r\n            val intent = Intent(this, QRScannerActivity::class.java).apply {\r\n                putExtra(\"EXTRA_MESSAGE\", \"message\")\r\n            }\r\n            startActivity(intent)\r\n        }\r\n\r\n        SC_CheckedIn_Customer.setOnClickListener{\r\n            val intent = Intent(this, CheckInScCustomer_List::class.java).apply {\r\n                putExtra(\"EXTRA_MESSAGE\", \"message\")\r\n            }\r\n            startActivity(intent)\r\n        }\r\n\r\n        SC_View_Store.setOnClickListener{\r\n            val intent = Intent(this, Store_List::class.java).apply {\r\n                putExtra(\"EXTRA_MESSAGE\", \"message\")\r\n            }\r\n            startActivity(intent)\r\n        }\r\n\r\n        btnDashBoardMain.setOnClickListener{\r\n            val intent = Intent(this, DashboardMain::class.java).apply {\r\n                putExtra(\"EXTRA_MESSAGE\", \"message\")\r\n            }\r\n            startActivity(intent)\r\n        }\r\n\r\n        btnReportStaffMain.setOnClickListener{\r\n\r\n            val currentDateTime  = LocalDateTime.now()\r\n            val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern(\"yyyyMMdd\")\r\n            val dateText = currentDateTime.format(dateFormat)\r\n            val id = intent.getStringExtra(\"MemberID\")\r\n\r\n            val query = userDatabase.child(\"ShoppingCentre\").child(\"20201116\")\r\n            val query1 = userDatabase.child(\"Member\").orderByChild(\"Id\").equalTo(id)\r\n            query1.addListenerForSingleValueEvent(object : ValueEventListener{\r\n                override fun onDataChange(snapshot: DataSnapshot) {\r\n                    for (snapshot in snapshot.children) {\r\n                        if (snapshot.exists()) {\r\n                            val name = snapshot.child(\"Name\").value.toString()\r\n                            query.addListenerForSingleValueEvent(object : ValueEventListener {\r\n                                override fun onDataChange(s0: DataSnapshot) {\r\n                                    try {\r\n                                        var count = 0;\r\n                                        for (s0 in s0.children) {\r\n                                            count++\r\n                                        }\r\n                                        val intent = Intent(\r\n                                            this@StaffMainActivity,\r\n                                            GenerateDailyReportJava::class.java\r\n                                        ).apply {\r\n                                            putExtra(\"Count\", count.toString())\r\n                                            putExtra(\"PrinterName\", name)\r\n                                        }\r\n                                        startActivity(intent)\r\n                                    } catch (e: Exception) {\r\n                                        Toast.makeText(\r\n                                            applicationContext,\r\n                                            \"ERROR$e\",\r\n                                            Toast.LENGTH_SHORT\r\n                                        ).show()\r\n                                    }\r\n                                }\r\n\r\n                                override fun onCancelled(error: DatabaseError) {\r\n                                    Toast.makeText(applicationContext, \"ERROR\", Toast.LENGTH_SHORT)\r\n                                        .show()\r\n                                }\r\n                            })\r\n                        }\r\n                    }\r\n                }\r\n                override fun onCancelled(error: DatabaseError) {\r\n                    Toast.makeText(applicationContext, \"ERROR\", Toast.LENGTH_SHORT).show()\r\n                }\r\n\r\n            })\r\n        }\r\n\r\n        btnStaffRegisMain.setOnClickListener{\r\n            val intent = Intent(this, StaffRegistration::class.java).apply {\r\n                putExtra(\"EXTRA_MESSAGE\", \"message\")\r\n            }\r\n            startActivity(intent)\r\n        }\r\n    }\r\n\r\n    private fun isServiceRunning(serviceClass: Class<*>): Boolean {\r\n        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager\r\n\r\n        // Loop through the running services\r\n        for (service in activityManager.getRunningServices(Integer.MAX_VALUE)) {\r\n            if (serviceClass.name == service.service.className) {\r\n                // If the service is running then return true\r\n                return true\r\n            }\r\n        }\r\n        return false\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/covid_19shoppingcentre/StaffMainActivity.kt	(revision b7e04a99d365503ac49fae6a015aafe9f8d540ee)
++++ app/src/main/java/com/example/covid_19shoppingcentre/StaffMainActivity.kt	(date 1606064661002)
+@@ -83,7 +83,7 @@
+             val dateText = currentDateTime.format(dateFormat)
+             val id = intent.getStringExtra("MemberID")
+ 
+-            val query = userDatabase.child("ShoppingCentre").child("20201116")
++            val query = userDatabase.child("ShoppingCentre").child(dateText)
+             val query1 = userDatabase.child("Member").orderByChild("Id").equalTo(id)
+             query1.addListenerForSingleValueEvent(object : ValueEventListener{
+                 override fun onDataChange(snapshot: DataSnapshot) {
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"PLATFORM\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"1.8\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/gradle.xml	(revision b7e04a99d365503ac49fae6a015aafe9f8d540ee)
++++ .idea/gradle.xml	(date 1606044756147)
+@@ -15,6 +15,7 @@
+           </set>
+         </option>
+         <option name="resolveModulePerSourceSet" value="false" />
++        <option name="useQualifiedModuleNames" value="true" />
+       </GradleProjectSettings>
+     </option>
+   </component>
