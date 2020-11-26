@@ -37,31 +37,28 @@ class PasswordRecovery3 :AppCompatActivity(){
     private lateinit var email: String
     private lateinit var pass:String
     private lateinit var confirmPass:String
+    private lateinit var memberId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.password_recovery_3)
         val intent1: Intent = intent
         val inten2 = Intent(this@PasswordRecovery3,MemberLogin::class.java)
         email = intent1.getStringExtra("MemberEmail")
+        memberId = intent1.getStringExtra("memberId")
         btnResetPassword.setOnClickListener{
             pass = txtResetPassword.text.toString()
             confirmPass = txtResetConfirmPassword.text.toString()
+            val searchquery = userDatabase.child(memberId)
             userDatabase.addValueEventListener(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    var returnAddress: String
-                    Loop@for(i in snapshot.children){
-                        returnAddress = i.child("Email").value.toString()
-                        if(returnAddress == email){
+                        if(snapshot.exists()){
                             if(pass == confirmPass){
-                                userDatabase.child(i.toString()).child("Password").setValue(pass)
+                                userDatabase.child(memberId).child("Password").setValue(pass)
                                 Toast.makeText(applicationContext, "Password Reset Successfully!!!",Toast.LENGTH_SHORT).show()
-
                             }else{
                                 Toast.makeText(applicationContext, "Please Enter the same password in both password field",Toast.LENGTH_SHORT).show()
                             }
-                            break@Loop
                         }
-                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {

@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.zxing.integration.android.IntentIntegrator
+import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.android.synthetic.main.member_registration.*
 import kotlinx.android.synthetic.main.qr_scanner.*
 import java.text.SimpleDateFormat
@@ -92,6 +93,44 @@ class QRCodeScanner : AppCompatActivity(){
         return Calendar.getInstance().time
     }
 
+    fun getStoreCurrentLimitation(dateText:String, storeId:String,hourText:String): Boolean {
+        var customerCountInt: Int = 0
+        var storelimit: Int = 0
+        var isOverLimit: Boolean = true
+        val query = Database.child("CheckInStore").child(dateText).child(storeId).child(hourText)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snap: DataSnapshot) {
+                for (snap in snap.children) {
+                    if(snap.child("status").value.toString() == "active") {
+                        customerCountInt++
+                    }
+                }
+                val query2 = Database.child("Store").child(storeId)
+                query2.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snap: DataSnapshot) {
+                        if(snap.exists()){
+                            storelimit = snap.child("Store_Limitation").value.toString().toInt()
+                        }
+                        Log.d("testing", storelimit.toString())
+                        if(customerCountInt<storelimit){
+                            isOverLimit = false
+                        }
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        })
+        return isOverLimit
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -102,58 +141,127 @@ class QRCodeScanner : AppCompatActivity(){
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
                     var results:String = result.contents.substring(0,1)
-                    if (results == "I"){
-
-                        storeId = result.contents.substring(1)
+                    if (results == "I") {
                         val date = getCurrentDateTime()
-                    val currentDateTime = date.toString("yyyy/MM/dd")
-                    val hourFormat = date.toString("hh:mm aa")
+                        val currentDateTime = date.toString("yyyy/MM/dd")
+                        val currentDateTimesearch = date.toString("yyyyMMdd")
+                        val hourFormat = date.toString("hh:mm aa")
+                        val hourf = date.toString("HH")
+                        storeId = result.contents.substring(1)
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        val currentDateTime1  = LocalDateTime.now()
-                        val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-                        val dateText = currentDateTime1.format(dateFormat)
-                        val hourMinuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
-                        val hourFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
-                        val hourMinuteText = currentDateTime1.format(hourMinuteFormat)
-                        val hourFormatText = currentDateTime1.format(hourFormat1)
+                        var customerCountInt: Int = 0
+                        var storelimit: Int = 0
+                        var isOverLimit: Boolean = true
+                        val query = Database.child("CheckInStore").child(currentDateTimesearch).child(
+                            storeId!!
+                        ).child(hourf)
+                        query.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snap: DataSnapshot) {
+                                for (snap in snap.children) {
+                                    if(snap.child("status").value.toString() == "active") {
+                                        customerCountInt++
+                                    }
+                                }
+                                val query2 = Database.child("Store").child(storeId!!)
+                                query2.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(snap: DataSnapshot) {
+                                        if(snap.exists()){
+                                            storelimit = snap.child("Store_Limitation").value.toString().toInt()
+                                        }
+                                        Log.d("testing", storelimit.toString())
+                                        if(customerCountInt<storelimit){
+                                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                            val currentDateTime1 = LocalDateTime.now()
+                                            val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                                            val dateText = currentDateTime1.format(dateFormat)
+                                            val hourMinuteFormat: DateTimeFormatter =
+                                                DateTimeFormatter.ofPattern("hh:mm a")
+                                            val hourFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
+                                            val hourMinuteText = currentDateTime1.format(hourMinuteFormat)
+                                            val hourFormatText = currentDateTime1.format(hourFormat1)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+                                            checkInDate = currentDateTime
+                                            checkInTime = hourFormat
+                                            mDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+                                                override fun onDataChange(snapshot: DataSnapshot) {
+                                                    var found: Int = 0
+                                                    for (i in snapshot.children) {
+                                                        val comparedate = currentDateTime.replace("/", "")
+                                                        if (i.hasChild(customerId!!) && i.key.toString() == comparedate && i.child(
+                                                                customerId!!
+                                                            ).child("status").value.toString() == "checkIn"
+                                                        ) {
+                                                            found++
+                                                            var tempString = i.child(customerId!!)
+                                                                .child("bodyTemperature").value.toString()
+                                                            bodyTemp = tempString
+                                                            var temp = tempString.substring(0, 4).toFloat()
+                                                            if (temp > 37.5) {
+                                                                status = "Fever"
+                                                            } else {
+                                                                status = "Normal"
+                                                            }
+                                                            userDatabase.child(checkInStoreId).setValue(
+                                                                MemberCheckInStore(
+                                                                    checkInDate, checkInTime, customerId, status,
+                                                                    storeId!!, bodyTemp
+                                                                )
+                                                            )
 
-                        checkInDate = currentDateTime
-                    checkInTime = hourFormat
-                        mDatabase.addListenerForSingleValueEvent(object: ValueEventListener{
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                for(i in snapshot.children){
-                                    val comparedate = currentDateTime.replace("/","")
-                                    if(i.hasChild(customerId!!)&&i.key.toString()== comparedate&&i.child(customerId!!).child("status").value.toString() == "checkIn"){
-                                        var tempString = i.child(customerId!!).child("bodyTemperature").value.toString()
-                                        bodyTemp = tempString
-                                        var temp = tempString.substring(0,4).toFloat()
-                                        if(temp> 37.5){
-                                            status = "Fever"
+                                                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                            Database.child("CheckInStore").child(dateText.toString())
+                                                                .child(storeId!!).child(hourFormatText.toString())
+                                                                .child(customerId.toString()).child("checkInTime")
+                                                                .setValue(hourMinuteText.toString())
+                                                            Database.child("CheckInStore").child(dateText.toString())
+                                                                .child(storeId!!).child(hourFormatText.toString())
+                                                                .child(customerId.toString()).child("checkOutTime")
+                                                                .setValue("pending")
+                                                            Database.child("CheckInStore").child(dateText.toString())
+                                                                .child(storeId!!).child(hourFormatText.toString())
+                                                                .child(customerId.toString()).child("customerId")
+                                                                .setValue(customerId.toString())
+                                                            Database.child("CheckInStore").child(dateText.toString())
+                                                                .child(storeId!!).child(hourFormatText.toString())
+                                                                .child(customerId.toString()).child("status")
+                                                                .setValue("active")
+                                                            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                        }
+                                                    }
+                                                    if (found < 1) {
+                                                        //WARNING
+                                                        Toast.makeText(
+                                                            this@QRCodeScanner,
+                                                            "Please checked in at the Shopping Mall Main entrance",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                }
+
+                                                override fun onCancelled(error: DatabaseError) {
+                                                    TODO("Not yet implemented")
+                                                }
+                                            })
                                         }else{
-                                            status="Normal"
+                                            Toast.makeText(
+                                                applicationContext,
+                                                "The current store's customer is over the limit",
+                                                Toast.LENGTH_LONG
+                                            ).show()
                                         }
-                                        userDatabase.child(checkInStoreId).setValue(MemberCheckInStore(checkInDate,checkInTime,customerId,status,
-                                            storeId!!,bodyTemp))
 
-                                        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("checkInTime").setValue(hourMinuteText.toString())
-                                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("checkOutTime").setValue("pending")
-                                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("customerId").setValue(customerId.toString())
-                                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("status").setValue("active")
-                                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                    }else{
-                                        Toast.makeText(this@QRCodeScanner, "Please checked in at the Shopping Mall Main entrance",Toast.LENGTH_SHORT).show()
                                     }
-                                }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
+                                    }
+                                })
                             }
 
                             override fun onCancelled(error: DatabaseError) {
-                                TODO("Not yet implemented")
+                                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
                             }
                         })
 

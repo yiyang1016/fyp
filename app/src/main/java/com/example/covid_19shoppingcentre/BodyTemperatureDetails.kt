@@ -1,30 +1,35 @@
 package com.example.covid_19shoppingcentre
 
 class BodyTemperatureDetails {
-    var checkInDate: String?=null
+    var bodyTemperature: String?=null
     var checkInTime: String?=null
+    var checkOutTime:String?=null
     var customerId: String?=null
+    var name:String?=null
+    var phone:String?=null
     var status: String?=null
-    var storeId: String?=null
-    var bodyTemp: String?=null
 
     constructor(){
 
     }
 
     constructor(
-        checkInDate: String?,
+        bodyTemperature: String?,
         checkInTime: String?,
+        checkOutTime: String?,
         customerId: String?,
-        status: String?,
-        storeId: String,
-        bodyTemp: String?
+        name: String?,
+        phone: String?,
+        status: String?
     ) {
-        this.checkInDate = checkInDate
+        this.bodyTemperature = bodyTemperature
         this.checkInTime = checkInTime
+        this.checkOutTime = checkOutTime
         this.customerId = customerId
+        this.name = name
+        this.phone = phone
         this.status = status
-        this.storeId = storeId
-        this.bodyTemp=bodyTemp
     }
+
+
 }

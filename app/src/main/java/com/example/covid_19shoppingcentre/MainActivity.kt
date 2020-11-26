@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_memberMenu->{
-                    val intent = Intent(this, QRCodeScanner::class.java)
+                    val intent = Intent(this, member_menu::class.java)
                     intent.putExtra("MemberID", memberID)
                     startActivity(intent)
                 }

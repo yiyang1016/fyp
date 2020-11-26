@@ -91,7 +91,7 @@ class VisitHistory : AppCompatActivity(){
     private fun loadFirebase(searchDate: String) {
 
         val firebaseSearchQuery =
-            mDatabase.orderByChild("CheckInDate").startAt(searchDate)
+            mDatabase.orderByChild("checkInDate").startAt(searchDate)
                 .endAt(searchDate + "\uf8ff")
         var FirebaseRecyclerAdapter =
             object : FirebaseRecyclerAdapter<MemberVisitDetails, MemberVisitDetailsViewHolder>(

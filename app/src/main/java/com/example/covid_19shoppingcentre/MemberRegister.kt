@@ -106,7 +106,7 @@ class MemberRegister : AppCompatActivity() {
                             txtEmailAddress.error = "Enter correct Email"
                         }
                     }else{
-                        txtICNumber.error = "Enter correct Password"
+                        txtICNumber.error = "Enter correct IC Number"
                     }
                 } else
                     Toast.makeText(

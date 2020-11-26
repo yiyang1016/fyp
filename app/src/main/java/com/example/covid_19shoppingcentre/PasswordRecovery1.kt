@@ -34,6 +34,7 @@ class PasswordRecovery1 :AppCompatActivity(){
     //firebase
     private var userDatabase = FirebaseDatabase.getInstance().getReference("Member")
     private lateinit var email: String
+    private lateinit var memberId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +47,15 @@ class PasswordRecovery1 :AppCompatActivity(){
                     var returnAddress: String
                     Loop@for(i in snapshot.children){
                         returnAddress = i.child("Email").value.toString()
+                        memberId = i.key.toString()
+                        foundEmail+1
                         if(returnAddress == email){
                             Toast.makeText(applicationContext, "Success",Toast.LENGTH_SHORT).show()
-                            foundEmail+1;
+                            val j = Intent(this@PasswordRecovery1, PasswordRecovery2::class.java)
+                            j.putExtra("MemberEmail", email)
+                            j.putExtra("MemberId",memberId)
+                            startActivity(j)
                             break@Loop
-                        }else{
-
                         }
                     }
                 }
