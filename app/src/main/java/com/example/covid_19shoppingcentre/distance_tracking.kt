@@ -44,6 +44,7 @@ class distance_tracking : AppCompatActivity() {
     private var bleScanResults = mutableMapOf<String?, BluetoothDevice?>()
     private lateinit var bleScanHandler: Handler
     var count = 0
+    var resumeCount = 0
     //    var deviceList = findViewById<EditText>(R.id.showDevice)
    // private lateinit var database:     DatabaseReference
     private var database = FirebaseDatabase.getInstance().getReference("Member")
@@ -53,7 +54,6 @@ class distance_tracking : AppCompatActivity() {
 
         setActionBar()
 
-        var secondCount = 0
         bleScanHandler = Handler()
         bleManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bleAdapter = bleManager.adapter
@@ -92,6 +92,10 @@ class distance_tracking : AppCompatActivity() {
         bleImageButton.setOnClickListener { view ->
             //check Bluetooth status every 3 seconds
             if(count == 0){
+                if(resumeCount == 1){
+                    onResume()
+                    resumeCount==0
+                }
                 val handler = Handler()
                 handler.postDelayed(object : Runnable {
                     override fun run() {
@@ -102,12 +106,13 @@ class distance_tracking : AppCompatActivity() {
                                 "Kindly Enable the Bluetooth inside your phone"
                             )
                         }
-                        handler.postDelayed(this, 3000)//3 sec delay
+                            handler.postDelayed(this, 3000)//3 sec delay
                     }
                 }, 0)
 
                 status.text = "STATUS : ON"
                 bleStartScan.run()
+                bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
                 count++
                 val bluetoothScanninghandler = Handler()
                 bluetoothScanninghandler.postDelayed(object : Runnable {
@@ -143,7 +148,7 @@ class distance_tracking : AppCompatActivity() {
                         bluetoothScanninghandler.postDelayed(this, 10000)//10 sec delay
                     }
                 }, 0)
-                bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
+
                 /*secondCount++
                 if(secondCount == 1){
                     onPause()
@@ -154,9 +159,8 @@ class distance_tracking : AppCompatActivity() {
             }else if(count == 1 ){
                 onPause()
                 //secondCount++
-            }else{
-                onResume()
             }
+
 
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
@@ -221,11 +225,11 @@ class distance_tracking : AppCompatActivity() {
             if (!resultOfScan.contains(deviceAddress)) {
                 resultOfScan.put(deviceAddress, bleDevice)
                 if (this.context != null) {
-                    Toast.makeText(
+                    /*Toast.makeText(
                         this.context,
                         bleDevice?.name + ":" + bleDevice?.address + "RSSI" + rssiValue,
                         Toast.LENGTH_SHORT
-                    ).show()
+                    ).show()*/
                     //deviceNameAddress.put(bleDevice?.name, deviceAddress)
                     addRssi.put(deviceAddress, rssiValue)
                 }
@@ -323,8 +327,8 @@ class distance_tracking : AppCompatActivity() {
                     )
 
                     ref.child(newId).setValue(data).addOnSuccessListener {
-                        Toast.makeText(applicationContext, "Added Successfully", Toast.LENGTH_SHORT)
-                            .show()
+                        //Toast.makeText(applicationContext, "Added Successfully", Toast.LENGTH_SHORT)
+                        //    .show()
                     }
 
                     val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
@@ -398,11 +402,11 @@ class distance_tracking : AppCompatActivity() {
     }
 
     override fun onPause() {
+        super.onPause()
         count = 0
         status.text = "STATUS : OFF"
         bleStopScan
-        super.onPause()
-
+        resumeCount++
         //bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
     }
 
