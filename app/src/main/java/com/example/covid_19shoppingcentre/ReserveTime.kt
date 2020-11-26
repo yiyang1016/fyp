@@ -8,9 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
-import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -26,12 +24,13 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ReserveTime : AppCompatActivity() {
     private var Database = FirebaseDatabase.getInstance().getReference()
 
     // CONSTANT
-    private val EVERY_EIGHT_SECOND: Long = 1000
+    private val EVERY_EIGHT_SECOND: Long = 500
 
     // Run on parallel
     private var handler: Handler? = null
@@ -52,13 +51,12 @@ class ReserveTime : AppCompatActivity() {
         storeName.text = storeN
 
         val chooseTime = listOf("10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM")
-
         timeList.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, chooseTime)
 
-        NoBookingSameTime()
         setActionBar()
         compareTime()
         alreadyBook()
+        NoBookingSameTime()
         executeHandler()
 
         val searchStore = Database.child("Store").orderByChild("Store_Name").equalTo(storeN)
@@ -280,7 +278,6 @@ class ReserveTime : AppCompatActivity() {
                 Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
             }
         })
-
     }
 
     private fun limitation1() {
@@ -645,45 +642,64 @@ class ReserveTime : AppCompatActivity() {
 
                             if (reserveDate == date){
                                 if(time == "10:00 AM"){
-                                    val view = timeList.getChildAt(0)
-                                    view.setOnClickListener{
-                                        Toast.makeText(applicationContext,
-                                            "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                    try{
+                                        val view = timeList.getChildAt(0)
+                                        view.setOnClickListener{
+                                            Toast.makeText(applicationContext,
+                                                "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                        }
+                                        val trying = view as TextView
+                                        trying.setTextColor(Color.GRAY)
+                                    } catch (e: Exception){
                                     }
-                                    val trying = view as TextView
-                                    trying.setTextColor(Color.GRAY)
                                 }
                                 if(time == "12:00 AM"){
-                                    val view = timeList.getChildAt(1)
-                                    view.setOnClickListener{
-                                        Toast.makeText(applicationContext, "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                    try{
+                                        val view = timeList.getChildAt(1)
+                                        view.setOnClickListener{
+                                            Toast.makeText(applicationContext,
+                                                "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                        }
+                                        val trying = view as TextView
+                                        trying.setTextColor(Color.GRAY)
+                                    } catch (e: Exception){
                                     }
-                                    val trying = view as TextView
-                                    trying.setTextColor(Color.GRAY)
                                 }
                                 if(time == "2:00 PM"){
-                                    val view = timeList.getChildAt(2)
-                                    view.setOnClickListener{
-                                        Toast.makeText(applicationContext, "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                    try{
+                                        val view = timeList.getChildAt(2)
+                                        view.setOnClickListener{
+                                            Toast.makeText(applicationContext,
+                                                "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                        }
+                                        val trying = view as TextView
+                                        trying.setTextColor(Color.GRAY)
+                                    } catch (e: Exception){
                                     }
-                                    val trying = view as TextView
-                                    trying.setTextColor(Color.GRAY)
                                 }
                                 if(time == "4:00 PM"){
-                                    val view = timeList.getChildAt(3)
-                                    view.setOnClickListener{
-                                        Toast.makeText(applicationContext, "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                    try{
+                                        val view = timeList.getChildAt(3)
+                                        view.setOnClickListener{
+                                            Toast.makeText(applicationContext,
+                                                "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                        }
+                                        val trying = view as TextView
+                                        trying.setTextColor(Color.GRAY)
+                                    } catch (e: Exception){
                                     }
-                                    val trying = view as TextView
-                                    trying.setTextColor(Color.GRAY)
                                 }
                                 if(time == "6:00 PM"){
-                                    val view = timeList.getChildAt(4)
-                                    view.setOnClickListener{
-                                        Toast.makeText(applicationContext, "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                    try{
+                                        val view = timeList.getChildAt(4)
+                                        view.setOnClickListener{
+                                            Toast.makeText(applicationContext,
+                                                "Already booked at this time on this day in $name", Toast.LENGTH_SHORT).show()
+                                        }
+                                        val trying = view as TextView
+                                        trying.setTextColor(Color.GRAY)
+                                    } catch (e: Exception){
                                     }
-                                    val trying = view as TextView
-                                    trying.setTextColor(Color.GRAY)
                                 }
                             }
                         }
@@ -708,6 +724,7 @@ class ReserveTime : AppCompatActivity() {
                     //Updating firebase store/getting
                     compareTime()
                     alreadyBook()
+                    NoBookingSameTime()
                     //And we execute it again
                     handler!!.postDelayed(this, EVERY_EIGHT_SECOND)
                 }
@@ -749,6 +766,19 @@ class ReserveTime : AppCompatActivity() {
         val actionBar: ActionBar? = supportActionBar
         actionBar!!.title = "Reserve Time"
         actionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onBackPressed() {
+        val pic = intent.getStringExtra("storePic")
+        val storeN = intent.getStringExtra("storeName")
+        val idd = intent.getStringExtra("memberid2")
+
+        val intent1 = Intent(this, ReserveDate::class.java).apply {
+            putExtra("StorePic", pic)
+            putExtra("StoreName", storeN)
+            putExtra("memberid1", idd)
+        }
+        startActivity(intent1)
     }
 
 }
