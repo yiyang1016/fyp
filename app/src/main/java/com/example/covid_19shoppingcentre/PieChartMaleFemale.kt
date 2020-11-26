@@ -72,7 +72,7 @@ class PieChartMaleFemale : AppCompatActivity() {
                 value.add(PieEntry(b.toFloat(),"Female"))
 
 
-                pds = PieDataSet(value,"Percentage of Male and Female")
+                pds = PieDataSet(value,"")
                 pds.valueTextSize = 35f
                 pds.colors = listColors
 

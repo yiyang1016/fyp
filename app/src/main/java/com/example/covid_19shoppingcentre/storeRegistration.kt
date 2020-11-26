@@ -56,8 +56,12 @@ class storeRegistration : AppCompatActivity() {
 
 
         btnUpPic.setOnClickListener{
-                name = txtStoreName.getText().toString()
+            name = txtStoreName.getText().toString()
 
+            if(name.equals(null) || name.equals("")){
+                Toast.makeText(applicationContext, "Plaese Enter Store Name before Upload", Toast.LENGTH_SHORT).show()
+            }
+            else{
                 val i = Intent(
                     this@storeRegistration,
                     uploadStorePicture::class.java
@@ -65,6 +69,7 @@ class storeRegistration : AppCompatActivity() {
                 i.putExtra("regisStoreName", name)
 
                 startActivity(i)
+            }
 
         }
 

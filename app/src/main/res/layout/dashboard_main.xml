@@ -34,20 +34,36 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/btnPiechartMaleFemale"
+    android:id="@+id/btnPiechartMaleFemale"
+    android:layout_width="373dp"
+    android:layout_height="80dp"
+    android:background="@drawable/button_staff_main"
+    android:gravity="left|center_vertical"
+    android:paddingLeft="20dp"
+    android:text="Percentage of Member's Gender (Pie Chart)"
+    android:textColor="#FFFFFF"
+    android:textSize="22dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.394"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/logoImgDashBoard"
+    app:layout_constraintVertical_bias="0.075" />
+
+    <Button
+        android:id="@+id/btnBarChartMonthReport"
         android:layout_width="373dp"
         android:layout_height="80dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/button_staff_main"
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
-        android:text="Percentage of Gender Menber (Pie Chart)"
+        android:text="3 Months CheckIn Report (Bar Chart)"
         android:textColor="#FFFFFF"
         android:textSize="22dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.392" />
+        app:layout_constraintTop_toBottomOf="@+id/btnPiechartMaleFemale" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,5 +18,12 @@ class DashboardMain : AppCompatActivity() {
             }
             startActivity(intent)
         }
+
+        btnBarChartMonthReport.setOnClickListener{
+            val intent = Intent(this, BarchartThreeMonthCheckIn::class.java).apply {
+                putExtra("EXTRA_MESSAGE", "message")
+            }
+            startActivity(intent)
+        }
     }
 }

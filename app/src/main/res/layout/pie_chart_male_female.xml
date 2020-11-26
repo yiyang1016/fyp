@@ -4,12 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
     tools:context=".PieChartMaleFemale">
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background_gradient" />
+        android:layout_width="435dp"
+        android:layout_height="550dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/background_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPiechart" />
+
+    <TextView
+        android:id="@+id/tvPiechart"
+        android:layout_width="544dp"
+        android:layout_height="84dp"
+        android:text="Percentage of Member's Gender"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

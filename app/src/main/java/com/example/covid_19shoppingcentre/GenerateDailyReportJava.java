@@ -57,6 +57,7 @@ public class GenerateDailyReportJava extends AppCompatActivity {
     int countCheckIn = 0;
     int countCheckOut = 0;
     int countAbnormal = 0;
+    int totalCust = 0;
     String key;
     String a;
 
@@ -70,10 +71,6 @@ public class GenerateDailyReportJava extends AppCompatActivity {
         LocalDateTime currentDateTime  = LocalDateTime.now();
         DateTimeFormatter dateFormat  = DateTimeFormatter.ofPattern("yyyyMMdd");
         String dateText = currentDateTime.format(dateFormat);
-        count = 0;
-        countCheckIn = 0;
-        countCheckOut = 0;
-        countAbnormal = 0;
 
         btn_create_pdf = (Button)findViewById(R.id.btn_create_pdf);
 
@@ -85,9 +82,6 @@ public class GenerateDailyReportJava extends AppCompatActivity {
                         btn_create_pdf.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view){
-//                                countCheckIn = 0;
-//                                countCheckOut = 0;
-//                                countAbnormal = 0;
 
                                 reff = FirebaseDatabase.getInstance().getReference().child("ShoppingCentre").child(dateText);
 
@@ -123,7 +117,7 @@ public class GenerateDailyReportJava extends AppCompatActivity {
                                 });
 
                                 if(count == 0) {
-                                    Toast.makeText(getApplicationContext(),"count =" + count,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Please Clink agian", Toast.LENGTH_SHORT).show();
                                 }else{
                                     createPDFFile(ReportCommonJava.getAppPath(GenerateDailyReportJava.this) + "test_pdf.pdf");
                                 }
@@ -157,6 +151,7 @@ public class GenerateDailyReportJava extends AppCompatActivity {
         if(new File(path).exists())
             new File(path).delete();
         try{
+            totalCust = countAbnormal + countCheckIn + countCheckOut;
 
             Document document = new Document();
             //save
@@ -208,7 +203,7 @@ public class GenerateDailyReportJava extends AppCompatActivity {
             addLineSeperator(document);
 
             //Item
-            addNewItem(document, "Total Customer : " + count, Element.ALIGN_LEFT, orderNumberValueFont);
+            addNewItem(document, "Total Customer : " + totalCust, Element.ALIGN_LEFT, orderNumberValueFont);
             /* addNewItemWithLeftAndRight(document, "12.0*1000", "12000.0", titleFont, orderNumberValueFont); */
 
             addLineSpace(document);
@@ -232,10 +227,16 @@ public class GenerateDailyReportJava extends AppCompatActivity {
             //addLineSpace(document);
             //addLineSpace(document);
 
+            totalCust = 0;
+            count = 0;
+            countCheckIn = 0;
+            countCheckOut = 0;
+            countAbnormal = 0;
 
             document.close();
 
             Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+
 
             printPDF();
 
