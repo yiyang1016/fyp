@@ -126,7 +126,7 @@ class ViewPlace : AppCompatActivity() {
     private fun getPlaceDetailUrl(placeId: String): String {
         val url=StringBuilder("https://maps.googleapis.com/maps/api/place/details/json")
         url.append("?placeid=$placeId")
-        url.append("&key=AIzaSyDQFRH8H5JA_Tw6Rnwne4CVB2VaNagqvsM")
+        url.append("&key=AIzaSyBTfgVQ6JTfOgGYDTrwiL6opabIEOwXCSs")
         return url.toString()
     }
 
@@ -134,7 +134,7 @@ class ViewPlace : AppCompatActivity() {
         val url=StringBuilder("https://maps.googleapis.com/maps/api/place/photo")
         url.append("?maxwidth=$maxWidth")
         url.append("&photoreference=$photo_reference")
-        url.append("&key=AIzaSyDQFRH8H5JA_Tw6Rnwne4CVB2VaNagqvsM")
+        url.append("&key=AIzaSyBTfgVQ6JTfOgGYDTrwiL6opabIEOwXCSs")
         return url.toString()
     }
 
