@@ -36,7 +36,7 @@ import java.time.format.DateTimeFormatter
 class distance_tracking : AppCompatActivity() {
 
     private val REQUEST_BLUETOOTH_TURN_ON = 1
-    private val BLE_SCAN_PERIOD: Long = 100000
+    private val BLE_SCAN_PERIOD: Long = 200000
     private lateinit var bleAdapter: BluetoothAdapter
     private lateinit var bleManager: BluetoothManager
     private lateinit var bleScanner: BluetoothLeScanner
@@ -83,7 +83,7 @@ class distance_tracking : AppCompatActivity() {
                 )
             }
         } else {
-            Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Location permissions already granted", Toast.LENGTH_SHORT).show()
         }
 
         //val getVisible = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
@@ -145,7 +145,7 @@ class distance_tracking : AppCompatActivity() {
                             }
                         }
                         bleScanCallback.addRssi.clear()
-                        bluetoothScanninghandler.postDelayed(this, 10000)//10 sec delay
+                        bluetoothScanninghandler.postDelayed(this, 20000)//20 sec delay
                     }
                 }, 0)
 

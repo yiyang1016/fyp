@@ -33,18 +33,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BarchartThreeMonthCheckIn"
-            android:parentActivityName=".DashboardMain" ></activity>
-        <activity android:name=".tabletSetLimitation" />
-        <activity
-            android:name=".tabletStoreControlMain"
-            android:parentActivityName=".Store_List" />
+
+        <activity android:name=".tabletSetLimitation"></activity>
+        <activity android:name=".tabletStoreControlMain"
+            android:parentActivityName=".Store_List"></activity>
         <activity
             android:name=".DashboardMain"
             android:parentActivityName=".StaffMainActivity" />
         <activity
             android:name=".GenerateDailyReportJava"
-            android:parentActivityName=".StaffMainActivity" />
+            android:parentActivityName=".StaffMainActivity"/>
         <activity
             android:name=".StaffRegistration"
             android:parentActivityName=".StaffMainActivity" />
@@ -77,14 +75,19 @@
 
         <activity
             android:name=".social_distance_score_history"
-            android:label="Score History" />
+            android:label="Score History"
+             />
         <activity
             android:name=".ViewPlace"
-            android:label="Hospital Near Me" />
+            android:label="Hospital Near Me"
+            />
         <activity
             android:name=".distance_tracking"
-            android:label="Distance Tracking" />
-        <activity android:name=".nearby_hospital" />
+            android:label="Distance Tracking"
+            />
+        <activity
+            android:name=".nearby_hospital"
+            />
         <activity
             android:name=".StaffMainActivity"
             android:label="Staff Main Page" />
@@ -117,24 +120,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".QRCodeGenerator" />
-        <activity android:name=".BodyTemperature"></activity>
-        <activity android:name=".QRCodeScanner" />
-        <activity android:name=".VisitHistory" />
-        <activity android:name=".CustomerRecordSelecting" />
-        <activity android:name=".QRScannerCheckOutActivity" />
-        <activity android:name=".CheckOutShoppingActivity" />
         <activity android:name=".BodyTemperature">
         </activity>
-        <activity android:name=".QRCodeScanner"></activity>
-        <activity android:name=".VisitHistory"></activity>
-        <activity android:name=".CustomerRecordSelecting">
-        </activity>
-        <activity android:name=".member_menu"></activity>
+        <activity android:name=".QRCodeScanner"/>
+        <activity android:name=".VisitHistory"/>
+        <activity android:name=".CustomerRecordSelecting"/>
         <activity android:name=".QRScannerCheckOutActivity"/>
         <activity android:name=".CheckOutShoppingActivity"/>
-        <activity android:name=".PasswordRecovery1"></activity>
-        <activity android:name=".PasswordRecovery2"></activity>
-        <activity android:name=".PasswordRecovery3"></activity>
 
         <service
             android:name=".checkService"

@@ -155,7 +155,7 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
         googlePlaceUrl.append("?location=$latitude,$longtitude")
         googlePlaceUrl.append("&radius=10000") //10km
         googlePlaceUrl.append("&type=$typePlace")
-        googlePlaceUrl.append("&key=AIzaSyDQFRH8H5JA_Tw6Rnwne4CVB2VaNagqvsM")
+        googlePlaceUrl.append("&key=AIzaSyBTfgVQ6JTfOgGYDTrwiL6opabIEOwXCSs")
 
         Log.d("URL_DEBUG",googlePlaceUrl.toString())
         return googlePlaceUrl.toString()
@@ -243,7 +243,7 @@ class nearby_hospital : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onStop() {
 
-        //fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
 
         super.onStop()
     }
