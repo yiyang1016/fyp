@@ -373,6 +373,7 @@ class MainActivity : AppCompatActivity() {
                             val query1 = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourtext1.toString())
                             query.addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(snap: DataSnapshot) {
+                                    customerCountInt = 0
                                     for (snap in snap.children) {
                                         if(snap.child("status").value.toString() == "active") {
                                             customerCountInt++
