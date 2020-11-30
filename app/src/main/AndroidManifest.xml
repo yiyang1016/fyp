@@ -127,6 +127,7 @@
         <activity android:name=".CustomerRecordSelecting"/>
         <activity android:name=".QRScannerCheckOutActivity"/>
         <activity android:name=".CheckOutShoppingActivity"/>
+        <activity android:name=".BarchartThreeMonthCheckIn"/>
 
         <service
             android:name=".checkService"

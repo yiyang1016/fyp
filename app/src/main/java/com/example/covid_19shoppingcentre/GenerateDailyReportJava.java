@@ -106,7 +106,6 @@ public class GenerateDailyReportJava extends AppCompatActivity {
                                                     countAbnormal = countAbnormal + 1;
                                                 }
                                             }
-
                                         }
                                     }
 
@@ -151,6 +150,7 @@ public class GenerateDailyReportJava extends AppCompatActivity {
         if(new File(path).exists())
             new File(path).delete();
         try{
+
             totalCust = countAbnormal + countCheckIn + countCheckOut;
 
             Document document = new Document();
@@ -227,12 +227,6 @@ public class GenerateDailyReportJava extends AppCompatActivity {
             //addLineSpace(document);
             //addLineSpace(document);
 
-            totalCust = 0;
-            count = 0;
-            countCheckIn = 0;
-            countCheckOut = 0;
-            countAbnormal = 0;
-
             document.close();
 
             Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
@@ -250,6 +244,12 @@ public class GenerateDailyReportJava extends AppCompatActivity {
     }
 
     private void printPDF() {
+        totalCust = 0;
+        count = 0;
+        countCheckIn = 0;
+        countCheckOut = 0;
+        countAbnormal = 0;
+
         PrintManager printManager = (PrintManager)getSystemService(Context.PRINT_SERVICE);
         try{
             PrintDocumentAdapter printDocumentAdapter = new PdfDocumentAdapterJava(GenerateDailyReportJava.this, ReportCommonJava.getAppPath(GenerateDailyReportJava.this) + "test_pdf.pdf");
