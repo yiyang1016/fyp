@@ -36,7 +36,7 @@ class QRCodeScanner : AppCompatActivity(){
     private var bodyTemp: String? =null
     private var userDatabase =  FirebaseDatabase.getInstance().getReference("NewCheckInStore")
     private var mDatabase = FirebaseDatabase.getInstance().getReference("ShoppingCentre")
-    private var Database = FirebaseDatabase.getInstance().getReference()
+    private var Database = FirebaseDatabase.getInstance().reference
     private lateinit var checkInStoreId:String
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +111,6 @@ class QRCodeScanner : AppCompatActivity(){
                         if(snap.exists()){
                             storelimit = snap.child("Store_Limitation").value.toString().toInt()
                         }
-                        Log.d("testing", storelimit.toString())
                         if(customerCountInt<storelimit){
                             isOverLimit = false
                         }
@@ -169,6 +168,7 @@ class QRCodeScanner : AppCompatActivity(){
                                             storelimit = snap.child("Store_Limitation").value.toString().toInt()
                                         }
                                         Log.d("testing", storelimit.toString())
+                                        Log.d("testing", customerCountInt.toString())
                                         if(customerCountInt<storelimit){
                                             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                             val currentDateTime1 = LocalDateTime.now()
@@ -244,7 +244,7 @@ class QRCodeScanner : AppCompatActivity(){
                                                     TODO("Not yet implemented")
                                                 }
                                             })
-                                        }else{
+                                        }else if(customerCountInt>=storelimit){
                                             Toast.makeText(
                                                 applicationContext,
                                                 "The current store's customer is over the limit",
@@ -266,20 +266,29 @@ class QRCodeScanner : AppCompatActivity(){
                         })
 
                  }else if(results == "O"){
+                        storeId = result.contents.substring(1)
                         val date = getCurrentDateTime()
                         val hourFormat = date.toString("hh:mm aa")
-                        checkOutTime  = hourFormat
-                        userDatabase.child(checkInStoreId!!).child("checkOutTime").setValue(checkOutTime)
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        val currentDateTime = date.toString("yyyyMMdd")
+                        val hourFormat12 = date.toString("H")
                         val currentDateTime2  = LocalDateTime.now()
-                        val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-                        val dateText = currentDateTime2.format(dateFormat)
                         val hourFormat1: DateTimeFormatter = DateTimeFormatter.ofPattern("H")
                         val hourFormatText = currentDateTime2.format(hourFormat1)
+                        Log.d("testing",hourFormat12)
+                        checkOutTime  = hourFormat
+                        //userDatabase.child(checkInStoreId!!).child("checkOutTime").setValue(checkOutTime)
+                        var database = FirebaseDatabase.getInstance().getReference()
+                       database.child("CheckInStore").child(currentDateTime).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("checkOutTime").setValue(checkOutTime.toString())
+                        database.child("CheckInStore").child(currentDateTime).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("status").setValue("pass")
 
-                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("checkOutTime").setValue(checkOutTime.toString())
-                        Database.child("CheckInStore").child(dateText.toString()).child(storeId!!).child(hourFormatText.toString()).child(customerId.toString()).child("status").setValue("pass")
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                      //  val currentDateTime2  = LocalDateTime.now()
+                       // val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                      //  val dateText = currentDateTime2.format(dateFormat)
+                    //    val hourFormatText = currentDateTime2.format(hourFormat1)
+
+                        //Database.child("CheckInStore").child(currentDateTime).child(storeId!!).child(hourFormat12).child(customerId.toString()).child("checkOutTime").setValue(checkOutTime.toString())
+                        //Database.child("CheckInStore").child(currentDateTime).child(storeId!!).child(hourFormat12).child(customerId.toString()).child("status").setValue("pass")
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     }else{
