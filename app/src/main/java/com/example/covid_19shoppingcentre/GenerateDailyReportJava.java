@@ -58,6 +58,8 @@ public class GenerateDailyReportJava extends AppCompatActivity {
     int countCheckOut = 0;
     int countAbnormal = 0;
     int totalCust = 0;
+
+    int verifyBtn = 0;
     String key;
     String a;
 
@@ -82,30 +84,39 @@ public class GenerateDailyReportJava extends AppCompatActivity {
                         btn_create_pdf.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view){
-
+                                verifyBtn = 1;
                                 reff = FirebaseDatabase.getInstance().getReference().child("ShoppingCentre").child(dateText);
 
-                                reff.addValueEventListener(new ValueEventListener() {
+                                reff.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         count = 1;
-                                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                                        totalCust = 0;
+                                        count = 0;
+                                        countCheckIn = 0;
+                                        countCheckOut = 0;
+                                        countAbnormal = 0;
+
+                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                                             count = 2;
-                                            if(postSnapshot.exists()){
+                                            if (postSnapshot.exists()) {
                                                 count = 3;
                                                 key = postSnapshot.getKey();
                                                 a = dataSnapshot.child(key).child("status").getValue().toString();
-                                                if(dataSnapshot.child(key).child("status").getValue().toString().equals("checkIn")){
+                                                if (dataSnapshot.child(key).child("status").getValue().toString().equals("checkIn")) {
                                                     count = 4;
                                                     countCheckIn = countCheckIn + 1;
-                                                }else if (dataSnapshot.child(key).child("status").getValue().toString().equals("checkOut")){
+                                                } else if (dataSnapshot.child(key).child("status").getValue().toString().equals("checkOut")) {
                                                     count = 4;
                                                     countCheckOut = countCheckOut + 1;
-                                                }else{
+                                                } else {
                                                     count = 4;
                                                     countAbnormal = countAbnormal + 1;
                                                 }
                                             }
+                                        }
+                                        if(count == 4) {
+                                            createPDFFile(ReportCommonJava.getAppPath(GenerateDailyReportJava.this) + "test_pdf.pdf");
                                         }
                                     }
 
@@ -115,11 +126,6 @@ public class GenerateDailyReportJava extends AppCompatActivity {
                                     }
                                 });
 
-                                if(count == 0) {
-                                    Toast.makeText(getApplicationContext(),"Please Clink agian", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    createPDFFile(ReportCommonJava.getAppPath(GenerateDailyReportJava.this) + "test_pdf.pdf");
-                                }
                             }
                         });
                     }
