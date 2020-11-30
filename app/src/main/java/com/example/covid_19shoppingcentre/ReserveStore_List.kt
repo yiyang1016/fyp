@@ -101,7 +101,7 @@ class ReserveStore_List :AppCompatActivity() {
                                             customerCountInt++
                                         }
                                     }
-                                    query1.addListenerForSingleValueEvent(object : ValueEventListener{
+                                    query1.addValueEventListener(object : ValueEventListener{
                                         override fun onDataChange(snapshot: DataSnapshot) {
                                             for (snapshot in snapshot.children) {
                                                 if(snapshot.child("status").value.toString() == "active") {
