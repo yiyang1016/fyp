@@ -94,7 +94,7 @@ class ReserveStore_List :AppCompatActivity() {
 
                             val query = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourText.toString())
                             val query1 = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourtext1.toString())
-                            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                            query.addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(snap: DataSnapshot) {
                                     for (snap in snap.children) {
                                         if(snap.child("status").value.toString() == "active") {

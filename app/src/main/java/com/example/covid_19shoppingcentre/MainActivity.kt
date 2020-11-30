@@ -349,7 +349,7 @@ class MainActivity : AppCompatActivity() {
 
                 //val findId = Database.child("Store").orderByChild("Store_Name").limitToFirst(2)
                 val findId = Database.child("Store").orderByChild("Store_Name").equalTo(p1.Store_Name)
-                findId.addListenerForSingleValueEvent(object : ValueEventListener {
+                findId.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (snapshot in snapshot.children) {
                             p0.mView.setOnClickListener {
@@ -371,14 +371,14 @@ class MainActivity : AppCompatActivity() {
 
                             val query = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourText.toString())
                             val query1 = Database.child("CheckInStore").child(dateText.toString()).child(storeId).child(hourtext1.toString())
-                            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                            query.addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(snap: DataSnapshot) {
                                     for (snap in snap.children) {
                                         if(snap.child("status").value.toString() == "active") {
                                             customerCountInt++
                                         }
                                     }
-                                    query1.addListenerForSingleValueEvent(object : ValueEventListener{
+                                    query1.addValueEventListener(object : ValueEventListener{
                                         override fun onDataChange(snapshot: DataSnapshot) {
                                             for (snapshot in snapshot.children) {
                                                 if(snapshot.child("status").value.toString() == "active") {

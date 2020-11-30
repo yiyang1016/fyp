@@ -7,8 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -43,6 +45,7 @@ class QRCodeScanner : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.qr_scanner)
         /////////////////////////////////////////////////////
+        setActionBar()
         val intent1: Intent = intent
         customerId= intent1.getStringExtra("MemberID")
         /////////////////////////////////////////////////////
@@ -302,5 +305,18 @@ class QRCodeScanner : AppCompatActivity(){
             }
         }
     }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = intent.getStringExtra("MemberID")
 
+        val intent1 = Intent(this, MainActivity::class.java).apply {
+            putExtra("MemberID", id)
+        }
+        startActivity(intent1)
+        return false
+    }
+    private fun setActionBar(){
+        val actionBar: ActionBar? = supportActionBar
+        actionBar!!.title = "Distance Tracking"
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
 }
