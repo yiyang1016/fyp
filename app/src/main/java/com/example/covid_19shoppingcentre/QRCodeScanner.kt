@@ -237,6 +237,8 @@ class QRCodeScanner : AppCompatActivity(){
                                                             "Please checked in at the Shopping Mall Main entrance",
                                                             Toast.LENGTH_SHORT
                                                         ).show()
+                                                    }else{
+                                                        Toast.makeText(this@QRCodeScanner, "Check In Store Successfully", Toast.LENGTH_LONG).show()
                                                     }
                                                 }
 
@@ -290,7 +292,7 @@ class QRCodeScanner : AppCompatActivity(){
                         //Database.child("CheckInStore").child(currentDateTime).child(storeId!!).child(hourFormat12).child(customerId.toString()).child("checkOutTime").setValue(checkOutTime.toString())
                         //Database.child("CheckInStore").child(currentDateTime).child(storeId!!).child(hourFormat12).child(customerId.toString()).child("status").setValue("pass")
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+                        Toast.makeText(this, "Check Out Store Successfully", Toast.LENGTH_LONG).show()
                     }else{
                         Toast.makeText(this, "Please Scan the correct store QR code", Toast.LENGTH_LONG).show()
                     }

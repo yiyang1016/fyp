@@ -10,7 +10,7 @@
             android:title="Reservation List"/>
         <item
             android:id="@+id/nav_generateQR"
-            android:title="Generate QR code" />
+            android:title="Check In Main Entrance" />
 
         <item
             android:id="@+id/nav_distanceTrackingBtn"
@@ -26,7 +26,7 @@
             android:title="Review"/>
         <item
             android:id="@+id/nav_scanQR"
-            android:title="Check in to Store" />
+            android:title="Check in and Out Store" />
         <item
             android:id="@+id/nav_memberMenu"
             android:title="View Record" />
