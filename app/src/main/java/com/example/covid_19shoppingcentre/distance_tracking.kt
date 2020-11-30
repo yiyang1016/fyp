@@ -36,7 +36,7 @@ import java.time.format.DateTimeFormatter
 class distance_tracking : AppCompatActivity() {
 
     private val REQUEST_BLUETOOTH_TURN_ON = 1
-    private val BLE_SCAN_PERIOD: Long = 200000
+    private val BLE_SCAN_PERIOD: Long = 100000
     private lateinit var bleAdapter: BluetoothAdapter
     private lateinit var bleManager: BluetoothManager
     private lateinit var bleScanner: BluetoothLeScanner
@@ -112,7 +112,7 @@ class distance_tracking : AppCompatActivity() {
 
                 status.text = "STATUS : ON"
                 bleStartScan.run()
-                bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
+                //bleScanHandler.postDelayed(bleStopScan, this.BLE_SCAN_PERIOD)
                 count++
                 val bluetoothScanninghandler = Handler()
                 bluetoothScanninghandler.postDelayed(object : Runnable {
@@ -143,9 +143,10 @@ class distance_tracking : AppCompatActivity() {
                                     )
                                 }
                             }
+
+                            bleScanCallback.addRssi.clear()
                         }
-                        bleScanCallback.addRssi.clear()
-                        bluetoothScanninghandler.postDelayed(this, 20000)//20 sec delay
+                        bluetoothScanninghandler.postDelayed(this, 10000)//10 sec delay
                     }
                 }, 0)
 
@@ -225,11 +226,11 @@ class distance_tracking : AppCompatActivity() {
             if (!resultOfScan.contains(deviceAddress)) {
                 resultOfScan.put(deviceAddress, bleDevice)
                 if (this.context != null) {
-                    /*Toast.makeText(
+                    Toast.makeText(
                         this.context,
                         bleDevice?.name + ":" + bleDevice?.address + "RSSI" + rssiValue,
                         Toast.LENGTH_SHORT
-                    ).show()*/
+                    ).show()
                     //deviceNameAddress.put(bleDevice?.name, deviceAddress)
                     addRssi.put(deviceAddress, rssiValue)
                 }
