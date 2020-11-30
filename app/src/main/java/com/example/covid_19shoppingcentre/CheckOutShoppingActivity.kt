@@ -22,6 +22,8 @@ class CheckOutShoppingActivity: AppCompatActivity() {
         val currentDateTime  = LocalDateTime.now()
         val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val dateText = currentDateTime.format(dateFormat)
+        val hourMinuteFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
+        val hourMinuteText = currentDateTime.format(hourMinuteFormat)
 
         val dataSent = intent.getStringExtra("EXTRA_MESSAGE")
         val memberI = intent.getStringExtra("memberID")
@@ -31,6 +33,7 @@ class CheckOutShoppingActivity: AppCompatActivity() {
             override fun onDataChange(s0: DataSnapshot) {
                 if (s0.exists()){
                     var query = userDatabase.child("ShoppingCentre").child(dateText.toString()).child(memberI.toString())
+                    query.child("checkOutTime").setValue(hourMinuteText.toString())
                     query.child("status").setValue(dataSent.toString()).addOnCompleteListener {
 
                         val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
@@ -47,8 +50,8 @@ class CheckOutShoppingActivity: AppCompatActivity() {
                                         database.child(dataSent).child("DistanceScoreStatus").setValue(0)
                                     }
                                 } else {
-                                    Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)
-                                        .show()
+//                                    Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)
+//                                        .show()
                                 }
                             }
                         })

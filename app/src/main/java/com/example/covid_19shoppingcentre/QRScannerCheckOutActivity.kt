@@ -86,8 +86,10 @@ class QRScannerCheckOutActivity: AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        val memberID = intent.getStringExtra("memberid")
+
         val intent1 = Intent(this, MainActivity::class.java).apply {
-            putExtra("EXTRA_MESSAGE", "message")
+            putExtra("MemberID", memberID)
         }
         startActivity(intent1)
     }
