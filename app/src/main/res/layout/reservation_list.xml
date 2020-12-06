@@ -65,7 +65,7 @@
             android:background="@drawable/toggle_widget_background"
             android:button="@null"
             android:gravity="center"
-            android:text="Pass"
+            android:text="Past"
             android:textColor="#FFFFFF" />
     </RadioGroup>
 

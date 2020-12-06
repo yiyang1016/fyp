@@ -70,7 +70,7 @@ class CheckOutShoppingActivity: AppCompatActivity() {
             }
             startActivity(intent1)
         }
-        }
+    }
 
     override fun onBackPressed() {
         val memberI = intent.getStringExtra("memberID")

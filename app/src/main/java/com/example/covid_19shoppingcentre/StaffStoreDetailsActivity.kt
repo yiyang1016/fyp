@@ -267,10 +267,6 @@ class StaffStoreDetailsActivity : AppCompatActivity() {
                             .show()
                     }
                 })
-//            } else{
-//                    p0.mView.visibility = View.GONE
-//                    p0.mView.layoutParams = RecyclerView.LayoutParams(0, 0)
-//                }
             }
         }
         mRecyclerView.adapter = FirebaseRecyclerAdapter

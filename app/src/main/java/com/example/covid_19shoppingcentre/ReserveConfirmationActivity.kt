@@ -84,12 +84,7 @@ class ReserveConfirmationActivity : AppCompatActivity() {
 
             query.child(reserveDate).child(storeI).child(reserveTime).child(memberI)
                 .setValue(writeNewCheckIn).addOnCompleteListener {
-                Toast.makeText(
-                    applicationContext,
-                    "Reserve Successful",
-                    Toast.LENGTH_SHORT
-                ).show()
-//                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Toast.makeText(applicationContext, "Reserve Successful", Toast.LENGTH_SHORT).show()
                 startActivity(intent1)
                 finish()
             }

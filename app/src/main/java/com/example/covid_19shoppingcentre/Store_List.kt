@@ -120,7 +120,7 @@ class Store_List :AppCompatActivity() {
                         }
                     }
                     override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(applicationContext, "notification", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
                     }
                 })
             }

@@ -254,23 +254,11 @@ class MemberInformationActivity : AppCompatActivity() {
                         //val customerID = s0.key.toString()
 
                         if (dataSent != null && checkInTime != null) {
-                            val writeNewCheckIn = addShoppingCentreCheckIn(
-                                checkInTime,
-                                name,
-                                phone,
-                                dataSent,
-                                temperature,
-                                statusNow,
-                                checkOutTime
-                            )
-
+                            val writeNewCheckIn = addShoppingCentreCheckIn(checkInTime, name, phone, dataSent, temperature,
+                                statusNow, checkOutTime)
                             addQuery.child(dataSent).setValue(writeNewCheckIn)
                                 .addOnCompleteListener {
-                                    Toast.makeText(
-                                        applicationContext,
-                                        "Check In Successful",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    Toast.makeText(applicationContext, "Check In Successful", Toast.LENGTH_SHORT).show()
 
                                     val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
                                         .orderByChild("Id").equalTo(dataSent)
@@ -290,11 +278,8 @@ class MemberInformationActivity : AppCompatActivity() {
                                                         resetMark()
                                                     }
                                                 }
-
-
                                         }
                                     })
-
                                     startActivity(intent1)
                                 }
 

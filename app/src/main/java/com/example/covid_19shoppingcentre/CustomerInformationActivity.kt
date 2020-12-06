@@ -124,16 +124,11 @@ class CustomerInformationActivity : AppCompatActivity() {
                                                             database.child(id).child("DistanceScoreStatus").setValue(0)
                                                         }
                                                     } else {
-                                                        Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)
-                                                            .show()
+                                                        Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT).show()
                                                     }
                                                 }
                                             })
-                                            Toast.makeText(
-                                                applicationContext,
-                                                "Check Out Successful",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            Toast.makeText(applicationContext, "Check Out Successful", Toast.LENGTH_SHORT).show()
                                             startActivity(intent)
                                             finish()
                                         }
@@ -168,15 +163,46 @@ class CustomerInformationActivity : AppCompatActivity() {
                                                     }
                                                 }
                                             })
-                                            Toast.makeText(
-                                                applicationContext,
-                                                "Check Out Successful",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            Toast.makeText(applicationContext, "Check Out Successful", Toast.LENGTH_SHORT).show()
                                             startActivity(intent)
                                             finish()
                                         }
                                 }
+                            } else {
+                                val statusNow = "checkOut"
+                                val checkOutTime = hourMinuteText.toString().trim()
+
+                                val updateQuery = FirebaseDatabase.getInstance()
+                                    .getReference("ShoppingCentre").child(dateText.toString())
+                                    .child(id)
+                                val customerID = s0.key.toString()
+
+                                updateQuery.child("status").setValue(statusNow)
+                                updateQuery.child("checkOutTime").setValue(checkOutTime)
+                                    .addOnCompleteListener {
+                                        val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
+                                            .orderByChild("Id").equalTo(id)
+                                        refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
+                                            override fun onCancelled(error: DatabaseError) {
+                                                val text = "Connection Failed"
+                                                Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+                                            }
+
+                                            override fun onDataChange(p0: DataSnapshot) {
+                                                if (p0.exists()) {
+                                                    for (p0 in p0.children) {
+                                                        database.child(id).child("DistanceScoreStatus").setValue(0)
+                                                    }
+                                                } else {
+                                                    Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)
+                                                        .show()
+                                                }
+                                            }
+                                        })
+                                        Toast.makeText(applicationContext, "Check Out Successful", Toast.LENGTH_SHORT).show()
+                                        startActivity(intent)
+                                        finish()
+                                    }
                             }
                         }
 
@@ -191,52 +217,6 @@ class CustomerInformationActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
             }
         })
-
-//
-//        query.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(s0: DataSnapshot) {
-//                for (s0 in s0.children) {
-//                    val statusNow = "checkOut"
-//                    val checkOutTime = hourMinuteText.toString().trim()
-//
-//                    val updateQuery = FirebaseDatabase.getInstance().getReference("ShoppingCentre").child(dateText.toString())
-//                    val customerID = s0.key.toString()
-//
-//                    updateQuery.child(customerID).child("status").setValue(statusNow)
-//                    updateQuery.child(customerID).child("checkOutTime").setValue(checkOutTime).addOnCompleteListener {
-//                        val refSearch = FirebaseDatabase.getInstance().getReference().child("Member")
-//                            .orderByChild("Id").equalTo(id)
-//                        refSearch.addListenerForSingleValueEvent(object : ValueEventListener {
-//                            override fun onCancelled(error: DatabaseError) {
-//                                val text = "Connection Failed"
-//                                Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
-//                            }
-//
-//                            override fun onDataChange(p0: DataSnapshot) {
-//                                if (p0.exists()) {
-//                                    for (p0 in p0.children) {
-//                                        database.child(id).child("DistanceScoreStatus").setValue(0)
-//                                    }
-//                                } else {
-//                                    Toast.makeText(applicationContext, "Member Missing", Toast.LENGTH_SHORT)
-//                                        .show()
-//                                }
-//                            }
-//                        })
-//                        Toast.makeText(
-//                            applicationContext,
-//                            "Check Out Successful",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        startActivity(intent)
-//                        finish()
-//                    }
-//                }
-//            }
-//            override fun onCancelled(error: DatabaseError) {
-//                Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
-//            }
-//        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

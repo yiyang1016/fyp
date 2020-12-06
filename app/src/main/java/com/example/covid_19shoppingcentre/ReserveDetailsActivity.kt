@@ -38,7 +38,6 @@ class ReserveDetailsActivity : AppCompatActivity() {
         val reserveD = intent.getStringExtra("date")
         val statu = intent.getStringExtra("status")
 
-
         storeName.text = storeN
         time.text = reserveT
         status.text = statu
@@ -64,7 +63,6 @@ class ReserveDetailsActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "ERROR", Toast.LENGTH_SHORT).show()
             }
         })
-
 
         cancelReserveBtn.setOnClickListener{
             cancelList()

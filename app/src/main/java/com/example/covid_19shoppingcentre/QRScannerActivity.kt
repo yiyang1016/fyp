@@ -61,7 +61,6 @@ class QRScannerActivity :AppCompatActivity() {
     }
 
     private fun setupQREADER() {
-
         qrEader = QREader.Builder(this@QRScannerActivity,camera_view, QRDataListener { data ->
             info_code.post{ startActivity(Intent(this, MemberInformationActivity::class.java).apply {
                 putExtra("EXTRA_MESSAGE", data) })}
